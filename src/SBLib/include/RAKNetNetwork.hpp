@@ -2,7 +2,8 @@
 
 #include "RakPeerInterface.h"
 #include "RakNetTypes.h"
-#include "rooms-plugin\RoomsPlugin.h"
+#include "rooms-plugin/RoomsPlugin.h"
+#include "RAKNetRoomCallbacks.hpp"
 
 #define RAKNET_TYPE_DIRECT_JOIN "Direct-IP  Join"
 #define RAKNET_TYPE_DIRECT_HOST "Direct-IP  Host"

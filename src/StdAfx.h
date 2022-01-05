@@ -17,13 +17,13 @@
 
 #include "stdstring.h"
 typedef CStdStringA CString;
-#include "Defines.h"
+#include "defines.h"
 #include "helper.h"
 
 #include "TeakLibW.h"
 #include "sbl.h"
-#include "sbbm.h"
-#include "sse.h"
+#include "Sbbm.h"
+#include "SSE.h"
 #include "ColorFx.h"
 
 #include "glstd.h"
