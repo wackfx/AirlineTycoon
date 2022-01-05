@@ -3,7 +3,7 @@
 //============================================================================================
 // Link: "Takeoff.h"
 //============================================================================================
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "HLine.h"
 #include "Checkup.h"
 #include <stdio.h>
@@ -40,7 +40,7 @@
 #include "Designer.h"
 #include "World.h"
 
-#include "glTitel.h"
+#include "gltitel.h"
 #include "cd_prot.h"
 
 #include "AtNet.h"
@@ -283,6 +283,7 @@ int main(int argc, char* argv[])
         sentry_value_set_by_key(crumbId, "message", sentry_value_new_string(std::to_string(crashId).c_str()));
         sentry_add_breadcrumb(crumbId);
     }
+#endif
 #endif
 
     const char* pText = "Hallo, ich bin ein Text";

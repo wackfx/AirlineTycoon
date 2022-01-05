@@ -1,7 +1,7 @@
 //============================================================================================
 //Schedule.cpp - Der Bildschirm für den Scheduler
 //============================================================================================
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AtNet.h"
 
 #define AT_Log(a,...) AT_Log_I("Schedule", a, __VA_ARGS__)
