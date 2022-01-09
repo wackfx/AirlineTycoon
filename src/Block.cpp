@@ -1,5 +1,5 @@
 //============================================================================================
-// Block.cpp : Routinen für den Notizblock der Spieler
+// Block.cpp : Routinen f�r den Notizblock der Spieler
 //============================================================================================
 #include "stdafx.h"
 
@@ -43,7 +43,7 @@ BLOCK::BLOCK ()
 }
 
 //--------------------------------------------------------------------------------------------
-//Den Block zerstören:
+//Den Block zerst�ren:
 //--------------------------------------------------------------------------------------------
 BLOCK::~BLOCK ()
 {
@@ -72,7 +72,7 @@ void BLOCK::BlitAt (SBBM &RoomBm)
       if (Destructing==1)
       {
          Phase=38-Phase;
-         if (Phase<=-7) 
+         if (Phase<=-7)
          {
             Destructing=2;
             return;
@@ -231,7 +231,7 @@ void BLOCK::BlitAt (SBBM &RoomBm)
 }
 
 //--------------------------------------------------------------------------------------------
-//Eine Lib für den Block laden:
+//Eine Lib f�r den Block laden:
 //--------------------------------------------------------------------------------------------
 void BLOCK::LoadLib (const CString &LibName)
 {
@@ -298,10 +298,10 @@ void BLOCK::UpdateTip (SLONG PlayerNum, BOOL StyleType)
 void BLOCK::Refresh (SLONG PlayerNum, BOOL StyleType)
 {
    SLONG      c, d, e, i;
-   XY         TitleArea;  //Hier beginnt der Platz für den Fenstertitel
+   XY         TitleArea;  //Hier beginnt der Platz f�r den Fenstertitel
    XY         ClientArea; //Hier beginnt das Papier
    XY         PageArea;   //Hier steht die aktuelle Seite Papier
-   XY         TitleAreaB;  //Hier beginnt der Platz für den Fenstertitel
+   XY         TitleAreaB;  //Hier beginnt der Platz f�r den Fenstertitel
    XY         ClientAreaB; //Hier beginnt das Papier
    XY         PageAreaB;   //Hier steht die aktuelle Seite Papier
    PLAYER    &qPlayer = Sim.Players.Players[PlayerNum];
@@ -315,7 +315,7 @@ void BLOCK::Refresh (SLONG PlayerNum, BOOL StyleType)
 
    if (TipInUse==TIP_NONE)
    {
-      //Specials für die Info-Seiten, wenn man keinen Berater hat:
+      //Specials f�r die Info-Seiten, wenn man keinen Berater hat:
       if (Index==0 && BlockType==5)
       {
          if (SelectedId==0)
@@ -368,7 +368,7 @@ void BLOCK::Refresh (SLONG PlayerNum, BOOL StyleType)
          if (PageB>0)                     Bitmap.BlitFromT (pGlobe->Back, 232+40, 237);  //Back
          if (PageB/PageSizeB<AnzPagesB-1) Bitmap.BlitFromT (pGlobe->Next, 232+208, 233); //Next
 
-         if (BlockTypeB==3) Bitmap.BlitFromT (pGlobe->IndexA[0], 268, 256); //Aufträge
+         if (BlockTypeB==3) Bitmap.BlitFromT (pGlobe->IndexA[0], 268, 256); //Auftr�ge
          if (BlockTypeB==4) Bitmap.BlitFromT (pGlobe->IndexA[2], 268, 256); //Routen
          if (BlockTypeB==6) Bitmap.BlitFromT (pGlobe->IndexA[1], 268, 256); //Fracht
 
@@ -787,7 +787,7 @@ void BLOCK::Refresh (SLONG PlayerNum, BOOL StyleType)
                   Bitmap.PrintAt (StandardTexte.GetS (TOKEN_PLANE, 1030), FontSmallBlack, TEC_FONT_LEFT, ClientArea+XY(2,103+52), ClientArea+XY(172,170));
                }
                else if (Page==2) //Besatzung:
-               {      
+               {
                   SLONG       c, n;
                   CPlane     &qPlane     = qPlayer.Planes[SelectedId];
                   //CPlaneType &qPlaneType = PlaneTypes[qPlane.TypeId];
@@ -1107,7 +1107,7 @@ switch_again:
                {
                   SB_CFont *s;
 
-                  //Nachschauen, ob der Flug zu lang ist für das Flugzeug:
+                  //Nachschauen, ob der Flug zu lang ist f�r das Flugzeug:
                   if (Index!=1 && TableB.ValueFlags[0+c*TableB.AnzColums]==0 && qPlayer.Auftraege.IsInAlbum(TableB.LineIndex[c]))
                   {
                      //if (!qPlayer.Auftraege[TableB.LineIndex[c]].FitsInPlane (PlaneTypes[Sim.Players.Players[(SLONG)PlayerNum].Planes[SelectedId].TypeId]))
@@ -1159,7 +1159,7 @@ switch_again:
 
                   s=&FontSmallBlack;
 
-                  //Nachschauen, ob der Flug zu lang ist für das Flugzeug:
+                  //Nachschauen, ob der Flug zu lang ist f�r das Flugzeug:
                   if (Index!=1)
                   {
                      SLONG VonCityId  = Routen[TableB.LineIndex[c]].VonCity;
@@ -1204,7 +1204,7 @@ switch_again:
                {
                   SB_CFont *s;
 
-                  //Nachschauen, ob der Flug zu lang ist für das Flugzeug:
+                  //Nachschauen, ob der Flug zu lang ist f�r das Flugzeug:
                   if (Index!=1 && TableB.ValueFlags[0+c*TableB.AnzColums]==0 && qPlayer.Frachten.IsInAlbum(TableB.LineIndex[c]))
                   {
                      //if (!qPlayer.Frachten[TableB.LineIndex[c]].FitsInPlane (PlaneTypes[Sim.Players.Players[(SLONG)PlayerNum].Planes[SelectedId].TypeId]))
@@ -1241,7 +1241,7 @@ switch_again:
          //Details
          switch (BlockTypeB)
          {
-            //Aufträge:
+            //Auftr�ge:
             case 3:
                {
                   if (!qPlayer.Auftraege.IsInAlbum(SelectedIdB))
@@ -1257,8 +1257,8 @@ switch_again:
                   //Headline: LAX - DUS
                   Bitmap.PrintAt (bprintf ("%s - %s", (LPCTSTR)Cities[qAuftrag.VonCity].Kuerzel, (LPCTSTR)Cities[qAuftrag.NachCity].Kuerzel), TitleFont, TEC_FONT_LEFT, TitleAreaB, Bitmap.Size);
 
-                  //Ausführlich von A nach B
-                  Bitmap.PrintAt (bprintf ("%s - %s", 
+                  //Ausf�hrlich von A nach B
+                  Bitmap.PrintAt (bprintf ("%s - %s",
                                   Cities[qAuftrag.VonCity].Name,
                                   Cities[qAuftrag.NachCity].Name),
                                   FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,1), ClientAreaB+XY(172,168));
@@ -1277,7 +1277,7 @@ switch_again:
                      else
                         Bitmap.PrintAt (CString(StandardTexte.GetS (TOKEN_SCHED, 3009)) + " " + CString(StandardTexte.GetS (TOKEN_SCHED, 3010+(qAuftrag.BisDate+Sim.StartWeekday)%7)), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(75,40), ClientAreaB+XY(172,170));
 
-                     //Prämie und Strafe
+                     //Pr�mie und Strafe
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_AUFTRAG, 1002), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,66), ClientAreaB+XY(172,170));
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_AUFTRAG, 1001), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,53), ClientAreaB+XY(172,170));
                      Bitmap.PrintAt (bprintf ("%s", (LPCTSTR)(CString)Einheiten[EINH_DM].bString (qAuftrag.Strafe)), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(75,66), ClientAreaB+XY(172,170));
@@ -1299,7 +1299,7 @@ switch_again:
                   {
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_AUFTRAG, 2500), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,28), ClientAreaB+XY(172,170));
                   }
-               }   
+               }
                break;
 
             //Routen:
@@ -1319,12 +1319,12 @@ switch_again:
                   //Headline: LAX - DUS
                   Bitmap.PrintAt (bprintf ("%s - %s", (LPCTSTR)Cities[qRoute.VonCity].Kuerzel, (LPCTSTR)Cities[qRoute.NachCity].Kuerzel), TitleFont, TEC_FONT_LEFT, TitleAreaB, Bitmap.Size);
 
-                  //Ausführlich von A nach B
-                  Bitmap.PrintAt (bprintf ("%s - %s", 
-                                  (LPCTSTR)Cities[qRoute.VonCity].Name,
-                                  (LPCTSTR)Cities[qRoute.NachCity].Name),
+                  //Ausf�hrlich von A nach B
+                  Bitmap.PrintAt (bprintf ("%s - %s",
+                                  Cities[qRoute.VonCity].Name,
+                                  Cities[qRoute.NachCity].Name),
                                   FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,1), ClientAreaB+XY(172,168));
-                       
+
                   if (PageB==0)
                   {
                      //Ticketpreis:
@@ -1336,7 +1336,7 @@ switch_again:
                      Bitmap.PrintAt (Einheiten[EINH_DM].bString (qRRoute.TicketpreisFC), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(80,40), ClientAreaB+XY(172,170));
                      Bitmap.PrintAt ("+-", FontSmallBlack, TEC_FONT_RIGHT, ClientAreaB+XY(2,40), ClientAreaB+XY(172,170));
 
-                     //erhöhen oder verringern:
+                     //erh�hen oder verringern:
                      //Bitmap.PrintAt (StandardTexte.GetS (TOKEN_ROUTE, 1100), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(2,40), ClientAreaB+XY(172,170));
                      //Bitmap.PrintAt (StandardTexte.GetS (TOKEN_ROUTE, 1101), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(2,53), ClientAreaB+XY(172,170));
 
@@ -1395,7 +1395,7 @@ switch_again:
                      //Miete:
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_ROUTE, 1006), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(2,131-2), ClientAreaB+XY(172,170));
                      Bitmap.PrintAt (Einheiten[EINH_DM].bString (qRRoute.Miete), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(100,131-2), ClientAreaB+XY(172,170));
-                     //Kündigen:
+                     //K�ndigen:
                      Bitmap.BlitFrom (FlugplanBms[57], ClientAreaB+XY(2,144-2));
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_ROUTE, 1200), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(22,148), Bitmap.Size);
                   }
@@ -1406,7 +1406,7 @@ switch_again:
                }
                break;
 
-            //Frachtaufträge:
+            //Frachtauftr�ge:
             case 6:
                {
                   if (!qPlayer.Frachten.IsInAlbum(SelectedIdB))
@@ -1422,8 +1422,8 @@ switch_again:
                   //Headline: LAX - DUS
                   Bitmap.PrintAt (bprintf ("%s - %s", (LPCTSTR)Cities[qFracht.VonCity].Kuerzel, (LPCTSTR)Cities[qFracht.NachCity].Kuerzel), TitleFont, TEC_FONT_LEFT, TitleAreaB, Bitmap.Size);
 
-                  //Ausführlich von A nach B
-                  Bitmap.PrintAt (bprintf ("%s - %s", 
+                  //Ausf�hrlich von A nach B
+                  Bitmap.PrintAt (bprintf ("%s - %s",
                                   Cities[qFracht.VonCity].Name,
                                   Cities[qFracht.NachCity].Name),
                                   FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,1), ClientAreaB+XY(172,168));
@@ -1446,7 +1446,7 @@ switch_again:
                      else
                         Bitmap.PrintAt (CString(StandardTexte.GetS (TOKEN_SCHED, 3009)) + " " + CString(StandardTexte.GetS (TOKEN_SCHED, 3010+(qFracht.BisDate+Sim.StartWeekday)%7)), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(75,40+23), ClientAreaB+XY(172,170));
 
-                     //Prämie und Strafe
+                     //Pr�mie und Strafe
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_AUFTRAG, 1002), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,66+19), ClientAreaB+XY(172,170));
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_AUFTRAG, 1001), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,53+21), ClientAreaB+XY(172,170));
                      Bitmap.PrintAt (bprintf ("%s", (LPCTSTR)(CString)Einheiten[EINH_DM].bString (qFracht.Strafe)), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(75,66+19), ClientAreaB+XY(172,170));
@@ -1468,7 +1468,7 @@ switch_again:
                   {
                      Bitmap.PrintAt (StandardTexte.GetS (TOKEN_AUFTRAG, 2501), FontSmallBlack, TEC_FONT_LEFT, ClientAreaB+XY(0,28), ClientAreaB+XY(172,170));
                   }
-               }   
+               }
                break;
          }
       }
@@ -1494,19 +1494,19 @@ switch_again:
    else if (TipInUseB == TIP_AUFTRAG)
    {
       DrawAuftragTipContents (-1,
-                              Bitmap, 
+                              Bitmap,
                               NULL,
                               &Sim.Players.Players[(SLONG)PlayerNum].Auftraege[CurrentTipId],
                               CurrentTipIdPar3, //Gate
                               CurrentTipIdPar1,
-                              CurrentTipIdPar2, 
+                              CurrentTipIdPar2,
                               TitleAreaB, ClientAreaB, XY(0,0), &TitleFont, &FontSmallBlack,
                               CurrentTipIdPar4);
    }
    else if (TipInUseB == TIP_FRACHT)
    {
       DrawFrachtTipContents (-1,
-                              Bitmap, 
+                              Bitmap,
                               NULL,
                               &Sim.Players.Players[(SLONG)PlayerNum].Frachten[CurrentTipId],
                               CurrentTipIdPar3, //t mit diesem Flug transportiert
@@ -1529,7 +1529,7 @@ switch_again:
 }
 
 //--------------------------------------------------------------------------------------------
-//Bringt die Daten (die später durch Refresh angezeigt werden) auf den neusten Stand:
+//Bringt die Daten (die sp�ter durch Refresh angezeigt werden) auf den neusten Stand:
 //--------------------------------------------------------------------------------------------
 void BLOCK::RefreshData (SLONG PlayerNum)
 {
@@ -1537,7 +1537,7 @@ void BLOCK::RefreshData (SLONG PlayerNum)
 
    switch (BlockType)
    {
-      //Städte:
+      //St�dte:
       case 1:
          Table.FillWithCities (&Sim.Players.Players[(SLONG)PlayerNum].RentCities);
          break;
@@ -1577,7 +1577,7 @@ void BLOCK::RefreshData (SLONG PlayerNum)
 
    switch (BlockTypeB)
    {
-      //Aufträge:
+      //Auftr�ge:
       case 3:
          TableB.FillWithAuftraege (&Sim.Players.Players[(SLONG)PlayerNum].Auftraege);
          if (IndexB)
@@ -1596,7 +1596,7 @@ void BLOCK::RefreshData (SLONG PlayerNum)
             AnzPagesB = 3;
          break;
 
-      //Frachtaufträge:
+      //Frachtauftr�ge:
       case 6:
          TableB.FillWithFracht (&Sim.Players.Players[(SLONG)PlayerNum].Frachten);
          if (IndexB)
@@ -1625,7 +1625,7 @@ void BLOCK::GotoNext (void)
 }
 
 //--------------------------------------------------------------------------------------------
-//Geht eine Seite zurück:
+//Geht eine Seite zur�ck:
 //--------------------------------------------------------------------------------------------
 void BLOCK::GotoPrevious (void)
 {
@@ -1645,7 +1645,7 @@ void BLOCK::UpdatePageSize (void)
 }
 
 //--------------------------------------------------------------------------------------------
-//Erneuert alle Blöcke mit Listen von Aufträgen:
+//Erneuert alle Bl�cke mit Listen von Auftr�gen:
 //--------------------------------------------------------------------------------------------
 void BLOCKS::RefreshAuftragsBloecke (SLONG PlayerNum, SLONG Background)
 {
@@ -1684,7 +1684,7 @@ TEAKFILE &operator << (TEAKFILE &File, const BLOCK &b)
 }
 
 //--------------------------------------------------------------------------------------------
-//Lädt ein BLOCK-Objekt:
+//L�dt ein BLOCK-Objekt:
 //--------------------------------------------------------------------------------------------
 TEAKFILE &operator >> (TEAKFILE &File, BLOCK &b)
 {
@@ -1730,7 +1730,7 @@ TEAKFILE &operator << (TEAKFILE &File, const BLOCKS &b)
 }
 
 //--------------------------------------------------------------------------------------------
-//Lädt ein BLOCKS-Objekt:
+//L�dt ein BLOCKS-Objekt:
 //--------------------------------------------------------------------------------------------
 TEAKFILE &operator >> (TEAKFILE &File, BLOCKS &b)
 {

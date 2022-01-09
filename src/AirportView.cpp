@@ -201,7 +201,7 @@ void AirportView::FocusCameraOnPos (XY Pos, BOOL Speed)
 			//Spielfigur in X-Richtung zentrieren:
 			SizeX=320;
 
-			if (Sim.Players.Players[PlayerNum].DialogWin && 
+			if (Sim.Players.Players[PlayerNum].DialogWin &&
 				 ((CStdRaum*)Sim.Players.Players[PlayerNum].DialogWin)->TempScreenScrollV!=1)
 				SizeX/=2;
 
@@ -245,7 +245,7 @@ void AirportView::FocusCameraOnPos (XY Pos, BOOL Speed)
 			//Spielfigur in X-Richtung zentrieren:
 			SizeX=320;
 
-			if (Sim.Players.Players[PlayerNum].DialogWin && 
+			if (Sim.Players.Players[PlayerNum].DialogWin &&
 				 ((CStdRaum*)Sim.Players.Players[PlayerNum].DialogWin)->TempScreenScrollV!=1)
 				SizeX/=2;
 
@@ -421,7 +421,7 @@ void AirportView::CenterCameraOnPlayer (void)
          //Spielfigur in X-Richtung zentrieren:
          SizeX=320;
 
-         if (Sim.Players.Players[PlayerNum].DialogWin && 
+         if (Sim.Players.Players[PlayerNum].DialogWin &&
              ((CStdRaum*)Sim.Players.Players[PlayerNum].DialogWin)->TempScreenScrollV!=1)
             SizeX/=2;
 
@@ -444,7 +444,7 @@ void AirportView::CenterCameraOnPlayer (void)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnPaint:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnPaint() 
+void AirportView::OnPaint()
 {
    ULONG c, d, t1, t2;
    static SLONG Pos=0;
@@ -838,7 +838,7 @@ void AirportView::OnPaint()
                                  ColorFX.BlitTrans (MoodBms[qPerson.Mood].pBitmap, &PrimaryBm.PrimaryBm, qPerson.ScreenPos-ViewPos+XY(8-1-MoodBms[qPerson.Mood].Size.x*4/5,-MoodBms[qPerson.Mood].Size.y-qClan.Phasen[0][0].Size.y-1), NULL, Grade);
                               }
                            }
-                        } 
+                        }
 
                         if (qClan.Type>=CLAN_PLAYER1 && qClan.Type<=CLAN_PLAYER4)
                         {
@@ -1065,7 +1065,7 @@ void AirportView::OnPaint()
                         if (BrickId==AbflugIndex || BrickId==AbflugIndex2)
                         {
                            long phase = 0;
-                           
+
                            if (Sim.Players.Players[Airport.GateMapper[(SLONG)qBuild.Par]].SecurityFlags&(1<<8))  phase=1;
                            if (Sim.Players.Players[Airport.GateMapper[(SLONG)qBuild.Par]].SecurityFlags&(1<<10)) phase=2;
                            Bricks[BrickId].BlitAt (PrimaryBm, 0, qBuild.ScreenPos-ViewPos+WinP1, phase);
@@ -1095,7 +1095,7 @@ void AirportView::OnPaint()
                      {
                         XY p=qBuild.ScreenPos-ViewPos+WinP1;
                         PrimaryBm.PrimaryBm.SetClipRect(&CRect(p.x+4, p.y+7, p.x+74,p.y+74));
-                        
+
                         for (SLONG d=0; d<SLONG(Sim.Persons.AnzEntries()); d++)
                         {
                            if (Sim.Persons.IsInAlbum(d) && Clans.IsInAlbum (Sim.Persons[d].ClanId))
@@ -1305,7 +1305,7 @@ void AirportView::AnnouceTipDataUpdate (SLONG TipType)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnLButtonDown:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnLButtonDown(UINT nFlags, CPoint point) 
+void AirportView::OnLButtonDown(UINT nFlags, CPoint point)
 {
    ReferTo (nFlags);
 
@@ -1664,7 +1664,7 @@ void AirportView::OnLButtonUp(UINT nFlags, CPoint point)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnLButtonDblClk:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnLButtonDblClk(UINT, CPoint point) 
+void AirportView::OnLButtonDblClk(UINT, CPoint point)
 {
    if (Sim.Time<=9*60000) return;
 
@@ -1696,7 +1696,7 @@ void AirportView::OnLButtonDblClk(UINT, CPoint point)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnRButtonDown:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnRButtonDown(UINT nFlags, CPoint point) 
+void AirportView::OnRButtonDown(UINT nFlags, CPoint point)
 {
    XY     p;
 
@@ -1780,7 +1780,7 @@ void AirportView::OnRButtonDown(UINT nFlags, CPoint point)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnKeyDown:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
    SLONG c;
    XY   &ViewPos = Sim.Players.Players[(SLONG)PlayerNum].ViewPos;
@@ -1896,7 +1896,7 @@ void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnToggleEditor:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnToggleEditor() 
+void AirportView::OnToggleEditor()
 {
    Editor ^= 1;
 }
@@ -1904,7 +1904,7 @@ void AirportView::OnToggleEditor()
 //--------------------------------------------------------------------------------------------
 //AirportView::OnChar:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void AirportView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
    //Sowas darf nur das Hauptfenster, was immer links oben ist:
    if (WinP1.x==0 && WinP1.y==0)
@@ -1962,7 +1962,7 @@ void AirportView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 //--------------------------------------------------------------------------------------------
 //AirportView::OnSysChar:
 //--------------------------------------------------------------------------------------------
-void AirportView::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void AirportView::OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
    //CStdRaum::OnSysChar(nChar, nRepCnt, nFlags);
 }
@@ -2031,7 +2031,7 @@ nofreetravelagents:
    if (Runes[(SLONG)Buffer[c]].Par==ROOM_REISEBUERO)
    {
       SLONG d, n;
-      
+
       if (pRand) n=pRand->Rand(256);
             else n=rand()%256;
 
@@ -2109,12 +2109,12 @@ nofreetravelagents:
       (*pMood)=(UBYTE)MoodPersonNone;
 
       if (ReturnStatePar==ROOM_SHOP1) //Duty-Free Laden ist Ziel
-         if (rand()%10<5) 
+         if (rand()%10<5)
             (*pMood)=(UBYTE)MoodPersonBeverage;
          else
             (*pMood)=(UBYTE)MoodPersonSchokolade;
       else if (ReturnStatePar==ROOM_BANK) //Bank ist das Ziel
-         if (rand()%90==0) 
+         if (rand()%90==0)
             (*pMood)=(UBYTE)MoodPersonBankRobber;
          else
             (*pMood)=(UBYTE)MoodPersonBank;
@@ -2487,7 +2487,7 @@ void AIRPORT::LoadAirport (SLONG LeftEnd, SLONG CheckIn, SLONG Office, SLONG Ent
             localBuilds[c][d].ScreenPos.x+=Diletation[c];
    }
 
-   d=0;     //localBuilds (0..4) Index 
+   d=0;     //localBuilds (0..4) Index
    e=0;     //Destination (main Build) index
 
    //Und alles zusammensetzen: (Jetzt im Ernst)
@@ -2604,7 +2604,7 @@ SLONG AIRPORT::CalcPlateXPosition (BUILD &qBuild, SLONG BrickXOffset, SLONG Alig
    if (Bricks[qBuild.BrickId].GetBitmapDimension().y-2+qBuild.ScreenPos.y<210)
    {
       //obere Ebene:
-      rc = (AddX+qBuild.ScreenPos.x-PlateOffset.x+11+BrickXOffset + 
+      rc = (AddX+qBuild.ScreenPos.x-PlateOffset.x+11+BrickXOffset +
             (Bricks[qBuild.BrickId].GetBitmapDimension().y+
              qBuild.ScreenPos.y-2-93)/2)/44-1;
    }
@@ -2798,7 +2798,7 @@ void AIRPORT::CalcPlates (void)
                if (y>=0 && y<=15 && x>=0) for (d=x; d<=x2; d++) {FUCK(y+(d<<4));iPlate[y+(d<<4)] &= (~12);}
                break;
 
-            //Schmale Horizontale Abgrenzung: 
+            //Schmale Horizontale Abgrenzung:
             case 4:
                x  = CalcPlateXPosition (c, 10, -1);
                x2 = x;   //12.4.98
@@ -2807,7 +2807,7 @@ void AIRPORT::CalcPlates (void)
                if (y>=-1 && y<=14 && x>=0) for (d=x; d<=x2; d++) {FUCK(y+1+(d<<4));iPlate[y+1+(d<<4)] &= (~128);  }
                break;
 
-            //Horizontale Abgrenzung: 
+            //Horizontale Abgrenzung:
             case OBST_HORIZONTAL:
                x  = CalcPlateXPosition (c, 10, -1);
                x2 = CalcPlateXPosition (c, -10, 1);
@@ -2876,7 +2876,7 @@ void AIRPORT::CalcPlates (void)
                if (y>=0 && y<=15 && x>=0) for (d=x; d<=x2; d++) {FUCK(y+(d<<4));iPlate[y+(d<<4)] &= (~128);}
                break;
 
-            //Der Eingang zur Treppe: 
+            //Der Eingang zur Treppe:
             case OBST_STAIRFRONT:
                x  = CalcPlateXPosition (c, 10, -1);
                x2 = CalcPlateXPosition (c, -10, 1);
@@ -2907,7 +2907,7 @@ void AIRPORT::CalcPlates (void)
                x2 = CalcPlateXPosition (c, -10, 1);
                y = CalcPlateYPosition (c, -8);
                if (y>=0 && y<=14 && x>=0) //ex:15
-                  for (d=x; d<=x2; d++) 
+                  for (d=x; d<=x2; d++)
                   {
                      if (d!=x+1)
                      {
@@ -2942,7 +2942,7 @@ void AIRPORT::CalcPlates (void)
                x2 = CalcPlateXPosition (c, -10, 1);
                y = CalcPlateYPosition (c, -8);
                if (y>=0 && y<=14 && x>=0) //ex:15
-                  for (d=x; d<=x2; d++) 
+                  for (d=x; d<=x2; d++)
                   {
                      if (d!=x2-1)
                      {
@@ -2978,7 +2978,7 @@ void AIRPORT::CalcPlates (void)
                x2 = CalcPlateXPosition (c, -10, 1);
                y = CalcPlateYPosition (c, -8);
                if (y>=0 && y<=15 && x>=0)
-                  for (d=x; d<=x2; d++) 
+                  for (d=x; d<=x2; d++)
                   {
                      {FUCK(y+(d<<4));   }
                      {FUCK(y+1+(d<<4));}
@@ -3011,7 +3011,7 @@ void AIRPORT::CalcPlates (void)
                x2 = CalcPlateXPosition (c, -60, 1);     //ex -10
                y = CalcPlateYPosition (c, -8);
                if (y>=0 && y<=14 && x>=0)  //ex: 15
-                  for (d=x; d<=x2; d++) 
+                  for (d=x; d<=x2; d++)
                   {
                      {FUCK(y+(d<<4));   }
                      {FUCK(y+1+(d<<4));}
@@ -3067,7 +3067,7 @@ void AIRPORT::CalcPlates (void)
                x  = CalcPlateXPosition (c, 0, 0);
                y = CalcPlateYPosition (c, 0);
 
-               if (y>=0 && y<=15 && x>=0) 
+               if (y>=0 && y<=15 && x>=0)
                   {FUCK(y+(x<<4));
                   switch (Builds[c].BrickId-0x10000000)
                   {
@@ -3293,7 +3293,7 @@ void AIRPORT::TryDoor (XY ArrayPos, BOOL Player, SLONG PlayerNum)
             }
          }
       }
-      else 
+      else
          if ((Doors[c].ArrayPos.x==ArrayPos.x && ((Doors[c].ArrayPos.y==ArrayPos.y-1 && !Player) || Doors[c].ArrayPos.y==ArrayPos.y)) ||
              (Doors[c].ArrayPos.x==ArrayPos.x && Doors[c].ArrayPos.y==ArrayPos.y+4 && Doors[c].ArabDoor==3) ||
              (Doors[c].ArrayPos.x==ArrayPos.x+1 && Doors[c].ArrayPos.y==ArrayPos.y) ||
@@ -3464,7 +3464,7 @@ void AIRPORT::CalcCoordinates (void)
                    Builds[c].ScreenPos.x-Builds[d].ScreenPos.x<176 &&
                    Builds[c].ScreenPos.y-Builds[d].ScreenPos.y<88)
                    Builds[c].Par = Builds[d].Par;
-            if (Builds[c].Par==0) 
+            if (Builds[c].Par==0)
                for (d=0; d<SLONG(Builds.AnzEntries()); d++)
                   if (Builds.IsInAlbum(d) &&
                       Builds[d].BrickId==0x10000000+RUNE_SHOP &&
@@ -3486,7 +3486,7 @@ void AIRPORT::CalcCoordinates (void)
    AreaMarkers.ReSize(AnzAreaMarkers);
    for (c=d=0; c<SLONG(Builds.AnzEntries()); c++)
       if (Builds.IsInAlbum(c) && Builds[c].BrickId-0x10000000==RUNE_AREALO)
-      { 
+      {
          AreaMarkers[d].Par=Builds[c].Par;
          AreaMarkers[d].p1=Builds[c].ScreenPos;
 
@@ -3514,7 +3514,7 @@ void AIRPORT::CalcCoordinates (void)
    Runes.ReSize (0);
    Runes.ReSize (AnzRunes);
 
-   AnzRunes     = 0;       
+   AnzRunes     = 0;
    NumBeltSpots = 0;
 
    //Die Belt-Spots zählen:
@@ -3531,7 +3531,7 @@ void AIRPORT::CalcCoordinates (void)
             SLONG x, y;
 
             Runes[AnzRunes]=Builds[c];
-         
+
             if (Builds[c].BrickId!=0x10000000+RUNE_CONDBLOCK)
             {
                //Liegt die Rune unten oder oben?
@@ -3549,7 +3549,7 @@ void AIRPORT::CalcCoordinates (void)
                   y = (Bricks[Runes[AnzRunes].BrickId].GetBitmapDimension().y-2+Runes[AnzRunes].ScreenPos.y-220+2200)/22-100;
                   Runes[AnzRunes].ScreenPos=XY(x*44+22,y*22+11);
                }
-            }  
+            }
 
             AnzRunes++;
          }
