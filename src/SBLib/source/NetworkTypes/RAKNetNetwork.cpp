@@ -381,7 +381,7 @@ bool RAKNetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool
     a.messageType = SBNETWORK_MESSAGE;
     a.dataLength = length;
     a.data = buffer;
-	a.peerID = peerID;
+    a.peerID = peerID;
 
     BitStream data;
     SerializePacket(&a, &data);
@@ -390,7 +390,7 @@ bool RAKNetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool
         AT_Log("SEND PRIVATE: SBNETWORK_MESSAGE ID: - ID %x TO: %x", (a.data[3] << 24) | (a.data[2] << 16) | (a.data[1] << 8) | (a.data[0]), peerID);
     }
 
-	mMaster->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, NET_BROADCAST, true);
+    mMaster->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, NET_BROADCAST, true);
 
 
     return true;
@@ -440,26 +440,26 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
         {
             AT_Log("RECEIVED: SBNETWORK_DISCONNECT - reason: %d", p->data[0]);
 
-            //ATPacket packet{};
-            //DeserializePacket(p->data, p->length, &packet);
+                    //ATPacket packet{};
+                    //DeserializePacket(p->data, p->length, &packet);
 
-        	//Find disconnected player
-            SBNetworkPlayer *disconnectedPlayer = nullptr;
-            for (mPlayers.GetFirst(); !mPlayers.IsLast(); mPlayers.GetNext()) {
-                if (static_cast<RAKNetworkPlayer*>(mPlayers.GetLastAccessed())->peer == p->guid) {
-                    disconnectedPlayer = mPlayers.GetLastAccessed();
-                    break;
-                }
-            }
+                    //Find disconnected player
+                    SBNetworkPlayer *disconnectedPlayer = nullptr;
+                    for (mPlayers.GetFirst(); !mPlayers.IsLast(); mPlayers.GetNext()) {
+                        if (static_cast<RAKNetworkPlayer*>(mPlayers.GetLastAccessed())->peer == p->guid) {
+                            disconnectedPlayer = mPlayers.GetLastAccessed();
+                            break;
+                        }
+                    }
 
-            if (disconnectedPlayer != nullptr) { //relay information to game
-                DPPacket dp{};
-                dp.messageType = DPSYS_DESTROYPLAYERORGROUP;
-                dp.playerType = DPPLAYERTYPE_PLAYER;
-                dp.dpId = disconnectedPlayer->ID;
-                size = sizeof(DPPacket);
-                *buffer = new UBYTE[size];
-                memcpy(*buffer, &dp, size);
+                    if (disconnectedPlayer != nullptr) { //relay information to game
+                        DPPacket dp{};
+                        dp.messageType = DPSYS_DESTROYPLAYERORGROUP;
+                        dp.playerType = DPPLAYERTYPE_PLAYER;
+                        dp.dpId = disconnectedPlayer->ID;
+                        size = sizeof(DPPacket);
+                        *buffer = new UBYTE[size];
+                        memcpy(*buffer, &dp, size);
 
                 mPlayers.RemoveLastAccessed();
                 delete disconnectedPlayer;
@@ -596,11 +596,11 @@ SBCapabilitiesFlags RAKNetNetwork::GetCapabilities() {
 }
 
 bool RAKNetNetwork::IsServerSearchable() {
-	return true;
+    return true;
 }
 
 IServerSearchable* RAKNetNetwork::GetServerSearcher() {
-	return this;
+    return this;
 }
 
 int RAKNetNetwork::CheckConnectionPacket(Packet* p, RakPeerInterface* peerInterface, bool isAnotherPeer) {
