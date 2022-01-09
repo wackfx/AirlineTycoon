@@ -97,7 +97,7 @@ void DisplayBroadcastMessage (CString str, SLONG FromPlayer)
 
    TempBm.BlitFrom (gBroadcastBm);
    gBroadcastBm.ReSize (320, oldy+sy+10);
-   if (gBroadcastBm.Size.y!=TempBm.Size.y) 
+   if (gBroadcastBm.Size.y!=TempBm.Size.y)
    {
       SB_CBitmapKey Key(*XBubbleBms[9].pBitmap);
       gBroadcastBm.FillWith (*(UWORD*)Key.Bitmap);
@@ -605,7 +605,7 @@ void PumpNetwork (void)
                       Message >> qPlayer.Image >> qPlayer.ImageGotWorse;
 
                       for (d=0; d<4; d++) Message >> qPlayer.Sympathie[d];
-  
+
                       for (d=Routen.AnzEntries()-1; d>=0; d--) Message >> qPlayer.RentRouten.RentRouten[d].Image;
                       for (d=Cities.AnzEntries()-1; d>=0; d--) Message >> qPlayer.RentCities.RentCities[d].Image;
 
@@ -813,9 +813,9 @@ void PumpNetwork (void)
                    SLONG c, PlayerNum;
 
                    Message >> PlayerNum;
-                   
+
                    PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
-                   
+
                    Message >> qPlayer.WaitWorkTill >> qPlayer.WaitWorkTill2;
 
                    for (c=0; c<4; c++) Message >> qPlayer.Sympathie[c];
@@ -832,9 +832,9 @@ void PumpNetwork (void)
                    SLONG City;
                    SLONG Delta;
                    SLONG Time;
-               
+
                    Message >> Type >> City >> Delta >> Time;
-               
+
                    switch (Type)
                    {
                       case 1: Sim.TickLastMinuteRefill = Delta; LastMinuteAuftraege.RefillForLastMinute();      break;
@@ -852,9 +852,9 @@ void PumpNetwork (void)
                    SLONG City;
                    SLONG Index;
                    SLONG PlayerNum;
-                  
+
                    Message >> PlayerNum >> Type >> Index >> City;
-                  
+
                    PLAYER &qPlayer = Sim.Players.Players[Sim.localPlayer];
 
                    switch (Type)
@@ -901,7 +901,7 @@ void PumpNetwork (void)
 
                    //Alle Aufträge überprüfen:
                    CFlugplan &qPlan = qPlane.Flugplan;
-        
+
                    for (e=qPlan.Flug.AnzEntries()-1; e>=0; e--)
                    {
                       if (qPlan.Flug[e].ObjectType==2)
@@ -1052,7 +1052,7 @@ void PumpNetwork (void)
                        qFromPlayer.Planes.Planes.ReSize(qFromPlayer.Planes.AnzEntries() + 10);
                        qFromPlayer.Planes.RepairReferences();
                    }
-             		
+
                    qFromPlayer.Planes += Sim.UsedPlanes[0x1000000+PlaneIndex];
 
                    Sim.UsedPlanes[0x1000000+PlaneIndex].Name.Empty();
@@ -1082,7 +1082,7 @@ void PumpNetwork (void)
                    PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
 
                    rnd.SRand (Sim.Date);
-                  
+
                    for (c=0; c<Anzahl; c++)
                       qPlayer.BuyPlane (Type, &rnd);
                 }
@@ -1099,7 +1099,7 @@ void PumpNetwork (void)
                    PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
 
                    rnd.SRand (Sim.Date);
-                  
+
                    for (c=0; c<Anzahl; c++)
                       qPlayer.BuyPlane (plane, &rnd);
                 }
@@ -1108,16 +1108,16 @@ void PumpNetwork (void)
              case ATNET_PERSONNEL:
                 {
                    SLONG PlayerNum, m, n;
-              
+
                    Message >> PlayerNum >> m >> n;
-              
+
                    if (PlayerNum>=0 && PlayerNum<Sim.Players.Players.AnzEntries())
                    {
                       PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
 
                       qPlayer.Statistiken[STAT_ZUFR_PERSONAL].SetAtPastDay(0, m);
                       qPlayer.Statistiken[STAT_MITARBEITER].SetAtPastDay(0, n);
-              
+
                       SLONG c=0;
                       while (1)
                       {
@@ -1144,7 +1144,7 @@ void PumpNetwork (void)
              case ATNET_PLANEPROPS:
                 {
                    SLONG PlayerNum, PlaneId;
-              
+
                    Message >> PlayerNum >> PlaneId;
                    if(PlayerNum > 4)
                     break;
@@ -1162,7 +1162,7 @@ void PumpNetwork (void)
                               >> qPlane.Reifen     >> qPlane.ReifenTarget
                               >> qPlane.Elektronik >> qPlane.ElektronikTarget
                               >> qPlane.Sicherheit >> qPlane.SicherheitTarget;
-    
+
                       Message >> qPlane.WorstZustand >> qPlane.Zustand >> qPlane.TargetZustand;
                       Message >> qPlane.AnzBegleiter >> qPlane.MaxBegleiter;
                    }
@@ -1180,7 +1180,7 @@ void PumpNetwork (void)
                    SLONG RequestingPlayer;
 
                    //Ist Spieler bereit, einen Dialog zu beginnen?
-                   if (qPlayer.GetRoom()==ROOM_AIRPORT && !qPlayer.IsStuck && 
+                   if (qPlayer.GetRoom()==ROOM_AIRPORT && !qPlayer.IsStuck &&
                        pRaum && pRaum->MenuIsOpen()==FALSE && pRaum->IsDialogOpen()==FALSE)
                    {
                       PERSON &qPerson = Sim.Persons.Persons[(SLONG)Sim.Persons.GetPlayerIndex(Sim.localPlayer)];

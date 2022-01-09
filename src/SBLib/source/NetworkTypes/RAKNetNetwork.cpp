@@ -391,7 +391,7 @@ bool RAKNetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool
     }
 
 	mMaster->Send(&data, HIGH_PRIORITY, RELIABLE_ORDERED, 0, NET_BROADCAST, true);
-    
+
 
     return true;
 }
@@ -442,8 +442,8 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
 
             //ATPacket packet{};
             //DeserializePacket(p->data, p->length, &packet);
-        		
-        	//Find disconnected player 
+
+        	//Find disconnected player
             SBNetworkPlayer *disconnectedPlayer = nullptr;
             for (mPlayers.GetFirst(); !mPlayers.IsLast(); mPlayers.GetNext()) {
                 if (static_cast<RAKNetworkPlayer*>(mPlayers.GetLastAccessed())->peer == p->guid) {
@@ -460,7 +460,7 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
                 size = sizeof(DPPacket);
                 *buffer = new UBYTE[size];
                 memcpy(*buffer, &dp, size);
-            	
+
                 mPlayers.RemoveLastAccessed();
                 delete disconnectedPlayer;
             }
@@ -478,7 +478,7 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
             if(packet.peerID && packet.peerID != mLocalID) {
 	            break;
             }
-        		
+
             *buffer = packet.data;
             size = packet.dataLength;
 
