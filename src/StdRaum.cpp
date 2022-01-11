@@ -4108,16 +4108,16 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
     switch (CurrentMenu)
     {
         case MENU_BANK:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Kredit.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("kredit.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "KREDIT OK CANCEL");
-            PaperTearFX.ReInit("Pap2.raw");
+            PaperTearFX.ReInit("pap2.raw");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
         case MENU_BUYKEROSIN:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("BuyKero.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("buykero.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "FORM OK CANCEL");
-            PaperTearFX.ReInit("Pap2.raw");
+            PaperTearFX.ReInit("pap2.raw");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
@@ -4126,20 +4126,20 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             {
                 ((CBuero*)this)->SP_Player.SetDesiredMood (SPM_LISTENING, SPM_IDLE);
             }
-            if (MenuPar1==1) pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Adressen.gli", GliPath), &pMenuLib1, L_LOCMEM);
-            if (MenuPar1==2) pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Telefons.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            if (MenuPar1==1) pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("adressen.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            if (MenuPar1==2) pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("telefons.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
         case MENU_KEROSIN:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("OilMenu.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("oilmenu.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "OILMENU");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
         case MENU_PERSONAL:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Personal.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("personal.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize (pMenuLib1, "ORDNER1 ORDNER2 ORDNER3 KREUZLE");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=MenuPageMax=MenuInfo=MenuInfo2=MenuInfo3=0;
@@ -4159,7 +4159,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
 
         case MENU_SABOTAGEPLANE:
             {
-                pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+                pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
                 MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
                 OnscreenBitmap.ReSize (MenuBms[0].Size);
                 MenuPage=0;
@@ -4173,7 +4173,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
 
         case MENU_SABOTAGEROUTE:
             {
-                pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+                pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
                 MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
                 OnscreenBitmap.ReSize (MenuBms[0].Size);
                 MenuPage=0;
@@ -4186,7 +4186,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_SELLPLANE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4195,7 +4195,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_BUYPLANE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4204,7 +4204,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_BUYXPLANE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4215,21 +4215,21 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
 
         case MENU_CLOSED:
             bgWarp = FALSE;
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Request.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("request.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "REQUEST");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
         case MENU_EXTRABLATT:
             bgWarp = FALSE;
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("ExtraBlt.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("extrablt.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "ROT1 ROT2 ROT3 ROT4 ROT5 ROT6 ROT7 ROT8 BACKGND SUN_SUN SUN_FAL SUN_PHO SUN_HON FAL_SUN FAL_FAL FAL_PHO FAL_HON PHO_SUN PHO_FAL PHO_PHO PHO_HON HON_SUN HON_FAL HON_PHO HON_HON");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
         case MENU_REQUEST:
             bgWarp = FALSE;
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Request.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("request.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "REQUEST");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
 
@@ -4241,7 +4241,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_RENAMEPLANE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "MENU");
             Optionen[0]=Sim.Players.Players[PlayerNum].Planes[MenuPar1].Name;
             OnscreenBitmap.ReSize (MenuBms[0].Size);
@@ -4250,7 +4250,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
         case MENU_RENAMEEDITPLANE:
             {
                 PLAYER &qPlayer=Sim.Players.Players[Sim.localPlayer];
-                pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
+                pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
                 MenuBms.ReSize(pMenuLib1, "MENU");
                 if (qPlayer.GetRoom()==ROOM_EDITOR) Optionen[0]=((CEditor*)qPlayer.LocationWin)->Plane.Name;
                 OnscreenBitmap.ReSize (MenuBms[0].Size);
@@ -4258,7 +4258,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_ENTERPROTECT:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "MENU");
             Optionen[0]="";
             MenuInfo2=0;
@@ -4269,7 +4269,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_ENTERTCPIP:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("rename.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "MENU");
             Optionen[0]="";
             OnscreenBitmap.ReSize (MenuBms[0].Size);
@@ -4303,27 +4303,27 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_LETTERS:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Letter.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("letter.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "LETTER RETURN NEXT OK LOECHEN RETURN_F NEXT_F FAX SALZ SKELETT REIFEN FEUER SUPERMAN KAPUTT KAPUTT STREIK");
             MenuPage=0;
             OnscreenBitmap.ReSize (MenuBms[0].Size, CREATE_SYSMEM);
-            PaperFX.ReInit("Pap3.raw");
-            PaperTearFX.ReInit("Pap2.raw");
+            PaperFX.ReInit("pap3.raw");
+            PaperTearFX.ReInit("pap2.raw");
             if (Sim.Options.OptionEffekte) PaperFX.Play(DSBPLAY_NOSTOP, Sim.Options.OptionEffekte*100/7);
             break;
 
         case MENU_SABOTAGEFAX:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Fax.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("fax.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "FAX SALZ SKELETT REIFEN FEUER SUPERMAN KAPUTT KAPUTT STREIK");
             MenuPage=0;
             OnscreenBitmap.ReSize (MenuBms[0].Size, CREATE_SYSMEM);
-            PaperFX.ReInit("Pap3.raw");
-            PaperTearFX.ReInit("Pap2.raw");
+            PaperFX.ReInit("pap3.raw");
+            PaperTearFX.ReInit("pap2.raw");
             if (Sim.Options.OptionEffekte) PaperFX.Play(DSBPLAY_NOSTOP, Sim.Options.OptionEffekte*100/7);
             break;
 
         case MENU_ADROUTE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("ListRout.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("listrout.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4346,14 +4346,14 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             }
         case MENU_SETRENDITE:
             if (CurrentMenu==MENU_SETRENDITE) MenuInfo=Sim.Players.Players[(SLONG)PlayerNum].Dividende;
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Form.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("form.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "FORM OK CANCEL");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
-            PaperTearFX.ReInit("Pap2.raw");
+            PaperTearFX.ReInit("pap2.raw");
             break;
 
         case MENU_FLUEGE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Fluege.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("fluege.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "MONITOR BLINK1 BLINK2 DOT1 DOT2 DOT3 DOT4");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
@@ -4363,7 +4363,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             Sim.NetRefill (5, MenuPar1);
             AuslandsAuftraege[MenuPar1].RefillForAusland (MenuPar1);
             AuslandsFrachten[MenuPar1].RefillForAusland (MenuPar1);
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("ListAuft.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("listauft.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             MenuBms2.ReSize (5);
             MenuBms2[0].ReSize (pMenuLib1, "PL_B00", 1+8);
@@ -4382,7 +4382,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_PLANEREPAIRS:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Wartung.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("wartung.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "WARTUNG LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4392,7 +4392,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_SECURITY:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Wartung.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("wartung.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "WARTUNG LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4401,7 +4401,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_PANNEN:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Wartung.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("wartung.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "WARTUNG LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4411,7 +4411,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_PLANEJOB:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4420,7 +4420,7 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_PLANECOSTS:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("List.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("list.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "BLOCK LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=0;
@@ -4429,36 +4429,36 @@ void CStdRaum::MenuStart (SLONG MenuType, SLONG MenuPar1, SLONG MenuPar2, SLONG 
             break;
 
         case MENU_KONTOAUSZUG:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Konto.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("konto.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "TIPMONEY LEFT RIGHT");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             MenuPage=9;  //Seite 9: Einträge 90-99; Seite 8: Einträge 80-89; ...
             break;
 
         case MENU_QUITMESSAGE:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("ExitMenu.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("exitmenu.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "EXITMENU");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
-      case MENU_CHAT:
-         pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("GlChat.gli", GliPath), &pMenuLib1, L_LOCMEM);
-         MenuBms.ReSize(pMenuLib1, "CHAT TEXTAREA");
-         OnscreenBitmap.ReSize (MenuBms[0].Size);
-         Optionen[0]="";
-         MenuBms[1].PrintAt (bprintf (StandardTexte.GetS (TOKEN_MISC, 3004), (LPCSTR)Sim.Players.Players[MenuPar1].NameX, Sim.Players.Players[MenuPar1].AirlineX.c_str()), FontNormalGrey, TEC_FONT_LEFT, 6, 119, 279, 147);
-         MenuBms[1].ShiftUp (10);
-         break;
+        case MENU_CHAT:
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("glchat.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            MenuBms.ReSize(pMenuLib1, "CHAT TEXTAREA");
+            OnscreenBitmap.ReSize (MenuBms[0].Size);
+            Optionen[0]="";
+            MenuBms[1].PrintAt (bprintf (StandardTexte.GetS (TOKEN_MISC, 3004), Sim.Players.Players[MenuPar1].NameX, Sim.Players.Players[MenuPar1].AirlineX), FontNormalGrey, TEC_FONT_LEFT, 6, 119, 279, 147);
+            MenuBms[1].ShiftUp (10);
+            break;
 
         case MENU_BRIEFING:
             Sim.Players.UpdateStatistics ();
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Briefing.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("briefing.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "MENU PLAYER0 PLAYER1 PLAYER2 PLAYER3 PLAYER4 PLAYER5 PLAYER6 PLAYER7 AUSRUF SABOT BRIFO01 BRIFO02 BRIAB01 BRIAB02");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
 
         case MENU_CALLITADAY:
-            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Network3.gli", GliPath), &pMenuLib1, L_LOCMEM);
+            pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("network3.gli", GliPath), &pMenuLib1, L_LOCMEM);
             MenuBms.ReSize(pMenuLib1, "MENU PL0 PL1 PL2 PL3 PL4 PL5 PL6 PL7");
             OnscreenBitmap.ReSize (MenuBms[0].Size);
             break;
@@ -7778,7 +7778,7 @@ void CStdRaum::CalcOpen (XY Position, SLONG Value)
 
     CalculatorKeyTimer = timeGetTime()-1000;
 
-    pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("Rechner.gli", GliPath), &pCalculatorLib, L_LOCMEM);
+    pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("rechner.gli", GliPath), &pCalculatorLib, L_LOCMEM);
 
     CalculatorBms.ReSize(pCalculatorLib, "RECHNER D0 D1 D2 D3 D4 D5 D6 D7 D8 D9 T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 TASTE_OK TASTE_C TASTE_X DOT");
 }
