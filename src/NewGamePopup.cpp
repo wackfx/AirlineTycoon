@@ -268,7 +268,7 @@ void NewGamePopup::Konstruktor(BOOL bHandy, SLONG PlayerNum)
 
         Sim.Gamestate = UBYTE((Sim.Gamestate & (~GAMESTATE_WORKING)) | GAMESTATE_DONE);
 
-        Routen.ReInit("Routen.csv", true);
+        Routen.ReInit("routen.csv", true);
         Sim.ChooseStartup(bQuick);
 
         Airport.LoadAirport(1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
@@ -1024,7 +1024,7 @@ void NewGamePopup::OnPaint()
 
                         //We load the routes and Sim when recieving the net event to prevent race conditions
                         if (Sim.bNetwork != true) {
-                            Routen.ReInit("Routen.csv", true);
+                            Routen.ReInit("routen.csv", true);
                             Sim.ChooseStartup(bQuick);
                         }
 
@@ -1382,7 +1382,7 @@ again_heimatflughafen:
                             return;
                         }
                         else {
-                            Routen.ReInit("Routen.csv", true);
+                            Routen.ReInit("routen.csv", true);
                             Sim.ChooseStartup(bQuick);
                         }
                     }
@@ -2127,7 +2127,7 @@ void NewGamePopup::CheckNetEvents() {
                             for (SLONG c = 0; c < 4; c++) Sim.Players.Players[c].bReadyForMorning = false;
 
                             Sim.bThisIsSessionMaster = bThisIsSessionMaster;
-                            Routen.ReInit("Routen.csv", true);
+                            Routen.ReInit("routen.csv", true);
                             Sim.ChooseStartup(bQuick);
                             RefreshKlackerField();
                         }
