@@ -4672,18 +4672,18 @@ void CStdRaum::MenuRepaint (void)
                 OnscreenBitmap.PrintAt (bprintf (StandardTexte.GetS (TOKEN_JOBS, 5050), Workers.Workers[MenuRemapper[MenuPage-1]].Gehalt), FontSmallBlack, TEC_FONT_LEFT, 40, 93, 250, 319);
                 OnscreenBitmap.PrintAt (StandardTexte.GetS (TOKEN_JOBS, 5020+Workers.Workers[MenuRemapper[MenuPage-1]].Talent/10), FontSmallBlack, TEC_FONT_LEFT, 40, 106, 250, 319);
 
-            //Auf welchem Flugzeug arbeitet er?
-            if (Workers.Workers[MenuRemapper[MenuPage-1]].Employer==PlayerNum && Workers.Workers[MenuRemapper[MenuPage-1]].Typ>=WORKER_PILOT)
-            {
-               if (Workers.Workers[MenuRemapper[MenuPage-1]].PlaneId==-1)
-                  OnscreenBitmap.PrintAt (StandardTexte.GetS (TOKEN_JOBS, 1100), FontSmallBlack, TEC_FONT_LEFT, 40, 155, 250, 319);
-               else
-               {
-                  CString planeName = Sim.Players.Players[PlayerNum].Planes[Workers.Workers[MenuRemapper[MenuPage-1]].PlaneId].Name;
-                  OnscreenBitmap.PrintAt (bprintf (StandardTexte.GetS (TOKEN_JOBS, 1101), (LPCTSTR)planeName), FontSmallBlack, TEC_FONT_LEFT, 40, 155, 250, 319);
-               }
-               OnscreenBitmap.PrintAt (StandardTexte.GetS (TOKEN_JOBS, 1102), FontSmallBlack, TEC_FONT_LEFT, 40, 181, 250, 319);
-            }
+                //Auf welchem Flugzeug arbeitet er?
+                if (Workers.Workers[MenuRemapper[MenuPage-1]].Employer==PlayerNum && Workers.Workers[MenuRemapper[MenuPage-1]].Typ>=WORKER_PILOT)
+                {
+                    if (Workers.Workers[MenuRemapper[MenuPage-1]].PlaneId==-1)
+                        OnscreenBitmap.PrintAt (StandardTexte.GetS (TOKEN_JOBS, 1100), FontSmallBlack, TEC_FONT_LEFT, 40, 155, 250, 319);
+                    else
+                    {
+                        CString planeName = Sim.Players.Players[PlayerNum].Planes[Workers.Workers[MenuRemapper[MenuPage-1]].PlaneId].Name;
+                        OnscreenBitmap.PrintAt (bprintf (StandardTexte.GetS (TOKEN_JOBS, 1101), (LPCTSTR)planeName), FontSmallBlack, TEC_FONT_LEFT, 40, 155, 250, 319);
+                    }
+                    OnscreenBitmap.PrintAt (StandardTexte.GetS (TOKEN_JOBS, 1102), FontSmallBlack, TEC_FONT_LEFT, 40, 181, 250, 319);
+                }
 
                 OnscreenBitmap.PrintAt (bprintf (StandardTexte.GetS (TOKEN_JOBS, 1105), Workers.Workers[MenuRemapper[MenuPage-1]].Alter), FontSmallBlack, TEC_FONT_LEFT, 40, 119, 250, 319);
 
