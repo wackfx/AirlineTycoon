@@ -1307,7 +1307,7 @@ void AirportView::AnnouceTipDataUpdate (SLONG TipType)
 //--------------------------------------------------------------------------------------------
 void AirportView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    ReferTo (nFlags);
+    //ReferTo (nFlags);
 
     if (Sim.Time<=9*60000) return;
 
@@ -1631,7 +1631,7 @@ void AirportView::OnLButtonUp(UINT nFlags, CPoint point)
 
     DefaultOnLButtonUp();
 
-    ReferTo (nFlags);
+    //ReferTo (nFlags);
 
     LButtonState = FALSE;
 
