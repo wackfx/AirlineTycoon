@@ -3,7 +3,7 @@
 #ifdef WIN32
 //#define _WINSOCK2API_   /* Prevent inclusion of winsock2.h in enet.h */
 #define INVALID_SOCKET (SOCKET)(~0)
-//typedef ptrdiff_t SOCKET;
+// typedef ptrdiff_t SOCKET;
 typedef struct fd_set fd_set;
 #endif
 #include <enet/enet.h>
@@ -16,19 +16,19 @@ typedef struct fd_set fd_set;
 typedef DWORD DPID;
 
 struct ENetNetworkPlayer : public SBNetworkPlayer {
-	//ULONG ID;
-	ENetPeer* peer;
+    // ULONG ID;
+    ENetPeer *peer;
 };
 
 struct ENetNetworkPeer {
-	ULONG ID;
-	ENetAddress address;
+    ULONG ID;
+    ENetAddress address;
 };
 
-struct ENetSessionInfo : SBSessionInfo{
-//	ULONG hostID;
-//	char sessionName[26];
-	ENetAddress address;
+struct ENetSessionInfo : SBSessionInfo {
+    //	ULONG hostID;
+    //	char sessionName[26];
+    ENetAddress address;
 };
 
 class ENetNetwork : public BaseNetworkType, public IServerSearchable {
