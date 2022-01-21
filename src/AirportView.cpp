@@ -21,9 +21,6 @@ extern SB_CColorFX ColorFX;
 // extern LPDIRECTDRAWSURFACE FrontSurf;
 extern XY gScrollOffsetA, gScrollOffsetB;
 
-// Die statischen Daten dafür initialisieren:
-static const char FileId[] = "AVie";
-
 BUFFER<CBencher> BrickWait(MAX_BRICKS);
 
 BOOL IgnoreNextLButtonUp = FALSE;
@@ -313,8 +310,6 @@ void AirportView::FocusCameraOnPos(XY Pos, BOOL Speed) {
 
             // Horizontales Scrolling berechnen:
             if (abs(UncorrectedPosX - ViewPos.x) > SizeX * 2 / 3 || CameraSpeed.x != 0 || timeGetTime() - LastScrollTime < 500) {
-                SLONG CameraSpeedX = CameraSpeed.x;
-
                 Tmp = CalcInertiaVelocity(Pos.x, Pos.x + (ViewPos.x - Pos.x) * 2) + AvgLastPlayerDelta;
                 if (Tmp > CameraSpeed.x) {
                     CameraSpeed.x++;
@@ -530,7 +525,6 @@ void AirportView::OnPaint() {
     ULONG t2 = 0;
     static SLONG Pos = 0;
     static UWORD Alpha = 0;
-    static UWORD r = 10;
     static UBYTE FlackerCount = 0;
     static SLONG ParallaxIndex[5] = {-1, -1, -1, -1, -1}; // Die direkten Brick Indices fürs Paralax
     XY &ViewPos = Sim.Players.Players[PlayerNum].ViewPos;
@@ -3655,7 +3649,6 @@ void AIRPORT::CalcPlates() {
 //--------------------------------------------------------------------------------------------
 void AIRPORT::PumpDoors() {
     SLONG c = 0;
-    SLONG ArabIndex = Bricks(static_cast<SLONG>(0x10000000) + 727);
 
     for (c = Doors.AnzEntries() - 1; c >= 0; c--) {
         if (Doors[c].ArabDoor == TRUE) {
@@ -3792,7 +3785,6 @@ void AIRPORT::TryDoor(XY ArrayPos, BOOL Player, SLONG PlayerNum) {
                         if (abs(Runes[c].ScreenPos.x - ArrayPos.x * 44) <= 88) {
                             if (Sim.Players.Players[(Runes[c].Par - ROOM_BURO_A) / 10].OfficeState == 1) {
                                 if (Sim.Players.Players[(Runes[c].Par - ROOM_BURO_A) / 10].Owner != 2) {
-                                    SLONG OpferNum = PlayerNum; //(Runes[c].Par-ROOM_BURO_A)/10;
                                     SLONG OfficeNum = (Runes[c].Par - ROOM_BURO_A) / 10;
 
                                     PLAYER &qPlayer = Sim.Players.Players[OfficeNum];

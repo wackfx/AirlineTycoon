@@ -12,8 +12,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static const char FileId[] = "Sche";
-
 extern SLONG FoodCosts[];
 
 // Daten des aktuellen Savegames beim laden:

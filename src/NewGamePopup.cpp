@@ -22,7 +22,6 @@ static char THIS_FILE[] = __FILE__;
 #define countof(array) (sizeof(array) / sizeof((array)[0]))
 #endif
 
-static const char FileId[] = "NewG";
 const char TOKEN_NEWGAME[] = "NewG";
 
 SLONG NewgameWantsToLoad = FALSE;
@@ -2002,7 +2001,6 @@ void NewGamePopup::CheckNetEvents() {
                 ULONG MessageType = 0;
                 ULONG Par1 = 0;
                 ULONG Par2 = 0;
-                ULONG Par3 = 0;
                 Message >> MessageType;
 
                 AT_Log_I("Net", "Received net event: %s", Translate_ATNET(MessageType));
