@@ -88,15 +88,18 @@ extern long GenericSyncIdPars[4];
 extern long GenericAsyncIds[4 * 100];
 extern long GenericAsyncIdPars[4 * 100];
 
-void DumpAASeedSum(long CallerId) {
 #ifdef _DEBUG
-   long long sum=0;
-   for (long c=0; c<MAX_CITIES; c++)
-      sum += AuslandsAuftraege[c].Random.GetSeed();
+void DumpAASeedSum(long CallerId) {
+    long long sum = 0;
+    for (long c = 0; c < MAX_CITIES; c++)
+        sum += AuslandsAuftraege[c].Random.GetSeed();
 
-   AT_Log("AA Seed sum for %li is %lli\n", CallerId, sum);
-#endif
+    AT_Log("AA Seed sum for %li is %lli\n", CallerId, sum);
 }
+#else
+void DumpAASeedSum(long /*CallerId*/) {
+}
+#endif
 
 //--------------------------------------------------------------------------------------------
 // Sorgt für Screen Refresh und für Ablauf der Simulation:
