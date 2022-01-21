@@ -1420,13 +1420,12 @@ void NewGamePopup::OnLButtonDown(UINT nFlags, CPoint point) {
                     RefreshKlackerField();
                     return;
                 }
-                else if ((PageNum == PAGE_TYPE::SELECT_PLAYER_SINGLEPLAYER || PageNum == PAGE_TYPE::SELECT_PLAYER_CAMPAIGN || PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER) && NamesOK && (PageNum != PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER || bThisIsSessionMaster))
-                {
+                else if ((PageNum == PAGE_TYPE::SELECT_PLAYER_SINGLEPLAYER || PageNum == PAGE_TYPE::SELECT_PLAYER_CAMPAIGN || PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER) && (NamesOK != 0) && (PageNum != PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER || bThisIsSessionMaster)) {
                     if (PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER)
                     {
                         SLONG c = 0;
 
-                        if (!(NamesOK && bThisIsSessionMaster && pNetworkPlayers && pNetworkPlayers->GetNumberOfElements() > 1)) {
+                        if (!((NamesOK != 0) && bThisIsSessionMaster && (pNetworkPlayers != nullptr) && pNetworkPlayers->GetNumberOfElements() > 1)) {
                             return;
                         }
 
@@ -1434,14 +1433,16 @@ void NewGamePopup::OnLButtonDown(UINT nFlags, CPoint point) {
                             return;
                         }
 
-                        if (PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER && (UnselectedNetworkIDs[0] || UnselectedNetworkIDs[1] || UnselectedNetworkIDs[2] || UnselectedNetworkIDs[3])) {
+                        if (PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER && ((UnselectedNetworkIDs[0] != 0u) || (UnselectedNetworkIDs[1] != 0u) || (UnselectedNetworkIDs[2] != 0u) ||
+                                                                               (UnselectedNetworkIDs[3] != 0u))) {
                             return;
                         }
 
                         if (gNetworkSavegameLoading != -1) {
                             for (c = 0; c < 4; c++) {
-                                if (Sim.Players.Players[c].Owner == 3)
+                                if (Sim.Players.Players[c].Owner == 3) {
                                     return;
+                                }
                             }
                         }
 
@@ -1454,38 +1455,38 @@ void NewGamePopup::OnLButtonDown(UINT nFlags, CPoint point) {
                         Sim.Difficulty = MissionValues[SessionMissionID];
 
                         if (gNetworkSavegameLoading == -1) {
-                            Sim.SendSimpleMessage(ATNET_BEGINGAME, 0, Sim.bAllowCheating, Sim.StartTime, Sim.HomeAirportId, Sim.Difficulty);
+                            SIM::SendSimpleMessage(ATNET_BEGINGAME, 0, Sim.bAllowCheating, Sim.StartTime, Sim.HomeAirportId, Sim.Difficulty);
                         } else {
-                            Sim.SendSimpleMessage(ATNET_BEGINGAMELOADING, 0, Sim.bAllowCheating, Sim.StartTime, Sim.HomeAirportId, gNetworkSavegameLoading,
-                                                  Sim.Difficulty);
+                            SIM::SendSimpleMessage(ATNET_BEGINGAMELOADING, 0, Sim.bAllowCheating, Sim.StartTime, Sim.HomeAirportId, gNetworkSavegameLoading,
+                                                   Sim.Difficulty);
                         }
 
                         // Sim.Difficulty     = DIFF_ATFS07;
                         Sim.bWatchForReady = TRUE;
-                        Sim.bNetwork = true;
-                        bNetworkUnderway = false;
+                        Sim.bNetwork = 1;
+                        bNetworkUnderway = 0;
 
-                        for (c = 0; c < 4; c++)
-                            Sim.Players.Players[c].bReadyForMorning = false;
+                        for (c = 0; c < 4; c++) {
+                            Sim.Players.Players[c].bReadyForMorning = 0;
+                        }
 
                         if (gNetworkSavegameLoading != -1) {
-                            NewgameWantsToLoad = true;
+                            NewgameWantsToLoad = 1;
                             Sim.bThisIsSessionMaster = bThisIsSessionMaster;
-                            nWaitingForPlayer += Sim.GetSavegameNumHumans(gNetworkSavegameLoading) - 1;
+                            nWaitingForPlayer += SIM::GetSavegameNumHumans(gNetworkSavegameLoading) - 1;
                             SetNetworkBitmap(3, 1);
                             FrameWnd->Invalidate();
                             MessagePump();
                             FrameWnd->Invalidate();
                             MessagePump();
                             Sim.LoadGame(gNetworkSavegameLoading);
-                            Sim.SendSimpleMessage(ATNET_WAITFORPLAYER, 0, -1, Sim.localPlayer);
+                            SIM::SendSimpleMessage(ATNET_WAITFORPLAYER, 0, -1, Sim.localPlayer);
                             gNetworkSavegameLoading = -1;
                             NewgameWantsToLoad = FALSE;
                             return;
-                        } else {
-                            Routen.ReInit("routen.csv", true);
-                            Sim.ChooseStartup(bQuick);
                         }
+                        Routen.ReInit("routen.csv", true);
+                        Sim.ChooseStartup(bQuick);
                     }
 
                     Sim.bThisIsSessionMaster = bThisIsSessionMaster;
