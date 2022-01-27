@@ -2405,9 +2405,9 @@ void NewGamePopup::OnTimer(UINT nIDEvent) {
         {
             //lpDD->FlipToGDISurface ();
 
-            switch (SBProviderEnum id = SBNetwork::GetProviderID(const_cast<char*>((LPCTSTR)pNetworkConnections->Get(NetMediumMapper[Selection] + 1)))) {
-                case(SBProviderEnum::SBNETWORK_RAKNET_DIRECT_JOIN):
-                    if (gNetwork.Connect(pNetworkConnections->Get(NetMediumMapper[Selection] + 1), const_cast<char*>((LPCTSTR)gHostIP))) {
+            switch (SBProviderEnum id = SBNetwork::GetProviderID(const_cast<char *>((LPCTSTR)pNetworkConnections->Get(NetMediumMapper[Selection] + 1)))) {
+                case (SBProviderEnum::SBNETWORK_RAKNET_DIRECT_JOIN):
+                    if (gNetwork.Connect(pNetworkConnections->Get(NetMediumMapper[Selection] + 1), const_cast<char *>((LPCTSTR)gHostIP))) {
 
                     hprintf("This computer is client.");
 
