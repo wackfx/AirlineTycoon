@@ -1392,6 +1392,8 @@ void CTakeOffApp::GameLoop(void * /*unused*/) {
                     SLONG Multiplier = 1;
 
                     switch (d) {
+                    case 0:
+                        break;
                     case 1:
                         Multiplier = 2;
                         break;
