@@ -19,7 +19,7 @@ extern char *TeakStrRemoveCppComment(char *);
 extern char *TeakStrRemoveEndingCodes(char *, char const *);
 extern unsigned char GerToLower(unsigned char);
 extern unsigned char GerToUpper(unsigned char);
-extern unsigned char *RecapizalizeString(unsigned char *);
+extern void RecapizalizeString(CString& str);
 extern const char *GetSuffix(const char *);
 
 #if defined(__RESHARPER__)
@@ -211,7 +211,7 @@ class TEAKFILE {
     void SetPasswort(char *);
     void SetPosition(SLONG) const;
     void Skip(SLONG);
-    void Write(unsigned char *, SLONG);
+    void Write(const unsigned char *, SLONG);
     void WriteLine(char *);
     void Announce(SLONG);
 
