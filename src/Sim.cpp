@@ -3940,9 +3940,7 @@ void SIM::UpdateRoomUsage() {
                     case ROOM_WERBUNG:
                         Talkers.Talkers[TALKER_WERBUNG].IncreaseLocking();
                         break;
-                    default:
-                        printf("Sim.cpp: Default case should not be reached.");
-                        DebugBreak();
+                    default: break;
                     }
                 }
             }
