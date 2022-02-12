@@ -333,7 +333,7 @@ GameFrame::~GameFrame() {
 
     TextBricks.ReSize(0);
     Sim.Players.Players.ReSize(0);
-    PlaneTypes.PlaneTypes.ReSize(0);
+    PlaneTypes.ReSize(0);
     Clans.Clans.ReSize(0);
     Bricks.Bricks.ReSize(0);
 
@@ -517,7 +517,8 @@ void GameFrame::ProcessEvent(const SDL_Event &event) const {
             FrameWnd->OnRButtonUp(WM_RBUTTONUP, pos);
         }
     } break;
-    default: break;
+    default:
+        break;
     }
 }
 
@@ -566,7 +567,7 @@ void GameFrame::RePostMessage(const CPoint &Pos) const {
 //--------------------------------------------------------------------------------------------
 // Die Nachricht an ein spezielles Sub-Fenster weiterleiten:
 //--------------------------------------------------------------------------------------------
-void GameFrame::RePostClick(SLONG  /*PlayerNum*/, UINT  /*message*/, WPARAM  /*wParam*/, LPARAM  /*lParam*/) {
+void GameFrame::RePostClick(SLONG /*PlayerNum*/, UINT /*message*/, WPARAM /*wParam*/, LPARAM /*lParam*/) {
     // if (Sim.Players.Players[PlayerNum].LocationWin)
     //   Sim.Players.Players[PlayerNum].LocationWin->SendMessage (message, wParam, lParam);
 }
@@ -578,12 +579,12 @@ void GameFrame::RePostClick(SLONG  /*PlayerNum*/, UINT  /*message*/, WPARAM  /*w
 //--------------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------------
-void GameFrame::OnSysKeyDown(UINT  /*nChar*/, UINT  /*nRepCnt*/, UINT  /*nFlags*/) {}
+void GameFrame::OnSysKeyDown(UINT /*nChar*/, UINT /*nRepCnt*/, UINT /*nFlags*/) {}
 
 //--------------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------------
-void GameFrame::OnSysKeyUp(UINT  /*nChar*/, UINT  /*nRepCnt*/, UINT  /*nFlags*/) {}
+void GameFrame::OnSysKeyUp(UINT /*nChar*/, UINT /*nRepCnt*/, UINT /*nFlags*/) {}
 
 //--------------------------------------------------------------------------------------------
 // Prepares the fade-Bitmap
@@ -1090,7 +1091,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         case 'Y':
             nTargetRoom = ROOM_SECURITY;
             break;
-        default: break;
+        default:
+            break;
         }
     } else if (gLanguage == LANGUAGE_O) {
         // Portugisisch
@@ -1155,7 +1157,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         case 'H':
             nTargetRoom = ROOM_FRACHT;
             break;
-        default: break;
+        default:
+            break;
         }
     } else {
         // Englisch, Sonstige:
@@ -1226,7 +1229,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         case 'Y':
             nTargetRoom = ROOM_SECURITY;
             break;
-        default: break;
+        default:
+            break;
         }
     }
 
@@ -1275,7 +1279,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                             }
                         }
                         break;
-                    default: break;
+                    default:
+                        break;
                     }
                 }
             }
@@ -1535,7 +1540,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                                                 qPlayer.EnterRoom(ROOM_OPTIONS);
                                             }
                                             break;
-                                        default: break;
+                                        default:
+                                            break;
                                         }
                                     }
                                 }
@@ -1622,7 +1628,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         case DIFF_ADDON10:
             Sim.Players.Players[SLONG(nChar - '1')].RocketFlags = ROCKET_ALL;
             break;
-        default: break;
+        default:
+            break;
         }
     }
 
@@ -1958,7 +1965,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
             case DIFF_ATFS10:
                 break;
-            default: break;
+            default:
+                break;
             }
             CheatSound();
         }
@@ -2299,7 +2307,8 @@ void GameFrame::OnChar(UINT nChar, UINT /*unused*/, UINT /*unused*/) {
                             (Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount = 3;
                         }
                         break;
-                    default: break;
+                    default:
+                        break;
                     }
                 }
             }
