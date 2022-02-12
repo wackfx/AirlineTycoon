@@ -1575,7 +1575,7 @@ void AirportView::OnLButtonDown(UINT nFlags, CPoint point) {
                         IgnoreNextLButtonUp = TRUE;
                     }
 
-                    PERSON &qPlayerPerson = Sim.Persons.Persons[static_cast<SLONG>(Sim.Persons.GetPlayerIndex(PlayerNum))];
+                    PERSON &qPlayerPerson = Sim.Persons[static_cast<SLONG>(Sim.Persons.GetPlayerIndex(PlayerNum))];
 
                     if ((MenuIsOpen() != 0) || qPlayerPerson.StatePar == ROOM_STAIRS1UP || qPlayerPerson.StatePar == ROOM_STAIRS2UP ||
                         qPlayerPerson.StatePar == ROOM_STAIRS3UP || qPlayerPerson.StatePar == ROOM_STAIRS1DOWN || qPlayerPerson.StatePar == ROOM_STAIRS2DOWN ||
@@ -2094,7 +2094,8 @@ void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                     }
                 }
                 break;
-            default: break;
+            default:
+                break;
             }
 
             CStdRaum::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -2117,7 +2118,8 @@ void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                         Airport.Builds[UnderCursor].ScreenPos.y += 22;
                         Airport.Builds[UnderCursor].ScreenPos.x -= 11;
                         break;
-                    default: break;
+                    default:
+                        break;
                     }
                 } else if ((GetAsyncKeyState(VK_CONTROL) != 0) && UnderCursor != 0xffffffff) {
                     switch (nChar) {
@@ -2133,7 +2135,8 @@ void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                     case VK_DOWN:
                         Airport.Builds[UnderCursor].ScreenPos.y++;
                         break;
-                    default: break;
+                    default:
+                        break;
                     }
                 } else {
                     switch (nChar) {
@@ -2149,7 +2152,8 @@ void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                     case VK_DOWN:
                         ViewPos.y += 10;
                         break;
-                    default: break;
+                    default:
+                        break;
                     }
                 }
             }
@@ -2213,7 +2217,8 @@ void AirportView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
             if (Editor)
                 TopWin = new HallDiskMenu(bHandy, PlayerNum);
             break;
-        default: break;
+        default:
+            break;
         }
 #endif
     }
@@ -4099,7 +4104,8 @@ void AIRPORT::RemoveRunes() {
             case RUNE_AREALO:
             case RUNE_AREARU:
                 Builds -= c;
-            default: break;
+            default:
+                break;
             }
         }
     }
