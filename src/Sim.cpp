@@ -2848,12 +2848,11 @@ void SIM::NewDay() {
 //--------------------------------------------------------------------------------------------
 // Sucht ein zufälliges Flugzeug für heute aus:
 //--------------------------------------------------------------------------------------------
-void SIM::CreateRandomUsedPlane(SLONG Index) {
+CPlane SIM::CreateRandomUsedPlane(SLONG seed) {
     TEAKRAND rnd;
 
-	rnd.SRand (Sim.Date+Index);
+	rnd.SRand(Sim.Date+seed);
 
-	UsedPlanes[0x1000000+Index]=CPlane (PlaneNames.GetUnused(&rnd), PlaneTypes.GetRandomExistingType(&rnd), 100, 0);
 
 	//Get Random Time: Now > Desired Time > Release Year
 
@@ -2862,17 +2861,18 @@ void SIM::CreateRandomUsedPlane(SLONG Index) {
 	localtime_s(  &currentTime, &t);
 	const int thisYear = currentTime.tm_year + 1900;
 
-    CPlane *usedPlane = &UsedPlanes[0x1000000 + Index];
+    CPlane usedPlane = CPlane(PlaneNames.GetUnused(&rnd), PlaneTypes.GetRandomExistingType(&rnd), 100, 0);
 
-    if(thisYear < usedPlane->ptErstbaujahr) {
+    if(thisYear < usedPlane.ptErstbaujahr) {
 	    TeakLibW_Exception(FNL, "Tried to add used plane that was built before this year (%d < %d)", thisYear, usedPlane->ptErstbaujahr);
     }
 
-    usedPlane->Baujahr = thisYear - rnd.Rand(thisYear - usedPlane->ptErstbaujahr);
-    usedPlane->Zustand = static_cast<UBYTE>(usedPlane->Baujahr - usedPlane->ptErstbaujahr + 25 + rnd.Rand(40) - 20);
-    usedPlane->Zustand = static_cast<UBYTE>(max(20, min(usedPlane->Zustand, 100)));
+    usedPlane.Baujahr = thisYear - rnd.Rand(thisYear - usedPlane.ptErstbaujahr);
+    usedPlane.Zustand = static_cast<UBYTE>(usedPlane.Baujahr - usedPlane.ptErstbaujahr + 25 + rnd.Rand(40) - 20);
+    usedPlane.Zustand = static_cast<UBYTE>(max(20, min(usedPlane->Zustand, 100)));
+    usedPlane.TargetZustand = usedPlane.Zustand;
 
-    usedPlane->TargetZustand = usedPlane->Zustand;
+    return usedPlane;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -2881,13 +2881,11 @@ void SIM::CreateRandomUsedPlane(SLONG Index) {
 void SIM::CreateRandomUsedPlanes() {
     SLONG c = 0;
 
-    UsedPlanes.Planes.ReSize(3);
+    UsedPlanes.ReSize(3);
     UsedPlanes.ClearAlbum();
-    UsedPlanes.RepairReferences();
 
     for (c = 0; c < 3; c++) {
-        UsedPlanes += 0x1000000 + c;
-        CreateRandomUsedPlane(c);
+        UsedPlanes.push_front(0x1000000 + c, CreateRandomUsedPlane(c));
     }
 
     if (Sim.Difficulty == DIFF_ATFS10 && Sim.Date >= 40 && Sim.Date <= 50) {
@@ -2907,7 +2905,7 @@ void SIM::UpdateUsedPlanes() {
 
     for (c = 0; c < SLONG(UsedPlanes.AnzEntries()) && Anz > 0; c++) {
         if (UsedPlanes[0x1000000 + c].Name.GetLength() == 0) {
-            CreateRandomUsedPlane(c);
+            UsedPlanes[0x1000000 + c] = CreateRandomUsedPlane(c);
             Anz--;
             Sim.TickMuseumRefill = 0;
         }
