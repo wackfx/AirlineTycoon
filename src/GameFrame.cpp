@@ -332,7 +332,7 @@ GameFrame::~GameFrame() {
     TextBricks.ReSize(0);
     Sim.Players.Players.ReSize(0);
     PlaneTypes.ReSize(0);
-    Clans.Clans.ReSize(0);
+    Clans.ReSize(0);
     Bricks.Bricks.ReSize(0);
 
     // SBBM:
