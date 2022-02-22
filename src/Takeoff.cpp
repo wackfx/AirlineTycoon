@@ -2176,6 +2176,7 @@ unsigned char *ReadableAnsiToUChar(const char *pData, const unsigned uLen) {
 void CTakeOffApp::LadeWeitereStandardTexte() {
     const char TOKEN_STAT[] = "STAT";
     const char TOKEN_MONEY[] = "Mony";
+    const char TOKEN_AKTIE[] = "Akti";
 
     StandardTexte.AddText(TOKEN_STAT, 10000, "Bodyguard-Rabatt");
     StandardTexte.AddText(TOKEN_STAT, 10001, "Zinsen");
@@ -2198,4 +2199,6 @@ void CTakeOffApp::LadeWeitereStandardTexte() {
     StandardTexte.UpdateText(TOKEN_MONEY, 2101, "(Saldo f\xFCr Auftragsflug %s)");
     StandardTexte.UpdateText(TOKEN_MONEY, 2102, "(Saldo f\xFCr Leerflug %s)");
     StandardTexte.UpdateText(TOKEN_MONEY, 2103, "(Saldo f\xFCr Frachtflug %s)");
+
+    StandardTexte.UpdateText(TOKEN_AKTIE, 3030, "Neuer Kontostand (inkl. Geb\xFChr)");
 }
