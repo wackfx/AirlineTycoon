@@ -61,7 +61,7 @@ CHLPool HLPool;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-void Unvideo (CString Filename, CString TargetFilename);
+void Unvideo (const CString& Filename, const CString& TargetFilename);
 
 CJumpingVar<ULONG>   gPhysicalCdRomBitlist=0;
 CJumpingVar<CString> gCDPath;
