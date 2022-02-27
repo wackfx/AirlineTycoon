@@ -396,7 +396,6 @@ bool RAKNetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool
     return true;
 }
 
-#pragma optimize("", off)
 bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
     if(mState == SBSessionEnum::SBNETWORK_SESSION_SEARCHING)
         return false;
@@ -576,8 +575,6 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
     }
     return false;
 }
-#pragma optimize("", on)
-
 
 SBList<SBNetworkPlayer*>* RAKNetNetwork::GetAllPlayers() {
     return &mPlayers;
