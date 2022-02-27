@@ -40,7 +40,6 @@
 #include <cstdio>
 #include <ctime>
 
-#include "cd_prot.h"
 #include "gltitel.h"
 
 #include "AtNet.h"
@@ -436,9 +435,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
         if (stricmp(Argument, "/p") == 0 || stricmp(Argument, "-p") == 0 || stricmp(Argument, "p") == 0) {
             return (FALSE);
         }
-#ifndef CD_PROTECTION
-#ifndef CD_PROTECTION_METALOCK
-#ifndef DISABLE_DEBUG_KEYS
+
         // if (stricmp (Argument, "/e")==0) gLanguage = LANGUAGE_E;
         // if (stricmp (Argument, "/quick")==0) bQuick = TRUE;
         // if (stricmp (Argument, "/fast")==0) bQuick = TRUE;
@@ -449,9 +446,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
             bFullscreen = FALSE;
         }
         // if (stricmp (Argument, "/windowed")==0) bFullscreen = FALSE;
-#endif
-#endif
-#endif
+
         if (stricmp(Argument, "/novgaram") == 0) {
             bNoVgaRam = TRUE;
         }
@@ -492,9 +487,6 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
             MakeVideoPath = CString(":") + strtok(nullptr, " ");
             MakeVideoPath2 = strtok(nullptr, " ");
         }
-#ifndef CD_PROTECTION
-#ifndef CD_PROTECTION_METALOCK
-#ifndef DISABLE_DEBUG_KEYS
         if (stricmp(Argument, "/updatepools") == 0) {
             DoAppPath();
             InitPathVars();
@@ -511,9 +503,6 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
             UpdateHLinePool();
             exit(0);
         }
-#endif
-#endif
-#endif
     }
 
     Sim.Options.ReadOptions();
@@ -681,7 +670,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
         else
             LOADING_TEXT("Initializing screen...");
 
-        CreditsSmackerFileHandle = fopen(FILLFILE_NAME, "rb");
+        CreditsSmackerFileHandle = fopen("intro/credits.smk", "rb");
 
         TitleBitmap.ReSize(pRoomLib, GFX_TITEL);
         PrimaryBm.BlitFrom(TitleBitmap);

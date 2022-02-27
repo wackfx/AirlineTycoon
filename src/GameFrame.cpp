@@ -9,7 +9,6 @@
 #include "NewGamePopup.h" //Fenster zum Wahl der Gegner und der Spielstärke
 #include "Outro.h"
 #include "Synthese.h"
-#include "cd_prot.h"
 #include "glpause.h"
 
 #include "SbLib.h"
@@ -871,11 +870,6 @@ void GameFrame::OnActivateApp(BOOL bActive, DWORD /*hTask*/) {
         ::bActive = bActive;
 
         if (bActive != 0) {
-#if 0
-#ifndef CD_PROTECTION
-            if (gpSSE && Sim.Options.OptionEnableDigi) gpSSE->EnableDS ();
-#endif
-#endif
 
             CRect rect(2, 2, 638, 478);
 
@@ -910,11 +904,6 @@ void GameFrame::OnActivateApp(BOOL bActive, DWORD /*hTask*/) {
             Invalidate();
         } else {
             FlushTalkers();
-#if 0
-#ifndef CD_PROTECTION
-            if (gpSSE) gpSSE->DisableDS ();
-#endif
-#endif
 
             if (Sim.bNetwork != 0) {
                 SIM::SendSimpleMessage(ATNET_ACTIVATEAPP, 0, 1, Sim.localPlayer);
@@ -2047,8 +2036,6 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             CheatSound();
         }
 
-#ifndef CD_PROTECTION
-#ifndef DISABLE_DEBUG_KEYS
         if (TypeBuffer[24] == 'A' && TypeBuffer[25] == 'T' && TypeBuffer[26] == 'P' && TypeBuffer[27] == 'R' && TypeBuffer[28] == 'O' &&
             TypeBuffer[29] == 'T') {
             if (Sim.bExeChanged == FALSE) {
@@ -2060,8 +2047,6 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                 Sim.bExeChanged = 30;
             }
         }
-#endif
-#endif
     }
 
     if (Editor == EDITOR_NONE) {
@@ -2091,9 +2076,6 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           } */
 
         // if (nChar==VK_F12) DebugBreak();
-
-#ifndef CD_PROTECTION
-#ifndef DISABLE_DEBUG_KEYS
 
         /*if (nChar==VK_TAB)
           {
@@ -2175,8 +2157,6 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
               qPlayer.WasInRoom.FillWith (TRUE);*/
         }
-#endif
-#endif
     }
 
     RePostMessage(CPoint(0, 0));
