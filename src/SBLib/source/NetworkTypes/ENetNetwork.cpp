@@ -254,7 +254,7 @@ bool ENetNetwork::IsInSession() {
     return mState == SBSessionEnum::SBNETWORK_SESSION_MASTER || mState == SBSessionEnum::SBNETWORK_SESSION_CLIENT;
 }
 
-bool ENetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool compression) {
+bool ENetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool  /*compression*/) {
     ENetPacket* packet = enet_packet_create(buffer, length, ENET_PACKET_FLAG_RELIABLE);
 
     if (peerID != 0u)

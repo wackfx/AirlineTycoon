@@ -377,7 +377,7 @@ bool RAKNetNetwork::IsInSession() {
     return mState == SBSessionEnum::SBNETWORK_SESSION_MASTER || mState == SBSessionEnum::SBNETWORK_SESSION_CLIENT;
 }
 
-bool RAKNetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool compression) {
+bool RAKNetNetwork::Send(BUFFER<UBYTE>& buffer, ULONG length, ULONG peerID, bool  /*compression*/) {
     ATPacket a{};
     a.messageType = SBNETWORK_MESSAGE;
     a.dataLength = length;
