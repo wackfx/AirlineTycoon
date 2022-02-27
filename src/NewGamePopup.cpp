@@ -4,14 +4,14 @@
 // Link to: "NewGamePopup.h"
 //============================================================================================
 #include "StdAfx.h"
-#include "glstart.h"
-#include "SecurityManager.h"
+#include "AtNet.h"
 #include "NewGamePopup.h"  //Fenster zum Wahl der Gegner und der Spielstärke
+#include "SecurityManager.h"
 #include "cd_prot.h"
 #include "fillfile.h"
-#include "AtNet.h"
-#include <cstdlib>
+#include "glstart.h"
 #include <cstdio>
+#include <cstdlib>
 
 #ifdef _DEBUG
 #undef THIS_FILE
