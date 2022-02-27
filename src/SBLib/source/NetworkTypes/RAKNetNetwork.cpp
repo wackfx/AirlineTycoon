@@ -1,4 +1,6 @@
 #include "StdAfx.h"
+#include "BitStream.h"
+#include "RAKNetNetwork.hpp"
 #include "SbLib.h"
 #include "network.h"
 #include <time.h>
