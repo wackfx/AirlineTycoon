@@ -111,7 +111,7 @@ SLONG ENetNetwork::GetMessageCount() {
                 if (event.packet->dataLength != sizeof(ENetNetworkPeer))
                     break;
 
-                    auto* peer = (ENetNetworkPeer*)event.packet->data;
+                    auto* peer = reinterpret_cast<ENetNetworkPeer*>(event.packet->data);
                     if (peer->ID == mLocalID) {
                         break;
 }
@@ -132,7 +132,7 @@ SLONG ENetNetwork::GetMessageCount() {
                 /* Delete the player and inform the multiplayer code */
                 if (event.peer->data != nullptr)
                 {
-                    auto* player = (SBNetworkPlayer*)event.peer->data;
+                    auto* player = static_cast<SBNetworkPlayer*>(event.peer->data);
                     DPPacket dp{};
                     dp.messageType = DPSYS_DESTROYPLAYERORGROUP;
                     dp.playerType = DPPLAYERTYPE_PLAYER;
