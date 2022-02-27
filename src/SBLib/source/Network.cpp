@@ -376,18 +376,18 @@ SBNetwork::SBNetwork(bool)
           mConnections.Add(RAKNET_TYPE_NAT_JOIN);
           mConnections.Add(RAKNET_TYPE_NAT_HOST);
 
-    AT_Log("Started SBNetwork");
-}
+          AT_Log("Started SBNetwork");
+      }
 
 SLONG SBNetwork::GetMessageCount() {
     return mNetwork->GetMessageCount();
 }
 
-bool SBNetwork::Connect(SBStr) {
+bool SBNetwork::Connect(SBStr /*unused*/) {
     return false; //No longer used..
 }
 
-bool SBNetwork::Connect(SBStr, const char* ip) {
+bool SBNetwork::Connect(SBStr /*unused*/, const char* ip) {
     return mNetwork->Connect(ip);
 }
 
@@ -435,11 +435,11 @@ SBProviderEnum SBNetwork::GetProviderID(char* name) {
 }
 
 SBProviderEnum SBNetwork::GetSelectedProviderID() const{
-	return mType;
+    return mType;
 }
 
 SBCapabilitiesFlags SBNetwork::GetSelectedProviderCapabilities() const {
-	if(mNetwork)
+    if(mNetwork)
         return mNetwork->GetCapabilities();
 
     return SBCapabilitiesFlags::SBNETWORK_NONE;
@@ -453,15 +453,15 @@ void SBNetwork::SetProvider(SBProviderEnum type) {
     case SBProviderEnum::SBNETWORK_RAKNET_DIRECT_HOST:
     case SBProviderEnum::SBNETWORK_RAKNET_NAT_HOST:
     case SBProviderEnum::SBNETWORK_RAKNET_NAT_JOIN: {
-	    RAKNetNetwork* const net = new RAKNetNetwork;
-    	net->SetNatMode(type >= SBProviderEnum::SBNETWORK_RAKNET_NAT_JOIN);
+        RAKNetNetwork* const net = new RAKNetNetwork;
+        net->SetNatMode(type >= SBProviderEnum::SBNETWORK_RAKNET_NAT_JOIN);
 
-    	mNetwork = net;
-    	break;
+        mNetwork = net;
+        break;
     }
     case SBProviderEnum::SBNETWORK_ENET:
         mNetwork = new ENetNetwork();
-    	break;
+        break;
     }
 
     mNetwork->Initialize();

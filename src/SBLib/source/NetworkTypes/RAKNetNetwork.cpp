@@ -184,8 +184,9 @@ bool RAKNetNetwork::ConnectToUDP(RakNetGUID gameHost) {
 }
 
 bool RAKNetNetwork::Connect(const char* host) {
-    if (mMaster == nullptr)
+    if (mMaster == nullptr) {
         return false;
+	}
 
     if(mIsNATMode && mServerBrowserPeer != nullptr) {
         RakNetGUID gameHost = RakNetGUID();
@@ -405,8 +406,9 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
         SBNetworkPlayer* master = mPlayers.GetFirst();
         for (mPlayers.GetNext(); !mPlayers.IsLast(); mPlayers.GetNext())
         {
-            if (mPlayers.GetLastAccessed()->ID < master->ID)
+            if (mPlayers.GetLastAccessed()->ID < master->ID) {
                 master = mPlayers.GetLastAccessed();
+}
         }
 
         if (master->ID == mLocalID)
@@ -429,9 +431,10 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
     }
     
     Packet* p;
-    if ((p = mMaster->Receive())) { //Game loop network messages:
-        if (p == nullptr)
+    if ((p = mMaster->Receive()) != nullptr) { //Game loop network messages:
+        if (p == nullptr) {
             return false;
+		}
 
         switch (p->data[0]) {
         case ID_DISCONNECTION_NOTIFICATION:

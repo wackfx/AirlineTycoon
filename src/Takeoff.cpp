@@ -143,8 +143,8 @@ SLONG gTimerCorrection=0;                         //Is it necessary to adapt the
 //--------------------------------------------------------------------------------------------
 __int64 betaId[3] = { 123456789876543210, 765423432423432676, 432987774377733433 };
 
-char *UCharToReadableAnsi( const unsigned char *pData, const unsigned uLen );
-unsigned char *ReadableAnsiToUChar( const char *pData, const unsigned uLen );
+char *UCharToReadableAnsi( const unsigned char *pData, unsigned uLen );
+unsigned char *ReadableAnsiToUChar( const char *pData, unsigned uLen );
 
 #define SCRAMBLE_ADD_XOR 0xa0febff4
 
@@ -159,7 +159,7 @@ struct protectedValue
     // methods
     __forceinline			protectedValue( );
     __forceinline void		SetValue( int iValue );
-    __forceinline void		AddValue( const int iAdd );
+    __forceinline void		AddValue( int iAdd );
     __forceinline int		GetValue( ) const;
 
     // Operators
@@ -174,7 +174,7 @@ struct protectedValue
 
     // Methods
     __forceinline int	Descramble( ) const;
-    __forceinline void	SetScrambled( const int iValue );
+    __forceinline void	SetScrambled( int iValue );
 
     // Members
     charint			mcharintScore;
@@ -415,10 +415,12 @@ CTakeOffApp::CTakeOffApp()
 //--------------------------------------------------------------------------------------------
 CTakeOffApp::~CTakeOffApp()
 {
-    if (gpClickFx) gpClickFx->Release();
-    if (gpPlaneFx) gpPlaneFx->Release();
+    if (gpClickFx != nullptr) { gpClickFx->Release();
+}
+    if (gpPlaneFx != nullptr) { gpPlaneFx->Release();
+}
 
-    if (gpSSE)
+    if (gpSSE != nullptr)
     {
         gpSSE->EnableSound(false);
         delete gpSSE;
@@ -519,20 +521,24 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
     {
         CRegistryAccess reg (chRegKey);
 
-        SLONG bConfigNoVgaRam      = false;
-        SLONG bConfigNoSpeedyMouse = false;
-        SLONG bConfigWinMouse      = false;
-        SLONG bConfigNoDigiSound   = false;
+        SLONG bConfigNoVgaRam      = 0;
+        SLONG bConfigNoSpeedyMouse = 0;
+        SLONG bConfigWinMouse      = 0;
+        SLONG bConfigNoDigiSound   = 0;
 
         reg.ReadRegistryKey_l (&bConfigNoVgaRam);
         reg.ReadRegistryKey_l (&bConfigNoSpeedyMouse);
         reg.ReadRegistryKey_l (&bConfigWinMouse);
         reg.ReadRegistryKey_l (&bConfigNoDigiSound);
 
-        if (bConfigNoVgaRam)       bNoVgaRam        = TRUE;
-        if (bConfigNoSpeedyMouse)  bNoQuickMouse    = TRUE;
-        if (bConfigWinMouse)       gUseWindowsMouse = TRUE;
-        if (bConfigNoDigiSound)    Sim.Options.OptionDigiSound = FALSE;
+        if (bConfigNoVgaRam != 0) {       bNoVgaRam        = TRUE;
+}
+        if (bConfigNoSpeedyMouse != 0) {  bNoQuickMouse    = TRUE;
+}
+        if (bConfigWinMouse != 0) {       gUseWindowsMouse = TRUE;
+}
+        if (bConfigNoDigiSound != 0) {    Sim.Options.OptionDigiSound = FALSE;
+}
     }
 
     //Schneller Mode zum Debuggen?
@@ -541,8 +547,10 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         char* Argument = argv[i];
         gPhysicalCdRomBitlist.Pump();
 
-        if (stricmp (Argument, "/fc")==0) bFirstClass = TRUE;
-        if (stricmp (Argument, "/p")==0 || stricmp (Argument, "-p")==0 || stricmp (Argument, "p")==0) return (FALSE);
+        if (stricmp (Argument, "/fc")==0) { bFirstClass = TRUE;
+}
+        if (stricmp (Argument, "/p")==0 || stricmp (Argument, "-p")==0 || stricmp (Argument, "p")==0) { return (FALSE);
+}
 #ifndef CD_PROTECTION
 #ifndef CD_PROTECTION_METALOCK
 #ifndef  DISABLE_DEBUG_KEYS
@@ -552,22 +560,33 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         //if (stricmp (Argument, "/d")==0) gLanguage = LANGUAGE_D;
         //if (stricmp (Argument, "/f")==0) gLanguage = LANGUAGE_F;
         //if (stricmp (Argument, "/test")==0) bTest = TRUE;
-        if (stricmp (Argument, "/window")==0) bFullscreen = FALSE;
+        if (stricmp (Argument, "/window")==0) { bFullscreen = FALSE;
+}
         //if (stricmp (Argument, "/windowed")==0) bFullscreen = FALSE;
 #endif
 #endif
 #endif
-        if (stricmp (Argument, "/novgaram")==0) bNoVgaRam = TRUE;
-        if (stricmp (Argument, "/noquickmouse")==0) bNoQuickMouse = TRUE;
-        if (stricmp (Argument, "/nodigisound")==0) Sim.Options.OptionDigiSound=FALSE;
-        if (stricmp (Argument, "/nospeedybar")==0) bNoSpeedyBar = TRUE;
-        if (stricmp (Argument, "/winmouse")==0) gUseWindowsMouse = TRUE;
-        if (stricmp (Argument, "/showallpools")==0) gShowAllPools = TRUE;
-        if (stricmp (Argument, "/load")==0) gLoadGameNumber = atoi(strtok (NULL, " "));
-        if (stricmp (Argument, "/savegamelocal")==0) SavegamePath = "d:\\Savegame\\%s";
+        if (stricmp (Argument, "/novgaram")==0) { bNoVgaRam = TRUE;
+}
+        if (stricmp (Argument, "/noquickmouse")==0) { bNoQuickMouse = TRUE;
+}
+        if (stricmp (Argument, "/nodigisound")==0) { Sim.Options.OptionDigiSound=FALSE;
+}
+        if (stricmp (Argument, "/nospeedybar")==0) { bNoSpeedyBar = TRUE;
+}
+        if (stricmp (Argument, "/winmouse")==0) { gUseWindowsMouse = TRUE;
+}
+        if (stricmp (Argument, "/showallpools")==0) { gShowAllPools = TRUE;
+}
+        if (stricmp (Argument, "/load")==0) { gLoadGameNumber = atoi(strtok (NULL, " "));
+}
+        if (stricmp (Argument, "/savegamelocal")==0) { SavegamePath = "d:\\Savegame\\%s";
+}
 
-        if (stricmp (Argument, "/useclangli")==0) gUpdatingPools = TRUE;
-        if (stricmp (Argument, "/555")==0)        MakeUnvideoOn555 = TRUE;
+        if (stricmp (Argument, "/useclangli")==0) { gUpdatingPools = TRUE;
+}
+        if (stricmp (Argument, "/555")==0) {        MakeUnvideoOn555 = TRUE;
+}
 
         if (stricmp (Argument, "/video")==0)
         {
@@ -587,7 +606,8 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
             DoAppPath();
             InitPathVars();
 
-            if (!InitDirectX()) return (FALSE);
+            if (InitDirectX() == 0) { return (FALSE);
+}
             FrameWnd = new GameFrame;
 
             gUpdatingPools = TRUE;
@@ -613,11 +633,12 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
     InitPathVars();
     //UpdateSavegames ();
 
-    bFirstClass |= !DoesFileExist(FullFilename("builds.csv", ExcelPath)) && !DoesFileExist(FullFilename("relation.csv", ExcelPath));
+    bFirstClass |= static_cast<int>((DoesFileExist(FullFilename("builds.csv", ExcelPath)) == 0) && (DoesFileExist(FullFilename("relation.csv", ExcelPath))) == 0);
 
     gPhysicalCdRomBitlist.Pump();
 
-    if (!InitDirectX()) return (FALSE);
+    if (InitDirectX() == 0) { return (FALSE);
+}
 
     //Computername archivieren:
 #ifdef _DEBUG
@@ -656,7 +677,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
 
     FrameWnd = new GameFrame;
 
-    if (MakeVideoPath.GetLength() && MakeVideoPath[0]==':')
+    if ((MakeVideoPath.GetLength() != 0) && MakeVideoPath[0]==':')
     {
         Unvideo (MakeVideoPath.Mid(1), MakeVideoPath2);
         exit (-1);
@@ -682,8 +703,9 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("titel.gli", RoomPath),  &pRoomLib, L_LOCMEM);
         pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("titel2.gli", RoomPath),  &pRoomLib2, L_LOCMEM);
 
-        if (Sim.Options.OptionDigiSound==TRUE)
+        if (Sim.Options.OptionDigiSound==TRUE) {
             InitSoundSystem (FrameWnd->m_hWnd);
+}
 
         if (Sim.Options.OptionViewedIntro==0 && IntroPath.GetLength()!=0)
         {
@@ -701,8 +723,9 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
             delete TopWin;
             TopWin=NULL;
         }
-        else
+        else {
             TitleBitmap.ReSize (pRoomLib, GFX_SPELLOGO);
+}
 
         PrimaryBm.BlitFrom (TitleBitmap);
         gMousePosition=XY(600,440); FrameWnd->Invalidate(); MessagePump();
@@ -715,8 +738,9 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         else if (gLanguage==LANGUAGE_F) LOADING_TEXT("Francais...")
         else                            LOADING_TEXT("Loading People...");
 
-        if (gUpdatingPools)
+        if (gUpdatingPools != 0) {
             pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("glclan.gli", GliPath),   &pGLibClan, L_LOCMEM);
+}
 
         if (gLanguage==LANGUAGE_N) LOADING_TEXT("Adviseurs worden opgestart...")
         else if (gLanguage==LANGUAGE_F) LOADING_TEXT("Francais...")
@@ -794,12 +818,12 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         else if (gLanguage==LANGUAGE_F) LOADING_TEXT("Francais...")
         else                            LOADING_TEXT("Initializing music sound system...");
 
-        if (bMidiAvailable && gpSSE)
+        if ((bMidiAvailable != 0) && (gpSSE != nullptr))
         {
             FrameWnd->Invalidate(); MessagePump(); //lpDD->FlipToGDISurface();
             gpSSE->CreateMidi(&gpMidi);
 
-            if (gpMidi)
+            if (gpMidi != nullptr)
             {
                 if (gLanguage==LANGUAGE_N) LOADING_TEXT("Stelt het midi-volume in...")
                 else if (gLanguage==LANGUAGE_F) LOADING_TEXT("Francais...")
@@ -809,7 +833,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
                 SetMidiVolume(Sim.Options.OptionMusik);
                 gpMidi->SetMode(Sim.Options.OptionMusicType);
 
-                if (Sim.Options.OptionViewedIntro)
+                if (Sim.Options.OptionViewedIntro != 0)
                 {
                     if (gLanguage==LANGUAGE_N) LOADING_TEXT("Start de eerste midi...")
                     else if (gLanguage==LANGUAGE_F) LOADING_TEXT("Francais...")
@@ -826,7 +850,8 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
                     SetMidiVolume(Sim.Options.OptionMusik);
                 }
             }
-            else bMidiAvailable=FALSE;
+            else { bMidiAvailable=FALSE;
+}
         }
 
         //Registration.ReSize ("Misc\\Register.res", 0x54a8fe83);
@@ -837,7 +862,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         Clans.ReInit ("clan.csv");
         Clans.UpdateClansInGame (TRUE);
 
-        if (pRoomLib2 && gLanguage!=LANGUAGE_N)
+        if ((pRoomLib2 != nullptr) && gLanguage!=LANGUAGE_N)
         {
             TitleBitmap.ReSize (pRoomLib2, GFX_TITEL);
             PrimaryBm.BlitFrom (TitleBitmap);
@@ -848,7 +873,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
             gMousePosition=XY(600,440); FrameWnd->Invalidate(); MessagePump();
         }
 
-        if (!gUpdatingPools)
+        if (gUpdatingPools == 0)
         {
             if (gLanguage==LANGUAGE_N) LOADING_TEXT("Initialiseert de röntgenfoto's...")
             else if (gLanguage==LANGUAGE_F) LOADING_TEXT("Francais...")
@@ -858,10 +883,10 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
 
             SLONG n=0;
 
-            for (SLONG c=Clans.AnzEntries()-1; c>=0; c--, n++)
-                if (Clans.IsInAlbum (c))
+            for (SLONG c=Clans.AnzEntries()-1; c>=0; c--, n++) {
+                if (Clans.IsInAlbum (c) != 0)
                 {
-                    if (c<SLONG(Clans.AnzEntries()-1) && Clans.IsInAlbum(c+1) && Clans[c].PalFilename==Clans[SLONG(c+1)].PalFilename && Clans[c].Type!=30)
+                    if (c<SLONG(Clans.AnzEntries()-1) && (Clans.IsInAlbum(c+1) != 0) && Clans[c].PalFilename==Clans[SLONG(c+1)].PalFilename && Clans[c].Type!=30)
                     {
                         Clans[c].ClanPool.ReSize (bprintf ("clan%li.pol", c), &Clans[SLONG(c+1)].ClanPool, NULL);
                         Clans[c].ClanGimmick.ReSize (bprintf ("clang%li.pol", c), &Clans[SLONG(c+1)].ClanPool, &Clans[c].ClanPool);
@@ -877,14 +902,16 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
                     Clans[c].ClanWarteGimmick.PreLoad();
                     Clans[c].ClanGimmick.PreLoad();
 
-                    if (Clans[c].TodayInGame) Clans[c].ClanPool.Load();
-                    else Clans[c].ClanPool.PreLoad();
+                    if (Clans[c].TodayInGame != 0) { Clans[c].ClanPool.Load();
+                    } else { Clans[c].ClanPool.PreLoad();
+}
 
                     if (gLanguage==LANGUAGE_N) LOADING_TEXT((char*)(LPCTSTR)(CString("Karakterdata wordt opgestart...")+CString("................................................................").Left(n/4)))
                     else if (gLanguage==LANGUAGE_F) LOADING_TEXT((char*)(LPCTSTR)(CString("Initializing people data...")+CString("................................................................").Left(n/4)))
                     else                            LOADING_TEXT((char*)(LPCTSTR)(CString("Initializing people data...")+CString("................................................................").Left(n/4)));
                     n++;
                 }
+}
         }
 
         if (gLanguage==LANGUAGE_N) LOADING_TEXT("Karakterdata wordt opgestart...")
@@ -922,8 +949,10 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
         else                            LOADING_TEXT("Starting game...");
 
         TitleBitmap.Destroy();
-        if (pRoomLib && pGfxMain) pGfxMain->ReleaseLib (pRoomLib);
-        if (pRoomLib2 && pGfxMain) pGfxMain->ReleaseLib (pRoomLib2);
+        if ((pRoomLib != nullptr) && (pGfxMain != nullptr)) { pGfxMain->ReleaseLib (pRoomLib);
+}
+        if ((pRoomLib2 != nullptr) && (pGfxMain != nullptr)) { pGfxMain->ReleaseLib (pRoomLib2);
+}
     }
 
     gMouseStartup = FALSE;
@@ -937,11 +966,14 @@ BOOL CTakeOffApp::InitInstance(int argc, char* argv[])
 //--------------------------------------------------------------------------------------------
 //Sorgt für Screen Refresh und für Ablauf der Simulation:
 //--------------------------------------------------------------------------------------------
-void CTakeOffApp::GameLoop(void*)
+void CTakeOffApp::GameLoop(void* /*unused*/)
 {
-    SLONG c, d, e;
+    SLONG c;
+    SLONG d;
+    SLONG e;
     DWORD LastTime=0xffffffff;
-    DWORD Time, NumSimSteps=0;
+    DWORD Time;
+    DWORD NumSimSteps=0;
     SLONG Faktor=1;
     BOOL  RefreshNeccessary=FALSE;
 
@@ -949,18 +981,20 @@ void CTakeOffApp::GameLoop(void*)
 
     Sim.TimeSlice = 0;
 
-    int startTime = 0, lastTime = 0;
-    while (!bLeaveGameLoop)
+    int startTime = 0;
+    int lastTime = 0;
+    while (bLeaveGameLoop == 0)
     {
         Time= SDL_GetTicks();
         startTime = Time;
 
         int timerFps = Time;
-        if (LastTime==0xffffffff || bgJustDidLotsOfWork || bActive==FALSE) LastTime=Time;
+        if (LastTime==0xffffffff || (bgJustDidLotsOfWork != 0) || bActive==FALSE) { LastTime=Time;
+}
 
         bgJustDidLotsOfWork=FALSE;
 
-        if (bActive)
+        if (bActive != 0)
         {
             Faktor=1;
             RefreshNeccessary=FALSE;
@@ -975,17 +1009,17 @@ void CTakeOffApp::GameLoop(void*)
 
             if (Sim.Gamestate==GAMESTATE_BOOT)
             {
-                if (TopWin) delete TopWin;
+                delete TopWin;
                 TopWin=NULL;
 
                 for (SLONG c=0; c<Sim.Players.Players.AnzEntries(); c++)
                 {
-                    if (Sim.Players.Players[c].LocationWin)
+                    if (Sim.Players.Players[c].LocationWin != nullptr)
                     {
                         delete Sim.Players.Players[c].LocationWin;
                         Sim.Players.Players[c].LocationWin=NULL;
                     }
-                    if (Sim.Players.Players[c].DialogWin)
+                    if (Sim.Players.Players[c].DialogWin != nullptr)
                     {
                         delete Sim.Players.Players[c].DialogWin;
                         Sim.Players.Players[c].DialogWin=NULL;
@@ -993,7 +1027,7 @@ void CTakeOffApp::GameLoop(void*)
                 }
 
                 //Titelmenü anzeigen:
-                if (Sim.Options.OptionViewedIntro || IntroPath.GetLength()==0)
+                if ((Sim.Options.OptionViewedIntro != 0) || IntroPath.GetLength()==0)
                 {
                     Sim.Gamestate = GAMESTATE_TITLE | GAMESTATE_WORKING;
                     TopWin = new TitlePopup(FALSE, 0);
@@ -1036,12 +1070,12 @@ void CTakeOffApp::GameLoop(void*)
             {
                 for (SLONG c=0; c<Sim.Players.Players.AnzEntries(); c++)
                 {
-                    if (Sim.Players.Players[c].LocationWin)
+                    if (Sim.Players.Players[c].LocationWin != nullptr)
                     {
                         delete Sim.Players.Players[c].LocationWin;
                         Sim.Players.Players[c].LocationWin=NULL;
                     }
-                    if (Sim.Players.Players[c].DialogWin)
+                    if (Sim.Players.Players[c].DialogWin != nullptr)
                     {
                         delete Sim.Players.Players[c].DialogWin;
                         Sim.Players.Players[c].DialogWin=NULL;
@@ -1051,10 +1085,11 @@ void CTakeOffApp::GameLoop(void*)
                 CStdRaum *TmpWin = TopWin; TopWin=NULL; delete TmpWin;
                 Sim.Gamestate |= GAMESTATE_WORKING;
 
-                if ((Sim.Gamestate & (~GAMESTATE_WORKING))==GAMESTATE_OUTRO)
+                if ((Sim.Gamestate & (~GAMESTATE_WORKING))==GAMESTATE_OUTRO) {
                     TopWin = new COutro(FALSE, 0, "outro.smk");
-                else
+                } else {
                     TopWin = new COutro(FALSE, 0, "outro2.smk");
+}
             }
             else if (Sim.Gamestate==(GAMESTATE_INIT | GAMESTATE_DONE))
             {
@@ -1062,13 +1097,15 @@ void CTakeOffApp::GameLoop(void*)
                 CStdRaum *TmpWin = TopWin; TopWin=NULL;
                 delete TmpWin;
 
-                if (gLoadGameNumber>-1)
+                if (gLoadGameNumber>-1) {
                     Sim.LoadGame (gLoadGameNumber-1);
+}
 
                 if (gLoadGameNumber==-1)
                 {
-                    for (c=0; c<Sim.Players.AnzPlayers; c++)
+                    for (c=0; c<Sim.Players.AnzPlayers; c++) {
                         Sim.Players.Players[c].EnterRoom (ROOM_AIRPORT, true);
+}
 
                     UpdateStatusBar();
                     Sim.Gamestate = GAMESTATE_PLAYING | GAMESTATE_WORKING;
@@ -1083,14 +1120,16 @@ void CTakeOffApp::GameLoop(void*)
                     }
                     else
                     {
-                        if (Sim.Difficulty==DIFF_TUTORIAL) Sim.IsTutorial = TRUE;
+                        if (Sim.Difficulty==DIFF_TUTORIAL) { Sim.IsTutorial = TRUE;
+}
                         MouseWait++;
                     }
 
                     NumSimSteps=0; //Noch nicht mit SimSteps beginnen
 
-                    for (c=0; c<Sim.Players.AnzPlayers; c++)
+                    for (c=0; c<Sim.Players.AnzPlayers; c++) {
                         Sim.Players.Players[c].WalkToRoom (ROOM_AUFSICHT);
+}
                 }
 
                 gLoadGameNumber=-1;
@@ -1099,57 +1138,61 @@ void CTakeOffApp::GameLoop(void*)
             if (Sim.Gamestate == (GAMESTATE_PLAYING | GAMESTATE_WORKING))
             {
                 //Feierabend berechnen:
-                if (Sim.bNetwork)
+                if (Sim.bNetwork != 0)
                 {
-                    if (Sim.CallItADay==FALSE && Sim.bIsHost && Sim.CallItADayAt==0)
+                    if (Sim.CallItADay==FALSE && (Sim.bIsHost != 0) && Sim.CallItADayAt==0)
                     {
                         Sim.CallItADay=TRUE;
                         for (c=0; c<Sim.Players.AnzPlayers; c++)
                         {
-                            Sim.CallItADay &= (Sim.Players.Players[c].CallItADay | (Sim.Players.Players[c].Owner==1));
+                            Sim.CallItADay &= (Sim.Players.Players[c].CallItADay | static_cast<int>(Sim.Players.Players[c].Owner==1));
 
-                            if (Sim.Players.Players[c].IsOut==0 && Sim.Players.Players[c].Owner==1 && Sim.Players.Players[c].WaitWorkTill!=-1)
+                            if (Sim.Players.Players[c].IsOut==0 && Sim.Players.Players[c].Owner==1 && Sim.Players.Players[c].WaitWorkTill!=-1) {
                                 Sim.CallItADay=FALSE;
+}
                         }
 
-                        if (Sim.CallItADay)
+                        if (Sim.CallItADay != 0)
                         {
-                            if (Sim.Options.OptionAutosave && Sim.bNetwork)
+                            if ((Sim.Options.OptionAutosave != 0) && (Sim.bNetwork != 0)) {
                                 Sim.SaveGame (11, StandardTexte.GetS (TOKEN_MISC, 5000));
+}
 
                             Sim.CallItADayAt=Sim.TimeSlice+30;
-                            Sim.SendSimpleMessage (ATNET_DAYFINISHALL, 0, Sim.CallItADayAt);
-                            Sim.CallItADay=false;
+                            SIM::SendSimpleMessage (ATNET_DAYFINISHALL, 0, Sim.CallItADayAt);
+                            Sim.CallItADay=0;
                         }
                     }
                 }
-                else
+                else {
                     Sim.CallItADay=Sim.Players.Players[Sim.localPlayer].CallItADay;
+}
 
                 //Dinge, die nicht beschleunigt werden:
-                if (nOptionsOpen==0 && nWaitingForPlayer==0 && !Sim.bPause && !Sim.CallItADay && Sim.Time<18*60000 && Sim.Time>=9*60000)
+                if (nOptionsOpen==0 && nWaitingForPlayer==0 && (Sim.bPause == 0) && (Sim.CallItADay == 0) && Sim.Time<18*60000 && Sim.Time>=9*60000)
                 {
-                    for (c=min(NumSimSteps,400); c>0; c--)
+                    for (c=min(NumSimSteps,400); c>0; c--) {
                         Sim.Players.MessagePump();
+}
                 }
 
                 for (c=0; c<Sim.Players.AnzPlayers; c++)
                 {
                     //Klickt gerade jemand ins Zeit-Fenster?
-                    if (!Sim.CallItADay && !Sim.bNetwork && XY(Sim.Players.Players[c].CursorPos).IfIsWithin (102, 440, 255, 459))
+                    if ((Sim.CallItADay == 0) && (Sim.bNetwork == 0) && XY(Sim.Players.Players[c].CursorPos).IfIsWithin (102, 440, 255, 459))
                     {
-                        if (Sim.Players.Players[c].Buttons&1) { NumSimSteps *= 5;  Faktor*=5; }
-                        if (Sim.Players.Players[c].Buttons&2) { NumSimSteps *= 20; Faktor*=20; }
+                        if ((Sim.Players.Players[c].Buttons&1) != 0) { NumSimSteps *= 5;  Faktor*=5; }
+                        if ((Sim.Players.Players[c].Buttons&2) != 0) { NumSimSteps *= 20; Faktor*=20; }
                     }
 
-                    if (Sim.Players.Players[c].WaitForRoom && !IsRoomBusy(Sim.Players.Players[c].WaitForRoom,c))
+                    if ((Sim.Players.Players[c].WaitForRoom != 0u) && (IsRoomBusy(Sim.Players.Players[c].WaitForRoom,c) == 0))
                     {
                         Sim.Players.Players[c].WalkToRoom (UBYTE(Sim.Players.Players[c].WaitForRoom));
                     }
                 }
 
                 //Tutorium:
-                if (Sim.IsTutorial)
+                if (Sim.IsTutorial != 0)
                 {
                     PLAYER &qLocalPlayer = Sim.Players.Players[Sim.localPlayer];
 
@@ -1160,24 +1203,26 @@ void CTakeOffApp::GameLoop(void*)
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1000));
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1001));
                     }
-                    else if (Sim.Tutorial==1000 && qLocalPlayer.Messages.IsSilent ())
+                    else if (Sim.Tutorial==1000 && (qLocalPlayer.Messages.IsSilent () != 0))
                     {
                         Sim.Tutorial=1100;
                         qLocalPlayer.Messages.IsMonolog = FALSE;
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1100));
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1101));
                     }
-                    else if (Sim.Tutorial==1100 && qLocalPlayer.Messages.IsSilent () && qLocalPlayer.GetRoom()==ROOM_AUFSICHT)
+                    else if (Sim.Tutorial==1100 && (qLocalPlayer.Messages.IsSilent () != 0) && qLocalPlayer.GetRoom()==ROOM_AUFSICHT)
                     {
                         Sim.Tutorial=1200+30;
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1200));
                         qLocalPlayer.Messages.Pump ();
                     }
-                    else if (Sim.Tutorial==1200+30 && qLocalPlayer.Messages.IsSilent ())
+                    else if (Sim.Tutorial==1200+30 && (qLocalPlayer.Messages.IsSilent () != 0))
                     {
                         SLONG c;
-                        for (c=9; c>=0; c--)
-                            if (qLocalPlayer.Locations[c]==ROOM_AUFSICHT) break;
+                        for (c=9; c>=0; c--) {
+                            if (qLocalPlayer.Locations[c]==ROOM_AUFSICHT) { break;
+}
+}
 
                         if (c>=0)
                         {
@@ -1190,7 +1235,8 @@ void CTakeOffApp::GameLoop(void*)
                     {
                         Sim.bNoTime   = FALSE;
                         Sim.DayState  = 2;
-                        if (qLocalPlayer.GetRoom()!=ROOM_AIRPORT) qLocalPlayer.LeaveRoom();
+                        if (qLocalPlayer.GetRoom()!=ROOM_AIRPORT) { qLocalPlayer.LeaveRoom();
+}
 
                         Sim.Tutorial=1310;
                         qLocalPlayer.Messages.NextMessage();
@@ -1203,9 +1249,9 @@ void CTakeOffApp::GameLoop(void*)
                         qLocalPlayer.Messages.NextMessage();
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, bprintf (StandardTexte.GetS (TOKEN_TUTORIUM, 1400), (LPCTSTR)qLocalPlayer.AirlineX));
                     }
-                    else if (Sim.Tutorial==1400 && qLocalPlayer.Messages.Messages[0].Message.GetLength()==0 && (qLocalPlayer.Messages.IsSilent () || qLocalPlayer.Messages.TalkCountdown<=1))
+                    else if (Sim.Tutorial==1400 && qLocalPlayer.Messages.Messages[0].Message.GetLength()==0 && ((qLocalPlayer.Messages.IsSilent () != 0) || qLocalPlayer.Messages.TalkCountdown<=1))
                     {
-                        if (qLocalPlayer.LocationWin)
+                        if (qLocalPlayer.LocationWin != nullptr)
                         {
                             CStdRaum &qRaum = *((CStdRaum*)qLocalPlayer.LocationWin);
 
@@ -1220,8 +1266,9 @@ void CTakeOffApp::GameLoop(void*)
                     }
                     else if (Sim.Tutorial==1401 && qLocalPlayer.GetRoom()==ROOM_GLOBE)
                     {
-                        if (qLocalPlayer.LocationWin)
+                        if (qLocalPlayer.LocationWin != nullptr) {
                             ((CStdRaum*)qLocalPlayer.LocationWin)->GlowEffects.ReSize(0);
+}
 
                         Sim.Tutorial=1500;
                         qLocalPlayer.Messages.NextMessage();
@@ -1232,9 +1279,9 @@ void CTakeOffApp::GameLoop(void*)
                         Sim.Tutorial=1501;
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1501));
                     }
-                    else if (Sim.Tutorial==1501 && qLocalPlayer.Messages.IsSilent ())
+                    else if (Sim.Tutorial==1501 && (qLocalPlayer.Messages.IsSilent () != 0))
                     {
-                        if (qLocalPlayer.LocationWin)
+                        if (qLocalPlayer.LocationWin != nullptr)
                         {
                             CStdRaum &qRaum = *((CStdRaum*)qLocalPlayer.LocationWin);
 
@@ -1254,13 +1301,13 @@ void CTakeOffApp::GameLoop(void*)
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1600));
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 1601));
                     }
-                    else if (Sim.Tutorial==2000 && qLocalPlayer.Messages.IsSilent ())
+                    else if (Sim.Tutorial==2000 && (qLocalPlayer.Messages.IsSilent () != 0))
                     {
                         Sim.Tutorial=2002;
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 2002));
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 2003));
                     }
-                    else if (Sim.Tutorial==2002 && qLocalPlayer.Messages.IsSilent ())
+                    else if (Sim.Tutorial==2002 && (qLocalPlayer.Messages.IsSilent () != 0))
                     {
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 2004));
                         qLocalPlayer.Messages.AddMessage (BERATERTYP_GIRL, StandardTexte.GetS (TOKEN_TUTORIUM, 2005));
@@ -1274,14 +1321,17 @@ void CTakeOffApp::GameLoop(void*)
                 d=3;
                 for (c=0; c<Sim.Players.AnzPlayers; c++)
                 {
-                    if (Sim.Players.Players[c].Owner!=1 && Sim.Players.Players[c].CallItADay==FALSE)
+                    if (Sim.Players.Players[c].Owner!=1 && Sim.Players.Players[c].CallItADay==FALSE) {
                         d = min (d, Sim.Players.Players[c].GameSpeed);
+}
                 }
 
-                if (Sim.CallItADay || Sim.Time<9*60000) d=5;
-                if ((Sim.Time<8*60000 || Sim.Time>=18*60000) && Sim.DayState==4) d=5;
+                if ((Sim.CallItADay != 0) || Sim.Time<9*60000) { d=5;
+}
+                if ((Sim.Time<8*60000 || Sim.Time>=18*60000) && Sim.DayState==4) { d=5;
+}
 
-                if (bgWarp)
+                if (bgWarp != 0)
                 {
                     PERSON &qPerson = Sim.Persons[Sim.Persons.GetPlayerIndex (Sim.localPlayer)];
 
@@ -1290,11 +1340,13 @@ void CTakeOffApp::GameLoop(void*)
                     {
                         bgWarp = FALSE;
 
-                        if (Sim.Players.Players[Sim.localPlayer].LocationWin)
+                        if (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr) {
                             ((AirportView*)Sim.Players.Players[Sim.localPlayer].LocationWin)->CenterCameraOnPlayer();
+}
                     }
 
-                    if (bgWarp) d=4;
+                    if (bgWarp != 0) { d=4;
+}
                 }
 
                 {
@@ -1303,8 +1355,10 @@ void CTakeOffApp::GameLoop(void*)
                     switch (d)
                     {
                         case 1: Multiplier = 2;   break;
-                        case 2: if (Sim.bNetwork) Multiplier = 3; else Multiplier = 4;   break;
-                        case 3: if (Sim.bNetwork) Multiplier = 4; else Multiplier = 8;   break;
+                        case 2: if (Sim.bNetwork != 0) { Multiplier = 3; } else { Multiplier = 4;   
+}break;
+                        case 3: if (Sim.bNetwork != 0) { Multiplier = 4; } else { Multiplier = 8;   
+}break;
                         case 4: Multiplier = 150; break;
                         case 5: Multiplier = 600; break;
                     }
@@ -1312,28 +1366,30 @@ void CTakeOffApp::GameLoop(void*)
                     Faktor      *= Multiplier;
                 }
 
-                if (Sim.bNetwork)
+                if (Sim.bNetwork != 0)
                 {
                     //Synchronisierung morgends:
-                    if (Sim.GetHour()>=9 && Sim.bWatchForReady && Sim.CallItADay==0)
+                    if (Sim.GetHour()>=9 && (Sim.bWatchForReady != 0) && Sim.CallItADay==0)
                     {
-                        if (Sim.Players.Players[Sim.localPlayer].bReadyForMorning==false && (Sim.Players.Players[Sim.localPlayer].GetRoom()!=ROOM_AUFSICHT || Sim.GetHour()>9 || Sim.GetMinute()>0))
+                        if (!static_cast<bool>(Sim.Players.Players[Sim.localPlayer].bReadyForMorning) && (Sim.Players.Players[Sim.localPlayer].GetRoom()!=ROOM_AUFSICHT || Sim.GetHour()>9 || Sim.GetMinute()>0))
                         {
-                            Sim.SendSimpleMessage (ATNET_READYFORMORNING, 0, Sim.localPlayer);
-                            Sim.Players.Players[Sim.localPlayer].bReadyForMorning=true;
+                            SIM::SendSimpleMessage (ATNET_READYFORMORNING, 0, Sim.localPlayer);
+                            Sim.Players.Players[Sim.localPlayer].bReadyForMorning=1;
                         }
 
-                        if (Sim.bWatchForReady && (Sim.Players.Players[Sim.localPlayer].GetRoom()!=ROOM_AUFSICHT || (Sim.Players.Players[Sim.localPlayer].GetRoom()==ROOM_AUFSICHT && ((CAufsicht*)Sim.Players.Players[Sim.localPlayer].LocationWin)->bExitASAP==true)) && Sim.Players.Players[Sim.localPlayer].LocationWin)
+                        if ((Sim.bWatchForReady != 0) && (Sim.Players.Players[Sim.localPlayer].GetRoom()!=ROOM_AUFSICHT || (Sim.Players.Players[Sim.localPlayer].GetRoom()==ROOM_AUFSICHT && ((CAufsicht*)Sim.Players.Players[Sim.localPlayer].LocationWin)->bExitASAP)) && (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr))
                         {
-                            for (c=0; c<4; c++)
-                                if (Sim.Players.Players[c].bReadyForMorning==false && Sim.Players.Players[c].Owner!=1)
+                            for (c=0; c<4; c++) {
+                                if (!static_cast<bool>(Sim.Players.Players[c].bReadyForMorning) && Sim.Players.Players[c].Owner!=1)
                                 {
                                     NumSimSteps=0;
 
-                                    if (Sim.Time==9*60000) SetNetworkBitmap (2);
+                                    if (Sim.Time==9*60000) { SetNetworkBitmap (2);
+}
                                 }
+}
 
-                            if (NumSimSteps)
+                            if (NumSimSteps != 0u)
                             {
                                 Sim.bWatchForReady=FALSE;
                                 SetNetworkBitmap (0);
@@ -1354,59 +1410,69 @@ void CTakeOffApp::GameLoop(void*)
                     {
                         if (Sim.Players.GetAnzRobotPlayers()>0)
                         {
-                            if (Sim.bIsHost)
+                            if (Sim.bIsHost != 0)
                             {
                                 //Host: Nicht weitermachen, wenn ein Client noch nicht so weit ist:
-                                for (c=0; c<4; c++)
-                                    if (Sim.Players.Players[c].bReadyForMorning==false && Sim.Players.Players[c].Owner==2 && !Sim.Players.Players[c].IsOut)
+                                for (c=0; c<4; c++) {
+                                    if (!static_cast<bool>(Sim.Players.Players[c].bReadyForMorning) && Sim.Players.Players[c].Owner==2 && (Sim.Players.Players[c].IsOut == 0)) {
                                         NumSimSteps = 0;
+}
+}
                             }
-                            else if (!Sim.b18Uhr)
+                            else if (Sim.b18Uhr == 0)
                             {
                                 //Client: Maximal bis zum Punkt rechnen, den der Host vorgegeben hat:
                                 SLONG LeastWaitTill=-1;
 
-                                for (c=0; c<4; c++)
-                                    if (Sim.Players.Players[c].Owner==1 && !Sim.Players.Players[c].IsOut)
-                                        if (LeastWaitTill==-1 || (Sim.Players.Players[c].WaitWorkTill<LeastWaitTill && Sim.Players.Players[c].WaitWorkTill!=-1))
+                                for (c=0; c<4; c++) {
+                                    if (Sim.Players.Players[c].Owner==1 && (Sim.Players.Players[c].IsOut == 0)) {
+                                        if (LeastWaitTill==-1 || (Sim.Players.Players[c].WaitWorkTill<LeastWaitTill && Sim.Players.Players[c].WaitWorkTill!=-1)) {
                                             LeastWaitTill=Sim.Players.Players[c].WaitWorkTill;
+}
+}
+}
 
-                                if (LeastWaitTill==-1)
+                                if (LeastWaitTill==-1) {
                                     NumSimSteps=0;
-                                else if (Sim.TimeSlice>LeastWaitTill)
+                                } else if (Sim.TimeSlice>LeastWaitTill) {
                                     NumSimSteps=1;
-                                else
+                                } else {
                                     NumSimSteps=min(NumSimSteps, ULONG(LeastWaitTill-Sim.TimeSlice+1));
+}
                             }
                         }
-                        if (NumSimSteps==0 && bCAbendOpen==0) NumSimSteps=1;
+                        if (NumSimSteps==0 && bCAbendOpen==0) { NumSimSteps=1;
+}
                     }
-                    else if (Sim.GetHour()>=18 && Sim.b18Uhr==FALSE && Sim.bIsHost)
+                    else if (Sim.GetHour()>=18 && Sim.b18Uhr==FALSE && (Sim.bIsHost != 0))
                     {
                         Sim.b18Uhr=TRUE;
-                        Sim.SendSimpleMessage (ATNET_PLAYER_18UHR);
+                        SIM::SendSimpleMessage (ATNET_PLAYER_18UHR);
 
-                        for (c=0; c<4; c++)
-                            Sim.Players.Players[c].bReadyForMorning=false;
+                        for (c=0; c<4; c++) {
+                            Sim.Players.Players[c].bReadyForMorning=0;
+}
                     }
 
-                    if (Sim.GetHour()>=19) Sim.b18Uhr=TRUE;
+                    if (Sim.GetHour()>=19) { Sim.b18Uhr=TRUE;
+}
                 }
                 else
                 {
                     NumSimSteps=min((SLONG)NumSimSteps, Faktor);
                 }
 
-                if (Sim.Time>8*60000 && CheatTestGame==2 && !Sim.Players.Players[Sim.localPlayer].CallItADay)
+                if (Sim.Time>8*60000 && CheatTestGame==2 && (Sim.Players.Players[Sim.localPlayer].CallItADay == 0))
                 {
-                    if (Sim.Date%10==0)
+                    if (Sim.Date%10==0) {
                         Sim.SaveGame (11, StandardTexte.GetS (TOKEN_MISC, 5000));
+}
 
                     Sim.Players.Players[Sim.localPlayer].CallItADay=TRUE;
                 }
 
                 //Im Netzwerk die Zeit aufgrund der ATNET_TIMEPING Nachricht fliessend anpassen
-                if (Sim.bNetwork && NumSimSteps && gTimerCorrection)
+                if ((Sim.bNetwork != 0) && (NumSimSteps != 0u) && (gTimerCorrection != 0))
                 {
                     static UBYTE MyPrivateRandom=0;
 
@@ -1435,46 +1501,53 @@ void CTakeOffApp::GameLoop(void*)
 
                     SLONG NumSimStepsBegin = NumSimSteps;
 
-                    while (NumSimSteps>0 && (SimStepsCounter<400 || (SimStepsCounter<1600 && (Sim.CallItADay || Sim.Time>18*60000 || Sim.Time<9*60000))))
+                    while (NumSimSteps>0 && (SimStepsCounter<400 || (SimStepsCounter<1600 && ((Sim.CallItADay != 0) || Sim.Time>18*60000 || Sim.Time<9*60000))))
                     {
                         //Synchronisierung beim Feierabend:
-                        if (Sim.GetHour()>=9 && Sim.GetHour()<18 && Sim.CallItADay==1 && Sim.bIsHost && NumSimStepsBegin!=1)
+                        if (Sim.GetHour()>=9 && Sim.GetHour()<18 && Sim.CallItADay==1 && (Sim.bIsHost != 0) && NumSimStepsBegin!=1)
                         {
-                            for (c=0; c<4; c++)
-                                if (Sim.Players.Players[c].bReadyForMorning==false && Sim.Players.Players[c].Owner==2 && !Sim.Players.Players[c].IsOut)
+                            for (c=0; c<4; c++) {
+                                if (!static_cast<bool>(Sim.Players.Players[c].bReadyForMorning) && Sim.Players.Players[c].Owner==2 && (Sim.Players.Players[c].IsOut == 0)) {
                                     NumSimSteps = 0;
+}
+}
 
-                            if (NumSimSteps == 0) break;
+                            if (NumSimSteps == 0) { break;
+}
                         }
 
-                        if (Sim.CallItADayAt && Sim.CallItADay==FALSE)
+                        if ((Sim.CallItADayAt != 0) && Sim.CallItADay==FALSE)
                         {
-                            if (Sim.TimeSlice>=Sim.CallItADayAt)
+                            if (Sim.TimeSlice>=Sim.CallItADayAt) {
                                 Sim.CallItADay=TRUE;
-                            else
+                            } else
                             {
                                 NumSimSteps=min(NumSimSteps, ULONG(Sim.CallItADayAt-Sim.TimeSlice));
-                                if (NumSimSteps<0) NumSimSteps=0;
+                                if (NumSimSteps<0) { NumSimSteps=0;
+}
                             }
                         }
 
                         if (nOptionsOpen == 0 && Sim.Players.Players[Sim.localPlayer].IsDrunk>0 && ((SDL_GetWindowFlags(FrameWnd->m_hWnd) & SDL_WINDOW_MOUSE_FOCUS) == SDL_WINDOW_MOUSE_FOCUS))
                         {
-                            int mouseX = 0,mouseY = 0;
+                            int mouseX = 0;
+                            int mouseY = 0;
                             SDL_GetGlobalMouseState(&mouseX, &mouseY);
 
                             SDL_WarpMouseGlobal(SLONG(mouseX +sin(Sim.TimeSlice*70/200.0)*cos(Sim.TimeSlice*70/160.0)*Sim.Players.Players[Sim.localPlayer].IsDrunk/30), SLONG(mouseY +cos(Sim.TimeSlice*70/230.0)*sin(Sim.TimeSlice*70/177.0)*Sim.Players.Players[Sim.localPlayer].IsDrunk/30));
                             Sim.Players.Players[Sim.localPlayer].IsDrunk--;
                         }
 
-                        if ((Sim.Time>=9*60000 && Sim.Time<=18*60000 && !Sim.CallItADay) || (Sim.Players.Players.AnzEntries()>0 && Sim.Players.Players[Sim.localPlayer].GetRoom()!=ROOM_ABEND && bCAbendOpen==0))
+                        if ((Sim.Time>=9*60000 && Sim.Time<=18*60000 && (Sim.CallItADay == 0)) || (Sim.Players.Players.AnzEntries()>0 && Sim.Players.Players[Sim.localPlayer].GetRoom()!=ROOM_ABEND && bCAbendOpen==0)) {
                             for (c=0; c<Sim.Players.Players.AnzEntries(); c++)
                             {
                                 PLAYER &qPlayer = Sim.Players.Players[c];
 
-                                if (qPlayer.Koffein>0) qPlayer.Koffein--;
+                                if (qPlayer.Koffein>0) { qPlayer.Koffein--;
+}
 
-                                if ((Sim.Time&31)==0) qPlayer.CalcRoom ();
+                                if ((Sim.Time&31)==0) { qPlayer.CalcRoom ();
+}
 
                                 //Veränderung am Second-Level-Raum?
                                 if (Sim.Difficulty!=DIFF_TUTORIAL || Sim.Tutorial>=1200 || Sim.IsTutorial==0 || Sim.Tutorial==0)
@@ -1486,20 +1559,23 @@ void CTakeOffApp::GameLoop(void*)
                                         //Raum verlassen...?
                                         for (d=0; d<10; d++)
                                         {
-                                            if (qPlayer.Locations[d] & ROOM_LEAVING)
+                                            if ((qPlayer.Locations[d] & ROOM_LEAVING) != 0)
                                             {
-                                                if (Sim.RoomBusy[qPlayer.Locations[d]&255]>0)
+                                                if (Sim.RoomBusy[qPlayer.Locations[d]&255]>0) {
                                                     Sim.RoomBusy[qPlayer.Locations[d]&255]--;
+}
 
-                                                if (qPlayer.LocationWin)
+                                                if (qPlayer.LocationWin != nullptr)
                                                 {
                                                     JustLeftRoom=TRUE;
-                                                    if (Sim.Options.OptionBlenden && qPlayer.Locations[d]!=ROOM_LAPTOP && (Sim.GetHour()>9 || Sim.Date==0))
+                                                    if ((Sim.Options.OptionBlenden != 0) && qPlayer.Locations[d]!=ROOM_LAPTOP && (Sim.GetHour()>9 || Sim.Date==0))
                                                     {
                                                         gBlendState=-1;
-                                                        if (FrameWnd) FrameWnd->PrepareFade();
+                                                        if (FrameWnd != nullptr) { FrameWnd->PrepareFade();
+}
                                                         FrameWnd->Invalidate(); MessagePump();
-                                                        if (Sim.Players.Players.AnzEntries()==0) break;
+                                                        if (Sim.Players.Players.AnzEntries()==0) { break;
+}
                                                     }
 
                                                     bIngnoreNextDoor=TRUE;
@@ -1510,33 +1586,38 @@ void CTakeOffApp::GameLoop(void*)
 
                                                 qPlayer.Locations[d] = 0;
 
-                                                if (d>0 && qPlayer.Locations[d-1]!=0)
+                                                if (d>0 && qPlayer.Locations[d-1]!=0) {
                                                     qPlayer.Locations[d-1] = USHORT((qPlayer.Locations[d-1] & (~ROOM_LEAVING)) | ROOM_ENTERING);
+}
 
                                                 qPlayer.CalcRoom ();
                                                 qPlayer.BroadcastPosition ();
                                                 qPlayer.BroadcastRooms (ATNET_LEAVEROOM);
-                                                Sim.UpdateRoomUsage ();
+                                                SIM::UpdateRoomUsage ();
                                             }
                                         }
-                                        if (Sim.Players.Players.AnzEntries()==0) break;
+                                        if (Sim.Players.Players.AnzEntries()==0) { break;
+}
 
                                         //Raum betreten...?
                                         for (d=0; d<10; d++)
                                         {
-                                            if ((qPlayer.Locations[d] & ROOM_ENTERING) && (qPlayer.Locations[d] & ROOM_LEAVING))
+                                            if (((qPlayer.Locations[d] & ROOM_ENTERING) != 0) && ((qPlayer.Locations[d] & ROOM_LEAVING) != 0)) {
                                                 qPlayer.Locations[d]=0;
+}
 
-                                            if (qPlayer.Locations[d] & ROOM_ENTERING)
+                                            if ((qPlayer.Locations[d] & ROOM_ENTERING) != 0)
                                             {
-                                                if (qPlayer.LocationWin)
+                                                if (qPlayer.LocationWin != nullptr)
                                                 {
-                                                    if (!JustLeftRoom && Sim.Options.OptionBlenden && qPlayer.Locations[d]!=ROOM_LAPTOP && qPlayer.Locations[d]!=ROOM_GLOBE && (Sim.GetHour()>9 || Sim.Date==0))
+                                                    if ((JustLeftRoom == 0) && (Sim.Options.OptionBlenden != 0) && qPlayer.Locations[d]!=ROOM_LAPTOP && qPlayer.Locations[d]!=ROOM_GLOBE && (Sim.GetHour()>9 || Sim.Date==0))
                                                     {
                                                         gBlendState=-1;
-                                                        if (FrameWnd) FrameWnd->PrepareFade();
+                                                        if (FrameWnd != nullptr) { FrameWnd->PrepareFade();
+}
                                                         FrameWnd->Invalidate(); MessagePump();
-                                                        if (Sim.Players.Players.AnzEntries()==0) break; //Spiel beendet
+                                                        if (Sim.Players.Players.AnzEntries()==0) { break; //Spiel beendet
+}
                                                     }
 
                                                     delete qPlayer.LocationWin;
@@ -1546,20 +1627,24 @@ void CTakeOffApp::GameLoop(void*)
                                                 qPlayer.Locations[d] &= ~ROOM_ENTERING;
                                                 gMouseScroll = 0;
 
-                                                if (qPlayer.Locations[d]!=ROOM_LAPTOP && gBlendBm.Size.y && (Sim.GetHour()>9 || Sim.Date==0))
+                                                if (qPlayer.Locations[d]!=ROOM_LAPTOP && (gBlendBm.Size.y != 0) && (Sim.GetHour()>9 || Sim.Date==0)) {
                                                     gBlendState=-2;
+}
 
                                                 SLONG Room = (qPlayer.Locations[d] & ~ROOM_LEAVING);
                                                 if (Room==ROOM_ARAB_AIR || Room==ROOM_ROUTEBOX || Room==ROOM_KIOSK || Room==ROOM_RICKS || Room==ROOM_LAST_MINUTE || Room==ROOM_REISEBUERO)
                                                 {
-                                                    if (Room==ROOM_ARAB_AIR || Room==ROOM_ROUTEBOX || Room==ROOM_KIOSK || Room==ROOM_RICKS)
+                                                    if (Room==ROOM_ARAB_AIR || Room==ROOM_ROUTEBOX || Room==ROOM_KIOSK || Room==ROOM_RICKS) {
                                                         Sim.Persons[Sim.Persons.GetPlayerIndex(c)].LookAt(0);
+}
 
-                                                    if (Room==ROOM_LAST_MINUTE)
+                                                    if (Room==ROOM_LAST_MINUTE) {
                                                         Sim.Persons[Sim.Persons.GetPlayerIndex(c)].LookAt(1);
+}
 
-                                                    if (Room==ROOM_REISEBUERO)
+                                                    if (Room==ROOM_REISEBUERO) {
                                                         Sim.Persons[Sim.Persons.GetPlayerIndex(c)].LookAt(3);
+}
 
                                                     qPlayer.CalcRoom ();
                                                     qPlayer.BroadcastRooms (ATNET_ENTERROOM);
@@ -1631,23 +1716,25 @@ void CTakeOffApp::GameLoop(void*)
                                                                            break;
 
                                                     default:
-                                                                           if (qPlayer.Locations[d]!=2049) hprintf (0, "Room %li not implemented!", qPlayer.Locations[d]);
+                                                                           if (qPlayer.Locations[d]!=2049) { hprintf (0, "Room %li not implemented!", qPlayer.Locations[d]);
+}
                                                                            qPlayer.Locations[d] = 0;
                                                                            break;
                                                 }
 
                                                 //Globe wegen den MessagePumps erst jetzt faden...
-                                                if (!JustLeftRoom && qPlayer.Locations[d]==ROOM_GLOBE && (Sim.GetHour()>9 || Sim.Date==0))
+                                                if ((JustLeftRoom == 0) && qPlayer.Locations[d]==ROOM_GLOBE && (Sim.GetHour()>9 || Sim.Date==0))
                                                 {
                                                     gBlendState=-1;
-                                                    if (FrameWnd && gBlendBm.Size.y==0) FrameWnd->PrepareFade();
+                                                    if ((FrameWnd != nullptr) && gBlendBm.Size.y==0) { FrameWnd->PrepareFade();
+}
                                                     FrameWnd->Invalidate(); MessagePump();
                                                 }
 
                                                 qPlayer.CalcRoom ();
                                                 qPlayer.BroadcastPosition (true);
                                                 qPlayer.BroadcastRooms (ATNET_ENTERROOM);
-                                                Sim.UpdateRoomUsage ();
+                                                SIM::UpdateRoomUsage ();
                                             }
                                         }
                                     }
@@ -1655,21 +1742,24 @@ void CTakeOffApp::GameLoop(void*)
                                     {
                                         for (d=0; d<10; d++)
                                         {
-                                            if (qPlayer.Locations[d] & ROOM_ENTERING)
+                                            if ((qPlayer.Locations[d] & ROOM_ENTERING) != 0)
                                             {
-                                                if (IsRoomBusy(UWORD(qPlayer.Locations[d] & (~ROOM_ENTERING)), c))
+                                                if (IsRoomBusy(UWORD(qPlayer.Locations[d] & (~ROOM_ENTERING)), c) != 0)
                                                 {
                                                     //Raum schon besetzt? Erst zweite Priorität ausführen:
-                                                    for (e=qPlayer.RobotActions.AnzEntries()-1; e>=1; e--)
+                                                    for (e=qPlayer.RobotActions.AnzEntries()-1; e>=1; e--) {
                                                         qPlayer.RobotActions[e]=qPlayer.RobotActions[e-1];
+}
                                                     qPlayer.RobotActions[1]=qPlayer.RobotActions[2];
                                                     qPlayer.RobotActions[2]=qPlayer.RobotActions[0];
 
-                                                    if (qPlayer.RobotActions[1].ActionId==ACTION_NONE)
-                                                        if (qPlayer.OfficeState==2)
+                                                    if (qPlayer.RobotActions[1].ActionId==ACTION_NONE) {
+                                                        if (qPlayer.OfficeState==2) {
                                                             qPlayer.RobotActions[1].ActionId=ACTION_PERSONAL;
-                                                        else
+                                                        } else {
                                                             qPlayer.RobotActions[1].ActionId=ACTION_BUERO;
+}
+}
 
                                                     qPlayer.RobotActions[0].ActionId=ACTION_NONE;
                                                     //qPlayer.RobotPump (); //wg. Verdacht auf Netzprobleme rausgenommen
@@ -1678,19 +1768,23 @@ void CTakeOffApp::GameLoop(void*)
                                                 {
                                                     qPlayer.Locations[d] &= ~ROOM_ENTERING;
                                                     qPlayer.CalcRoom ();
-                                                    if (qPlayer.Locations[d]!=ROOM_AIRPORT) qPlayer.RobotExecuteAction ();
+                                                    if (qPlayer.Locations[d]!=ROOM_AIRPORT) { qPlayer.RobotExecuteAction ();
+}
 
                                                     SLONG Room = (qPlayer.Locations[d] & ~ROOM_LEAVING);
                                                     if (Room==ROOM_ARAB_AIR || Room==ROOM_ROUTEBOX || Room==ROOM_KIOSK || Room==ROOM_RICKS || Room==ROOM_LAST_MINUTE || Room==ROOM_REISEBUERO)
                                                     {
-                                                        if (Room==ROOM_ARAB_AIR || Room==ROOM_ROUTEBOX || Room==ROOM_KIOSK || Room==ROOM_RICKS)
+                                                        if (Room==ROOM_ARAB_AIR || Room==ROOM_ROUTEBOX || Room==ROOM_KIOSK || Room==ROOM_RICKS) {
                                                             Sim.Persons[Sim.Persons.GetPlayerIndex(c)].LookAt(0);
+}
 
-                                                        if (Room==ROOM_LAST_MINUTE)
+                                                        if (Room==ROOM_LAST_MINUTE) {
                                                             Sim.Persons[Sim.Persons.GetPlayerIndex(c)].LookAt(1);
+}
 
-                                                        if (Room==ROOM_REISEBUERO)
+                                                        if (Room==ROOM_REISEBUERO) {
                                                             Sim.Persons[Sim.Persons.GetPlayerIndex(c)].LookAt(3);
+}
                                                     }
 
                                                     switch (qPlayer.Locations[d])
@@ -1707,15 +1801,15 @@ void CTakeOffApp::GameLoop(void*)
                                                         case ROOM_SECURITY:  Talkers.Talkers[TALKER_SECURITY].IncreaseLocking ();   break;
                                                     }
 
-                                                    if (Sim.bNetwork && Sim.bIsHost)
+                                                    if ((Sim.bNetwork != 0) && (Sim.bIsHost != 0))
                                                     {
                                                         qPlayer.BroadcastPosition ();
                                                         qPlayer.BroadcastRooms (ATNET_ENTERROOM, qPlayer.Locations[d]);
-                                                        Sim.UpdateRoomUsage ();
+                                                        SIM::UpdateRoomUsage ();
                                                     }
                                                 }
                                             }
-                                            else if (qPlayer.Locations[d] & ROOM_LEAVING)
+                                            else if ((qPlayer.Locations[d] & ROOM_LEAVING) != 0)
                                             {
                                                 switch (qPlayer.Locations[d] & (~ROOM_LEAVING))
                                                 {
@@ -1733,45 +1827,50 @@ void CTakeOffApp::GameLoop(void*)
 
                                                 SLONG RoomLeft = qPlayer.Locations[d]&255;
 
-                                                if (Sim.RoomBusy[RoomLeft]) Sim.RoomBusy[RoomLeft]--;
+                                                if (Sim.RoomBusy[RoomLeft] != 0u) { Sim.RoomBusy[RoomLeft]--;
+}
 
                                                 qPlayer.Locations[d] = 0;
                                                 qPlayer.Locations[d-1] = USHORT((qPlayer.Locations[d-1] & (~ROOM_LEAVING)) | ROOM_ENTERING);
                                                 qPlayer.CalcRoom ();
 
-                                                if (Sim.bNetwork && Sim.bIsHost)
+                                                if ((Sim.bNetwork != 0) && (Sim.bIsHost != 0))
                                                 {
                                                     qPlayer.BroadcastPosition ();
                                                     qPlayer.BroadcastRooms (ATNET_LEAVEROOM, RoomLeft);
-                                                    Sim.UpdateRoomUsage ();
+                                                    SIM::UpdateRoomUsage ();
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
+}
 
-                        if (nOptionsOpen==0 && nWaitingForPlayer==0 && !Sim.bPause)
+                        if (nOptionsOpen==0 && nWaitingForPlayer==0 && (Sim.bPause == 0))
                         {
                             //Personen bewegen:
-                            if (Sim.Time>=8*60000 && Sim.Time<=18*60000 && Editor==EDITOR_NONE && !Sim.CallItADay)
+                            if (Sim.Time>=8*60000 && Sim.Time<=18*60000 && Editor==EDITOR_NONE && (Sim.CallItADay == 0))
                             {
-                                if (Sim.Difficulty!=DIFF_TUTORIAL || Sim.Tutorial>=1100 || !Sim.IsTutorial)
+                                if (Sim.Difficulty!=DIFF_TUTORIAL || Sim.Tutorial>=1100 || (Sim.IsTutorial == 0)) {
                                     for (c=0; c<Sim.Players.AnzPlayers; c++)
                                     {
-                                        if ((Sim.Time&255)==0 && Sim.Players.Players[c].iWalkActive) Sim.Players.Players[c].UpdateWaypoints();
+                                        if ((Sim.Time&255)==0 && (Sim.Players.Players[c].iWalkActive != 0)) { Sim.Players.Players[c].UpdateWaypoints();
+}
                                         Sim.Players.Players[c].UpdateWaypointWalkingDirection ();
                                     }
+}
                             }
 
                             if (!(Sim.Time<8*60000 || (Sim.Time>=18*60000 && Sim.DayState==4)))
                             {
                                 if (Editor==EDITOR_NONE)
                                 {
-                                    if (!Sim.CallItADay) Sim.PersonQueue.Pump();
+                                    if (Sim.CallItADay == 0) { Sim.PersonQueue.Pump();
+}
                                     Sim.Persons.DoOneStep();
 
-                                    if (!Sim.CallItADay)
+                                    if (Sim.CallItADay == 0)
                                     {
                                         Talkers.Pump();
                                         Airport.PumpDoors ();
@@ -1779,33 +1878,42 @@ void CTakeOffApp::GameLoop(void*)
                                 }
                             }
 
-                            if (Sim.Time>9*60000 && Sim.Time<=18*60000 && Sim.bNoTime==FALSE && !Editor)
-                                if (Sim.bNoTime==FALSE) //Neu, wegen Bugs im Netzwerk
-                                    if (Sim.Difficulty!=DIFF_TUTORIAL || Sim.Tutorial>=1100 || !Sim.IsTutorial)
+                            if (Sim.Time>9*60000 && Sim.Time<=18*60000 && Sim.bNoTime==FALSE && (Editor == 0)) {
+                                if (Sim.bNoTime==FALSE) { //Neu, wegen Bugs im Netzwerk
+                                    if (Sim.Difficulty!=DIFF_TUTORIAL || Sim.Tutorial>=1100 || (Sim.IsTutorial == 0)) {
                                         Sim.Players.RobotPump();
+}
+}
+}
 
                             //Flugzeuge bewegen:
                             {
                                 AnzPlanesOnScreen=0;
-                                if (Editor==EDITOR_NONE)
+                                if (Editor==EDITOR_NONE) {
                                     if (SkipPlaneCalculation<=0)
                                     {
                                         SkipPlaneCalculation=10;
-                                        for (c=0; c<Sim.Players.AnzPlayers; c++)
-                                            if (!Sim.Players.Players[c].IsOut)
+                                        for (c=0; c<Sim.Players.AnzPlayers; c++) {
+                                            if (Sim.Players.Players[c].IsOut == 0) {
                                                 Sim.Players.Players[c].Planes.DoOneStep(c);
+}
+}
                                     }
-                                    else
+                                    else {
                                         SkipPlaneCalculation--;
+}
+}
 
-                                if (LastAnzPlanesOnScreen<AnzPlanesOnScreen) LastAnzPlanesOnScreen=min(LastAnzPlanesOnScreen+3,AnzPlanesOnScreen);
-                                if (LastAnzPlanesOnScreen>AnzPlanesOnScreen) LastAnzPlanesOnScreen=max(LastAnzPlanesOnScreen-3,AnzPlanesOnScreen);
+                                if (LastAnzPlanesOnScreen<AnzPlanesOnScreen) { LastAnzPlanesOnScreen=min(LastAnzPlanesOnScreen+3,AnzPlanesOnScreen);
+}
+                                if (LastAnzPlanesOnScreen>AnzPlanesOnScreen) { LastAnzPlanesOnScreen=max(LastAnzPlanesOnScreen-3,AnzPlanesOnScreen);
+}
 
                                 AmbientManager.SetVolume (AMBIENT_JET_OUTSIDE, LastAnzPlanesOnScreen);
                             }
 
                             //Flugzeuge, die vorbeifliegen:
-                            if (Sim.Options.OptionEffekte)
+                            if (Sim.Options.OptionEffekte != 0)
                             {
                                 if (gUniversalPlaneFxCountdown==0 || timeGetTime()>DWORD(gUniversalPlaneFxCountdown))
                                 {
@@ -1820,27 +1928,31 @@ void CTakeOffApp::GameLoop(void*)
                             }
 
                             //Zeit weitermachen:
-                            if (!Sim.bNoTime)
+                            if (Sim.bNoTime == 0)
                             {
                                 //Zeitabhängige Events auslösen & Uhr weitersetzten:
                                 if (Sim.Time<8*60000)
                                 {
                                     Sim.DoTimeStep ();
-                                    if (Sim.Time>=8*60000) NumSimSteps=1;
+                                    if (Sim.Time>=8*60000) { NumSimSteps=1;
+}
                                 }
                                 else if (Sim.Time<9*60000)
                                 {
                                     Sim.DoTimeStep ();
-                                    if (Sim.Time>=9*60000) NumSimSteps=1;
+                                    if (Sim.Time>=9*60000) { NumSimSteps=1;
+}
                                 }
-                                else
+                                else {
                                     Sim.DoTimeStep ();
+}
 
-                                if (!(Sim.CallItADay || Sim.Time<9*60000 || (Sim.Time>=18*60000 && Sim.DayState==4)) && ((Sim.Time+NumSimSteps)&1023)==0)
+                                if (!((Sim.CallItADay != 0) || Sim.Time<9*60000 || (Sim.Time>=18*60000 && Sim.DayState==4)) && ((Sim.Time+NumSimSteps)&1023)==0) {
                                     Sim.Players.RandomBeraterMessage();
+}
                             }
 
-                            if (Sim.Time>=18*60000 || (Sim.CallItADay && Sim.DayState==2) || Sim.DayState==4)
+                            if (Sim.Time>=18*60000 || ((Sim.CallItADay != 0) && Sim.DayState==2) || Sim.DayState==4)
                             {
                                 if (Sim.Time>=18*60000 && Sim.DayState!=4)
                                 {
@@ -1852,7 +1964,7 @@ void CTakeOffApp::GameLoop(void*)
                                 {
                                     BOOL now=TRUE;
 
-                                    if (Sim.Players.Players[Sim.localPlayer].LocationWin && ((CStdRaum *)Sim.Players.Players[Sim.localPlayer].LocationWin)->IsDialogOpen())
+                                    if ((Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr) && (((CStdRaum *)Sim.Players.Players[Sim.localPlayer].LocationWin)->IsDialogOpen() != 0))
                                     {
                                         ((CStdRaum *)Sim.Players.Players[Sim.localPlayer].LocationWin)->StopDialog ();
                                     }
@@ -1860,14 +1972,14 @@ void CTakeOffApp::GameLoop(void*)
                                     for (c=0; c<Sim.Players.AnzPlayers; c++)
                                     {
                                         //Raum verlassen:
-                                        if (Sim.Players.Players[c].Owner!=1 && Sim.Players.Players[c].Locations[0] && Sim.Players.Players[c].GetRoom()!=ROOM_ABEND)
+                                        if (Sim.Players.Players[c].Owner!=1 && (Sim.Players.Players[c].Locations[0] != 0u) && Sim.Players.Players[c].GetRoom()!=ROOM_ABEND)
                                         {
                                             Sim.Players.Players[c].LeaveRoom ();
                                             now=FALSE;
                                         }
                                     }
 
-                                    if (now)
+                                    if (now != 0)
                                     {
                                         TopWin = new CAbend (FALSE, Sim.localPlayer);
                                         Sim.DayState = 3;
@@ -1877,7 +1989,7 @@ void CTakeOffApp::GameLoop(void*)
                                 {
                                     if (Sim.Time>=9*60000 && Sim.Time<=10*60000)
                                     {
-                                        if (TopWin)
+                                        if (TopWin != nullptr)
                                         {
                                             delete TopWin;
                                             TopWin = NULL;
@@ -1887,44 +1999,50 @@ void CTakeOffApp::GameLoop(void*)
                                         Sim.DayState  = 1;
                                         MouseWait++;
 
-                                        for (c=0; c<Sim.Players.AnzPlayers; c++)
-                                            if (!Sim.Players.Players[c].IsOut)
+                                        for (c=0; c<Sim.Players.AnzPlayers; c++) {
+                                            if (Sim.Players.Players[c].IsOut == 0)
                                             {
                                                 Sim.Players.Players[c].EnterRoom (ROOM_AIRPORT);
                                                 Sim.Players.Players[c].EnterRoom (ROOM_AUFSICHT);
                                             }
+}
                                     }
                                 }
                             }
 
                             //Shopper ankommen lassen:
-                            if (!Sim.CallItADay && Sim.Time>=8*60000 && Sim.Time<=18*60000)
-                                if (nOptionsOpen==0 && nWaitingForPlayer==0 && !Sim.bPause && Sim.bNoTime==false) //Neu, wegen Bugs im Netzwerk
+                            if ((Sim.CallItADay == 0) && Sim.Time>=8*60000 && Sim.Time<=18*60000) {
+                                if (nOptionsOpen==0 && nWaitingForPlayer==0 && (Sim.bPause == 0) && !static_cast<bool>(Sim.bNoTime)) //Neu, wegen Bugs im Netzwerk
                                 {
-                                    if ((Sim.TimeSlice & 63)==0)      Sim.AddNewShoppers ();
-                                    if (((Sim.TimeSlice+16) & 31)==0) Sim.AddNewPassengers ();
+                                    if ((Sim.TimeSlice & 63)==0) {      Sim.AddNewShoppers ();
+}
+                                    if (((Sim.TimeSlice+16) & 31)==0) { Sim.AddNewPassengers ();
+}
 
-                                    if ((Sim.TimeSlice & 7)==0 && Sim.Players.Players[Sim.localPlayer].GetRoom()==ROOM_AIRPORT)
+                                    if ((Sim.TimeSlice & 7)==0 && Sim.Players.Players[Sim.localPlayer].GetRoom()==ROOM_AIRPORT) {
                                         Sim.Persons.TryMoods ();
+}
 
-                                    if (Sim.Time>=9*60000 && Sim.GetMinute()==30 && (Sim.GetHour()&1)==0 && VoiceScheduler.AnzEntries()==0 && !bgWarp && Sim.Players.Players[Sim.localPlayer].GameSpeed<2)
+                                    if (Sim.Time>=9*60000 && Sim.GetMinute()==30 && (Sim.GetHour()&1)==0 && VoiceScheduler.AnzEntries()==0 && (bgWarp == 0) && Sim.Players.Players[Sim.localPlayer].GameSpeed<2)
                                     {
                                         TEAKRAND LocalRand (Sim.Date+Sim.StartTime+Sim.GetHour());
-                                        if (LocalRand.Rand(10)==0)
+                                        if (LocalRand.Rand(10)==0) {
                                             VoiceScheduler.AddVoice ("fahrzeug");
-                                        else
-                                            if (((Sim.GetHour()/2)&1)==0)
+                                        } else
+                                            if (((Sim.GetHour()/2)&1)==0) {
                                                 VoiceScheduler.AddVoice ("zoneok");
-                                            else
+                                            } else {
                                                 VoiceScheduler.AddVoice ("hinweis");
+}
                                     }
                                 }
+}
 
                             //Gimmicks ggf. rauswerfen:
                             if ((Sim.Time&127)==0)
                             {
-                                for (SLONG c=Clans.AnzEntries()-1; c>=0; c--)
-                                    if (Clans.IsInAlbum (c))
+                                for (SLONG c=Clans.AnzEntries()-1; c>=0; c--) {
+                                    if (Clans.IsInAlbum (c) != 0)
                                     {
                                         //Gimmick seit 2 Sekunden nicht genutzt?
                                         if (Sim.TickerTime-Clans[c].GimmickTime>60)
@@ -1933,6 +2051,7 @@ void CTakeOffApp::GameLoop(void*)
                                             Clans[c].ClanWarteGimmick.Unload ();
                                         }
                                     }
+}
                             }
 
                             if (Sim.Time==9*60000 && Sim.TimeSlice!=0)
@@ -1941,11 +2060,13 @@ void CTakeOffApp::GameLoop(void*)
                                 Sim.PersonQueue.NewDay ();
                             }
                             else
-                                if (nOptionsOpen==0 && nWaitingForPlayer==0 && !Sim.bPause && Sim.bNoTime==false) //Neu, wegen Bugs im Netzwerk
+                                if (nOptionsOpen==0 && nWaitingForPlayer==0 && (Sim.bPause == 0) && !static_cast<bool>(Sim.bNoTime)) { //Neu, wegen Bugs im Netzwerk
                                     Sim.TimeSlice++;
+}
                         }
 
-                        if (Sim.Time>9*60000 && Sim.Time<18*60000) VoiceScheduler.Pump();
+                        if (Sim.Time>9*60000 && Sim.Time<18*60000) { VoiceScheduler.Pump();
+}
 
                         //if (nOptionsOpen==0 && nWaitingForPlayer==0 && !Sim.bPause) //Neu, wegen Bugs im Netzwerk
                         {
@@ -1991,16 +2112,19 @@ void CTakeOffApp::GameLoop(void*)
                         if (Sim.Gamestate==(GAMESTATE_QUIT|GAMESTATE_WORKING))
                         {
                             Sim.QuitCountDown--;
-                            while (!Sim.QuitCountDown) Sim.QuitCountDown--;
+                            while (Sim.QuitCountDown == 0u) { Sim.QuitCountDown--;
+}
                         }
 
                         PumpBroadcastBitmap ();
                     }
                 }
-                else
+                else {
                     PumpBroadcastBitmap (true);
+}
 
-                if (Sim.Date==0 && Sim.IsTutorial && Sim.Tutorial==0 && Sim.Players.Players[Sim.localPlayer].LocationWin) Sim.Tutorial=999;
+                if (Sim.Date==0 && (Sim.IsTutorial != 0) && Sim.Tutorial==0 && (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr)) { Sim.Tutorial=999;
+}
 
             //Zeit für die AnimBricks aktualisieren:
             Sim.TickerTime = Time>>5;
@@ -2012,14 +2136,15 @@ void CTakeOffApp::GameLoop(void*)
          } //Not In Game ==> Always refresh
 
             //Bildschirm neu zeichnen:
-            if (RefreshNeccessary)
+            if (RefreshNeccessary != 0)
             {
-                if (nOptionsOpen==0 && nWaitingForPlayer==0 && !Sim.bPause && !Sim.CallItADay && Editor==EDITOR_NONE)
+                if (nOptionsOpen==0 && nWaitingForPlayer==0 && (Sim.bPause == 0) && (Sim.CallItADay == 0) && Editor==EDITOR_NONE)
                 {
                     for (c=0; c<Sim.Players.AnzPlayers; c++)
                     {
-                        if (Sim.Players.Players[c].GetRoom()==ROOM_AIRPORT && Sim.Players.Players[c].LocationWin)
+                        if (Sim.Players.Players[c].GetRoom()==ROOM_AIRPORT && (Sim.Players.Players[c].LocationWin != nullptr)) {
                             ((AirportView*)Sim.Players.Players[c].LocationWin)->MoveCamera ();
+}
                     }
                 }
 
@@ -2088,28 +2213,29 @@ void CTakeOffApp::GameLoop(void*)
         MessagePump();
     }
 
-    if (bFullscreen)
+    if (bFullscreen != 0)
     {
         //lpDD->RestoreDisplayMode ();
         //ClipCursor (NULL);
     }
 
     //Shutdown:
-    if (TopWin)
+    if (TopWin != nullptr)
     {
         CStdRaum *TmpWin = TopWin; TopWin=NULL; delete TmpWin;
     }
 
-    if (Sim.Players.Players.AnzEntries()>0)
+    if (Sim.Players.Players.AnzEntries()>0) {
         for (c=0; c<Sim.Players.AnzPlayers; c++)
         {
-            if (Sim.Players.Players[c].LocationWin)
+            if (Sim.Players.Players[c].LocationWin != nullptr)
             {
                 CStdRaum *TmpWin = (CStdRaum *)Sim.Players.Players[c].LocationWin;
                 Sim.Players.Players[c].LocationWin = NULL;
                 delete TmpWin;
             }
         }
+}
 
     VoiceScheduler.Clear();
 }
@@ -2175,7 +2301,7 @@ BOOL InitDirectX (void)
 //--------------------------------------------------------------------------------------------
 //Ruft das Help-File auf:
 //--------------------------------------------------------------------------------------------
-void CTakeOffApp::WinHelp(DWORD, UINT)
+void CTakeOffApp::WinHelp(DWORD /*unused*/, UINT /*unused*/)
 {
     ToolTipState=FALSE;
 
