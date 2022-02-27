@@ -27,7 +27,7 @@ class GameFrame
         // Operations
     public:
         void Invalidate (void);
-        void UpdateWindow ();
+        void UpdateWindow () const;
         void UpdateFrameSize() const;
         void RePostMessage (const CPoint& Pos) const;
         void RePostClick (SLONG PlayerNum, UINT message, WPARAM wParam, LPARAM lParam);
@@ -47,7 +47,7 @@ class GameFrame
     public:
         virtual ~GameFrame();
 
-        void ProcessEvent(const SDL_Event& event);
+        void ProcessEvent(const SDL_Event& event) const;
 
         // Generated message map functions
         //{{AFX_MSG(GameFrame)

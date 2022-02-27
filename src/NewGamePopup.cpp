@@ -891,7 +891,7 @@ void NewGamePopup::OnPaint()
                 else if (x > 5 || y < 2 || ((y - 2) % 2) != 0)
                 {
                     if (KlackerTafel.Haben[x + y * 24] != 0) {
-                        if (y < 2 || (y >= 2 && (y - 2) / 2 <= 3 && (Sim.Players.Players[(y - 2) / 2].Owner == 0u))) {
+                        if (y < 2 || (y >= 2 && (y - 2) / 2 <= 3 && (Sim.Players.Players[(y - 2) / 2].Owner == 0U))) {
                             RoomBm.BlitFrom(KlackerTafel.KlackerBms[static_cast<long>(KlackerTafel.Haben[x + y * 24])], x * 16 + 128, py);
                         } else {
                             RoomBm.BlitFrom(KlackerTafel.KlackerBms[static_cast<long>(KlackerTafel.Haben[x + y * 24]) + (73 + 8 + 3 + 3)], x * 16 + 128, py);
@@ -1385,7 +1385,7 @@ again_heimatflughafen:
                 }
                 else if (PageNum == PAGE_TYPE::MISSION_SELECT || PageNum == PAGE_TYPE::ADDON_MISSION_SELECT || PageNum == PAGE_TYPE::FLIGHT_SECURITY_MISSION_SELECT)
                 {
-                    PageNum = bFirstClass ? PAGE_TYPE::MAIN_MENU : PAGE_TYPE::CAMPAIGN_SELECT;
+                    PageNum = bFirstClass != 0 ? PAGE_TYPE::MAIN_MENU : PAGE_TYPE::CAMPAIGN_SELECT;
                     RefreshKlackerField();
                     return;
                 }
@@ -1583,7 +1583,7 @@ again_heimatflughafen:
                                 RefreshKlackerField();
                             }
 
-                            Sim.SendSimpleMessage(ATNET_UNSELECTPLAYER, 0, c, gNetwork.GetLocalPlayerID());
+                            SIM::SendSimpleMessage(ATNET_UNSELECTPLAYER, 0, c, gNetwork.GetLocalPlayerID());
                         }
                     }
                     else if (Sim.Players.Players[c].NetworkID == 0 || Sim.Players.Players[c].NetworkID == gNetwork.GetLocalPlayerID() || PageNum != PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER)
@@ -1616,7 +1616,7 @@ again_heimatflughafen:
                             {
                                 if (Sim.Players.Players[d].Owner == 0 && PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER)
                                 {
-                                    Sim.SendSimpleMessage(ATNET_SELECTPLAYER, 0, d, c, gNetwork.GetLocalPlayerID());
+                                    SIM::SendSimpleMessage(ATNET_SELECTPLAYER, 0, d, c, gNetwork.GetLocalPlayerID());
                                     memswap(&Sim.Players.Players[d].NetworkID, &Sim.Players.Players[c].NetworkID, sizeof(ULONG));
                                     bFound = false;
                                 }
@@ -1626,7 +1626,7 @@ again_heimatflughafen:
 
                             Sim.Players.Players[c].Owner = 0;
                             Sim.Players.Players[c].NetworkID = gNetwork.GetLocalPlayerID();
-                            if (!bFound) { Sim.SendSimpleMessage(ATNET_SELECTPLAYER, 0, -1, c, gNetwork.GetLocalPlayerID());
+                            if (!bFound) { SIM::SendSimpleMessage(ATNET_SELECTPLAYER, 0, -1, c, gNetwork.GetLocalPlayerID());
 }
 
 
@@ -1820,7 +1820,7 @@ again_heimatflughafen:
                     Message << ATNET_WANNAJOIN << gNetwork.GetLocalPlayerID() << Sim.Options.OptionLastPlayer
                         << CString(VersionString);
 
-                    Sim.SendMemFile(Message);
+                    SIM::SendMemFile(Message);
 
                     PageNum = PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER;
                     RefreshKlackerField();
@@ -1949,7 +1949,7 @@ again_heimatflughafen:
             //Back to session creation / selection:
             if (GridPos.IfIsWithin(1, 15, 7, 15))
             {
-                Sim.SendSimpleMessage(ATNET_WANNALEAVE, 0, gNetwork.GetLocalPlayerID());
+                SIM::SendSimpleMessage(ATNET_WANNALEAVE, 0, gNetwork.GetLocalPlayerID());
                 gNetwork.CloseSession();
 
                 SBCapabilitiesFlags caps = gNetwork.GetSelectedProviderCapabilities();
@@ -2019,7 +2019,7 @@ void NewGamePopup::CheckNetEvents() {
         {
             TEAKFILE Message;
 
-            if (Sim.ReceiveMemFile(Message))
+            if (SIM::ReceiveMemFile(Message))
             {
                 ULONG MessageType = 0;
                 ULONG Par1 = 0;
@@ -2150,7 +2150,7 @@ void NewGamePopup::CheckNetEvents() {
                             {
                                 BOOL bOld = Sim.bNetwork;
                                 Sim.bNetwork = 1;
-                                Sim.SendSimpleMessage(ATNET_WANNAJOIN2, 0, gNetwork.GetLocalPlayerID(), SIM::GetSavegameLocalPlayer(SavegameIndex));
+                                SIM::SendSimpleMessage(ATNET_WANNAJOIN2, 0, gNetwork.GetLocalPlayerID(), SIM::GetSavegameLocalPlayer(SavegameIndex));
                                 Sim.bNetwork = bOld;
                             }
                             else
@@ -2305,7 +2305,7 @@ void NewGamePopup::CheckNetEvents() {
                             nWaitingForPlayer += SIM::GetSavegameNumHumans(Index) - 1;
                             SetNetworkBitmap(3, 1); FrameWnd->Invalidate(); MessagePump(); FrameWnd->Invalidate(); MessagePump();
                             Sim.LoadGame(Index);
-                            Sim.SendSimpleMessage(ATNET_WAITFORPLAYER, 0, -1, Sim.localPlayer);
+                            SIM::SendSimpleMessage(ATNET_WAITFORPLAYER, 0, -1, Sim.localPlayer);
                             gNetworkSavegameLoading = -1;
                             NewgameWantsToLoad = FALSE;
                         }
@@ -2453,7 +2453,7 @@ void NewGamePopup::OnTimer(UINT nIDEvent)
                         Message << ATNET_WANNAJOIN << gNetwork.GetLocalPlayerID() << Sim.Options.OptionLastPlayer
                             << CString(VersionString);
 
-                        Sim.SendMemFile(Message);
+                        SIM::SendMemFile(Message);
 
                     PageNum = PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER;
                     RefreshKlackerField();
@@ -2705,7 +2705,7 @@ void NewGamePopup::PushNames()
         << Sim.Players.Players[static_cast<SLONG>(2)].Name << Sim.Players.Players[static_cast<SLONG>(3)].Name
         << Sim.Players.Players[static_cast<SLONG>(0)].NetworkID << Sim.Players.Players[static_cast<SLONG>(1)].NetworkID
         << Sim.Players.Players[static_cast<SLONG>(2)].NetworkID << Sim.Players.Players[static_cast<SLONG>(3)].NetworkID;
-    Sim.SendMemFile(Message);
+    SIM::SendMemFile(Message);
 }
 
 //--------------------------------------------------------------------------------------------
@@ -2717,7 +2717,7 @@ void NewGamePopup::PushName(SLONG n)
 
     Message.Announce(30);
     Message << ATNET_ENTERNAME << n << Sim.Players.Players[n].Name;
-    Sim.SendMemFile(Message);
+    SIM::SendMemFile(Message);
 }
 
 //--------------------------------------------------------------------------------------------
@@ -2821,7 +2821,7 @@ bool SIM::ReceiveMemFile(TEAKFILE& file)
     file.MemBufferUsed = Size;
     file.MemPointer = 0;
 
-    if ((p != nullptr) && (Size != 0u)) {
+    if ((p != nullptr) && (Size != 0U)) {
         file.MemBuffer.ReSize(Size, p);
 }
 
