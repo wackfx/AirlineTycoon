@@ -399,7 +399,7 @@ void SBNetwork::DisConnect() {
     }
 }
 
-bool SBNetwork::CreateSession(const SBStr& name, SBNetworkCreation* settings) {
+bool SBNetwork::CreateSession(const SBStr&  /*name*/, SBNetworkCreation* settings) {
     return mNetwork->CreateSession(settings);
 }
 
