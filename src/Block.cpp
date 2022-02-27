@@ -1,5 +1,5 @@
 //============================================================================================
-// Block.cpp : Routinen f�r den Notizblock der Spieler
+// Block.cpp : Routinen für den Notizblock der Spieler
 //============================================================================================
 #include "StdAfx.h"
 

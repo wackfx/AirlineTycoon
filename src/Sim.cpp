@@ -8,7 +8,7 @@
 #include <filesystem>
 
 #define AT_Log(a,...) AT_Log_I("Sim", a, __VA_ARGS__)
-                        // Für Menschen       Für Computer
+                        // FÃ¼r Menschen       FÃ¼r Computer
                         // Money    Credit    Money    Credit
 static long InitMoney[] = {1500000, 0,        2000000, 0,                                                        // DIFF_FREEGAME
                            5000000, 0,        200000,  0,                                                        // DIFF_TUTORIAL
@@ -56,7 +56,7 @@ void CalcPlayerMaximums(bool bForce);
 SLONG SaveVersion = 1;
 SLONG SaveVersionSub = 107;
 
-//Öffnungszeiten:
+//Ã–ffnungszeiten:
 extern SLONG timeDutyOpen;
 extern SLONG timeDutyClose;
 extern SLONG timeArabOpen;
@@ -103,7 +103,7 @@ void DumpAASeedSum(long /*CallerId*/) {
 #endif
 
 //--------------------------------------------------------------------------------------------
-// Sorgt für Screen Refresh und für Ablauf der Simulation:
+// Sorgt fÃ¼r Screen Refresh und fÃ¼r Ablauf der Simulation:
 //--------------------------------------------------------------------------------------------
 SIM::SIM() {
     PersonRandMisc.SRand(0);
@@ -112,7 +112,7 @@ SIM::SIM() {
 
     Jahreszeit = -1;
 
-    // Variableninhalt ist zufällig:
+    // Variableninhalt ist zufÃ¤llig:
     bReloadAirport = 0;
     Gamestate = GAMESTATE_BOOT;
     QuitCountDown = 0;
@@ -143,7 +143,7 @@ SIM::SIM() {
 SIM::~SIM() { SaveOptions(); }
 
 //--------------------------------------------------------------------------------------------
-// Fügt einen Smacker im Flughafen hinzu:
+// FÃ¼gt einen Smacker im Flughafen hinzu:
 //--------------------------------------------------------------------------------------------
 void SIM::AddSmacker(const CString &Filename, long BrickId, XY Offset) {
     AirportSmacks.ReSize(AirportSmacks.AnzEntries() + 1);
@@ -173,7 +173,7 @@ void SIM::AddNewShoppers() const {
 }
 
 //--------------------------------------------------------------------------------------------
-// Fügt Flugpassagiere hinzu:
+// FÃ¼gt Flugpassagiere hinzu:
 //--------------------------------------------------------------------------------------------
 void SIM::AddNewPassengers() {
     SLONG c = 0;
@@ -182,15 +182,15 @@ void SIM::AddNewPassengers() {
     SLONG n = 0;
     CFlugplan *Plan = nullptr;
 
-    // Für alle Spieler:
+    // FÃ¼r alle Spieler:
     for (c = 0; c < Sim.Players.AnzPlayers; c++) {
-        // Für alle Flugzeuge des Spielers:
+        // FÃ¼r alle Flugzeuge des Spielers:
         if (Players.Players[c].IsOut == 0) {
             for (d = 0; d < Players.Players[c].Planes.AnzEntries(); d++) {
                 if (Players.Players[c].Planes.IsInAlbum(d) != 0) {
                     Plan = &Players.Players[c].Planes[d].Flugplan;
 
-                    // Für alle Flüge des Flugzeuges:
+                    // FÃ¼r alle FlÃ¼ge des Flugzeuges:
                     e = Players.Players[c].Planes[d].Flugplan.NextStart;
 
                     if (e != -1) {
@@ -203,7 +203,7 @@ void SIM::AddNewPassengers() {
                                 qFPE.Gate != -1 && qFPE.VonCity == static_cast<ULONG>(Sim.HomeAirportId)) {
                                 for (n = 0; n < 2; n++) {
                                     if (PersonRandCreate.Rand(6) == 0 || Sim.GetMinute() >= 20) {
-                                        // Endlich werden Leute hinzugefügt:
+                                        // Endlich werden Leute hinzugefÃ¼gt:
                                         if (Sim.Persons.GetNumFree() > 2) {
                                             if (c == Sim.localPlayer && Sim.Tutorial == 1600 && (Sim.IsTutorial != 0)) {
                                                 XY p;
@@ -261,7 +261,7 @@ void SIM::AddNewPassengers() {
 }
 
 //------------------------------------------------------------------------------
-// Fügt dem ganzen eine Stinkbombe hinzu:
+// FÃ¼gt dem ganzen eine Stinkbombe hinzu:
 //------------------------------------------------------------------------------
 void SIM::AddStenchSabotage(XY Position) {
     SLONG Id = Sim.Persons *= PERSON(UBYTE(Clans.GetAnimationId(20)), Position, REASON_SHOPPING, -1, -1, -1, UBYTE(MoodPersonNone));
@@ -279,7 +279,7 @@ void SIM::AddStenchSabotage(XY Position) {
 }
 
 //------------------------------------------------------------------------------
-// Fügt dem ganzen etwas Klebstoff hinzu:
+// FÃ¼gt dem ganzen etwas Klebstoff hinzu:
 //------------------------------------------------------------------------------
 bool SIM::AddGlueSabotage(XY Position, SLONG Dir, SLONG NewDir, SLONG Phase) {
     XY ArrayPos;
@@ -332,7 +332,7 @@ bool SIM::AddGlueSabotage(XY Position, SLONG Dir, SLONG NewDir, SLONG Phase) {
 }
 
 //------------------------------------------------------------------------------
-// Läßt den Benutzer Schwierigkeit, Anfangsjahr und Spieler wählen:
+// LÃ¤ÃŸt den Benutzer Schwierigkeit, Anfangsjahr und Spieler wÃ¤hlen:
 //------------------------------------------------------------------------------
 void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
     SLONG c = 0;
@@ -452,7 +452,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
     Sim.IsTutorial = static_cast<BOOL>(Sim.Difficulty == DIFF_TUTORIAL);
     Sim.DialogOvertureFlags = 0;
 
-    // Wochentag für die Öffnungszeiten:
+    // Wochentag fÃ¼r die Ã–ffnungszeiten:
     Weekday = StartWeekday;
 
     Sim.Players.Players.ReSize(Sim.Players.AnzPlayers);
@@ -762,7 +762,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
             TEAKRAND localRand;
             localRand.SRand(1);
             switch (Sim.Difficulty) {
-            case DIFF_EASY: // Mission: 2500 Passagiere befördern
+            case DIFF_EASY: // Mission: 2500 Passagiere befÃ¶rdern
                 qPlayer.BuyPlane(100, &localRand);
                 qPlayer.BuyPlane(114, &localRand);
                 break;
@@ -888,7 +888,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
             }
         }
 
-        if (qPlayer.Owner == 0) // 20 Blocks für Spieler
+        if (qPlayer.Owner == 0) // 20 Blocks fÃ¼r Spieler
         {
             Sim.localPlayer = c;
             qPlayer.Blocks.Blocks.ReSize(0);
@@ -1111,7 +1111,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
 
     Players.RobotInit();
 
-    // Aushänge für Versteigerungen, Aufträge, ..:
+    // AushÃ¤nge fÃ¼r Versteigerungen, AuftrÃ¤ge, ..:
     TafelData.Randomize(2);
     gFrachten.Random.SRand(Sim.Date);
     LastMinuteAuftraege.Random.SRand(Sim.Date + 1);
@@ -1151,7 +1151,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
 }
 
 //----------------------------------------------------------------------------------------
-// Sucht die Städte aus, die der Spieler in der Routenmissionen verbinden muß
+// Sucht die StÃ¤dte aus, die der Spieler in der Routenmissionen verbinden muÃŸ
 //----------------------------------------------------------------------------------------
 void SIM::CreateMissionCities() {
     SLONG c = 0;
@@ -1159,7 +1159,7 @@ void SIM::CreateMissionCities() {
     SLONG e = 0;
     BUFFER<SLONG> Map(Cities.AnzEntries());
 
-    // Die Map-Tabelle ist ein Filter, der alle Städte nach ihrer Einwohnerzahl sortiert:
+    // Die Map-Tabelle ist ein Filter, der alle StÃ¤dte nach ihrer Einwohnerzahl sortiert:
     for (c = Map.AnzEntries() - 1; c >= 0; c--) {
         Map[c] = Cities.GetIdFromIndex(c);
     }
@@ -1178,22 +1178,22 @@ void SIM::CreateMissionCities() {
 
     MissionCities.ReSize(6);
 
-    // Default-Städte:
-    MissionCities[0] = Cities.GetIdFromNames("Río de Janeiro", "Rio de Janeiro", NULL);
+    // Default-StÃ¤dte:
+    MissionCities[0] = Cities.GetIdFromNames("R\xEDo de Janeiro", "Rio de Janeiro", NULL);
     MissionCities[1] = Cities.GetIdFromNames("Nova Iorque", "Nueva York", "New York", NULL);
-    MissionCities[2] = Cities.GetIdFromNames("Tóquio", "Tokio", "Tokyo", NULL);
-    MissionCities[3] = Cities.GetIdFromNames("Deli", "Delhi", "Dillí", NULL);
+    MissionCities[2] = Cities.GetIdFromNames("T\xF3quio", "Tokio", "Tokyo", NULL);
+    MissionCities[3] = Cities.GetIdFromNames("Deli", "Delhi", "Dill\xED", NULL);
     MissionCities[4] = Cities.GetIdFromNames("Joanesburgo", "Johanesburgo", "Johannesburg", NULL);
-    MissionCities[5] = Cities.GetIdFromNames("Moskau", "Moskou", "Moscovo", "Moscou", "Mosca", "Moscú", "Moscow", "Moskva", NULL);
+    MissionCities[5] = Cities.GetIdFromNames("Moskau", "Moskou", "Moscovo", "Moscou", "Mosca", "Mosc\xFA", "Moscow", "Moskva", NULL);
 
-    /*if (gLanguage==LANGUAGE_S) MissionCities[0]=Cities.GetIdFromName ("Río de Janeiro");
+    /*if (gLanguage==LANGUAGE_S) MissionCities[0]=Cities.GetIdFromName ("RÃ­o de Janeiro");
       else                       MissionCities[0]=Cities.GetIdFromName ("Rio de Janeiro");
 
       if (gLanguage==LANGUAGE_O)      MissionCities[1]=Cities.GetIdFromName ("Nova Iorque"); //Portugisisch
       else if (gLanguage==LANGUAGE_S) MissionCities[1]=Cities.GetIdFromName ("Nueva York");  //Spanisch
       else                            MissionCities[1]=Cities.GetIdFromName ("New York");
 
-      if (gLanguage==LANGUAGE_O)      MissionCities[2]=Cities.GetIdFromName ("Tóquio"); //Portugisisch
+      if (gLanguage==LANGUAGE_O)      MissionCities[2]=Cities.GetIdFromName ("TÃ³quio"); //Portugisisch
       else if (gLanguage==LANGUAGE_S) MissionCities[2]=Cities.GetIdFromName ("Tokio");  //Spanisch
       else                            MissionCities[2]=Cities.GetIdFromName ("Tokyo");
 
@@ -1209,7 +1209,7 @@ void SIM::CreateMissionCities() {
       else if (gLanguage==LANGUAGE_O) MissionCities[5]=Cities.GetIdFromName ("Moscovo");
       else if (gLanguage==LANGUAGE_F) MissionCities[5]=Cities.GetIdFromName ("Moscou");
       else if (gLanguage==LANGUAGE_I) MissionCities[5]=Cities.GetIdFromName ("Mosca");
-      else if (gLanguage==LANGUAGE_S) MissionCities[5]=Cities.GetIdFromName ("Moscú");
+      else if (gLanguage==LANGUAGE_S) MissionCities[5]=Cities.GetIdFromName ("MoscÃº");
       else                            MissionCities[5]=Cities.GetIdFromName ("Moscow");*/
 
     // Ist eine Stadt doppelt oder zu weit weg? Dann eine Bessere raussuchen:
@@ -1238,7 +1238,7 @@ void SIM::CreateMissionCities() {
         }
     }
 
-    // Wenn die notwendigen Routen normalerweise nicht existieren, müssen wir sie halt erzeugen:
+    // Wenn die notwendigen Routen normalerweise nicht existieren, mÃ¼ssen wir sie halt erzeugen:
     for (c = 0; c < 6; c++) {
         for (d = Routen.AnzEntries() - 1; d >= 0; d--) {
             if (Routen.IsInAlbum(d) != 0) {
@@ -1264,7 +1264,7 @@ void SIM::CreateMissionCities() {
             Routen[Id].Faktor = 1;
             Routen[Id].Bedarf = 0;
 
-            // Tabellenzeile hinzufügen:
+            // Tabellenzeile hinzufÃ¼gen:
             Id2 = Routen.GetUniqueId();
             Routen += Id2;
 
@@ -1308,7 +1308,7 @@ void SIM::CreateEarthquakeCity() {
 }
 
 //----------------------------------------------------------------------------------------
-// Zählt die Uhr einen Schritt weiter und löst ggf. Ereignisse aus.
+// ZÃ¤hlt die Uhr einen Schritt weiter und lÃ¶st ggf. Ereignisse aus.
 //----------------------------------------------------------------------------------------
 void SIM::DoTimeStep() {
     BOOL DoCalc = 0;
@@ -1401,7 +1401,7 @@ void SIM::DoTimeStep() {
         }
 
         if (GetHour() == 18 && OldHour != 18) {
-            // Synchronisierung durch Robots; wird um 18 Uhr auf false gesetzt (würde sonst in CAbend.cpp geschehen)
+            // Synchronisierung durch Robots; wird um 18 Uhr auf false gesetzt (wÃ¼rde sonst in CAbend.cpp geschehen)
             if (Sim.Players.GetAnzRobotPlayers() == 0) {
                 for (SLONG c = 0; c < 4; c++) {
                     Sim.Players.Players[c].bReadyForMorning = 1;
@@ -1409,7 +1409,7 @@ void SIM::DoTimeStep() {
             }
         }
 
-        // Verschiedene Sync's für's Netzwerk:
+        // Verschiedene Sync's fÃ¼r's Netzwerk:
         if ((Sim.CallItADay == 0) && (Sim.bNetwork != 0)) {
             if (Minute >= 10 && OldMinute < 10 && Sim.Time >= 9 * 60000 && Sim.Time <= 18 * 60000) {
                 PLAYER::NetSynchronizeMoney();
@@ -1444,8 +1444,8 @@ void SIM::DoTimeStep() {
                         qPlayer.StrikeHours = 0;
 
                         if (qPlayer.Owner == 0) {
-                            qPlayer.StrikeNotified = FALSE; // Dem Spieler bei nächster Gelegenheit bescheid sagen
-                            // Die Variable qPlayer.StrikeEndType muß bereits gesetzt sein
+                            qPlayer.StrikeNotified = FALSE; // Dem Spieler bei nÃ¤chster Gelegenheit bescheid sagen
+                            // Die Variable qPlayer.StrikeEndType muÃŸ bereits gesetzt sein
                         }
                     }
                 }
@@ -1553,7 +1553,7 @@ void SIM::DoTimeStep() {
                         if (AnyPlanes != 0) {
                             qPlayer.StrikePlanned = FALSE;
                             qPlayer.StrikeEndCountdown = 0;
-                            qPlayer.StrikeNotified = FALSE; // Dem Spieler bei nächster Gelegenheit bescheid sagen
+                            qPlayer.StrikeNotified = FALSE; // Dem Spieler bei nÃ¤chster Gelegenheit bescheid sagen
 
                             TEAKRAND LocalRand(Sim.Date + Sim.GetHour());
 
@@ -1574,7 +1574,7 @@ void SIM::DoTimeStep() {
                         qPlayer.StrikeHours--;
 
                         if (qPlayer.StrikeHours == 0 && qPlayer.Owner == 0) {
-                            qPlayer.StrikeNotified = FALSE; // Dem Spieler bei nächster Gelegenheit bescheid sagen
+                            qPlayer.StrikeNotified = FALSE; // Dem Spieler bei nÃ¤chster Gelegenheit bescheid sagen
                             qPlayer.StrikeEndType = 3;      // Streik beendet durch abwarten
 
                             Workers.AddHappiness(c, -10);
@@ -1583,7 +1583,7 @@ void SIM::DoTimeStep() {
                 }
             }
 
-            // Probleme bei einem Flugzeug auslösen:
+            // Probleme bei einem Flugzeug auslÃ¶sen:
             if ((CallItADay == 0) && (GetHour() > 5 && GetHour() < 17)) {
                 PLAYER &qPlayer = qLocalPlayer;
 
@@ -1666,7 +1666,7 @@ void SIM::DoTimeStep() {
 
         if (Minute < OldMinute || (Sim.Date == 0 && Sim.GetHour() == 9 && Sim.GetMinute() == 0)) {
             if (Sim.CallItADay == 0 && Sim.Time < 18 * 60000 && Sim.Time > 8 * 60000) {
-                // Conditional Block: DutyFree, ArabAir, LastMinute, Museum, Reisebüro:
+                // Conditional Block: DutyFree, ArabAir, LastMinute, Museum, ReisebÃ¼ro:
                 Airport.SetConditionBlock(
                     0, static_cast<BOOL>(SLONG(Sim.Time) < timeDutyOpen || (((Sim.Weekday == 5 || Sim.Weekday == 6) && SLONG(Sim.Time) > timeDutyClose))));
                 Airport.SetConditionBlock(1, static_cast<BOOL>(SLONG(Sim.Time) < timeArabOpen || Sim.Weekday == 6));
@@ -1714,7 +1714,7 @@ void SIM::DoTimeStep() {
                             }
 
                             if (ActNow != 0) {
-                                // Die Anschläge ausführen:
+                                // Die AnschlÃ¤ge ausfÃ¼hren:
                                 __int64 PictureId = 0;
                                 CPlane &qPlane = qOpfer.Planes[Sim.Players.Players[c].ArabPlane];
 
@@ -1844,7 +1844,7 @@ void SIM::DoTimeStep() {
                                     }
                                     // log: hprintf ("Player[%li].Image now (sabo) = %li", (LPCTSTR)Sim.Players.Players[c].ArabOpfer, (LPCTSTR)qOpfer.Image);
 
-                                    // Für's Briefing vermerken:
+                                    // FÃ¼r's Briefing vermerken:
                                     SabotageActs.ReSize(SabotageActs.AnzEntries() + 1);
                                     SabotageActs[SabotageActs.AnzEntries() - 1].Player = bFremdsabotage ? -2 : c;
                                     SabotageActs[SabotageActs.AnzEntries() - 1].ArabMode = Sim.Players.Players[c].ArabMode;
@@ -1967,7 +1967,7 @@ void SIM::DoTimeStep() {
             if (Sim.Players.Players[c].IsOut == 0) {
                 PLAYER &qPlayer = Sim.Players.Players[c];
 
-                // Für alle Flugzeuge die er besitzt
+                // FÃ¼r alle Flugzeuge die er besitzt
                 for (d = 0; d < qPlayer.Planes.AnzEntries(); d++) {
                     if (qPlayer.Planes.IsInAlbum(d) != 0) {
                         CPlane &qPlane = qPlayer.Planes[d];
@@ -1976,7 +1976,7 @@ void SIM::DoTimeStep() {
                             CFlugplanEintrag &qFPE = qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight];
 
                             if (Sim.Date > qFPE.Startdate || (Sim.Date == qFPE.Startdate && Sim.GetHour() >= qFPE.Startzeit + 1)) {
-                                // Unfälle wegen schlechter Qualität?
+                                // UnfÃ¤lle wegen schlechter QualitÃ¤t?
                                 TEAKRAND LocalRand(Sim.Date + GetHour() + GetMinute());
                                 if (qPlane.Zustand < 80 && LocalRand.Rand(5000) > qPlane.Zustand + 4920) {
                                     // Nur wenn wirklich Personen mitfliegen:
@@ -2002,12 +2002,12 @@ void SIM::DoTimeStep() {
                                     }
                                 }
 
-                                // Unfälle wegen Jahreszeit:
+                                // UnfÃ¤lle wegen Jahreszeit:
                                 if (LocalRand.Rand(5000) > 4980) {
                                     bool bCanHappenToThisPlane = false;
 
                                     switch (GetSeason()) {
-                                    // 0-3 : Frühling, Sommer, Herbst, Winter:
+                                    // 0-3 : FrÃ¼hling, Sommer, Herbst, Winter:
                                     case 0:
                                         if (qPlane.Elektronik != 2) {
                                             bCanHappenToThisPlane = true;
@@ -2042,7 +2042,7 @@ void SIM::DoTimeStep() {
                                     }
                                 }
 
-                                // Wir müssen die aktuelle Länge/Breite berechnen:
+                                // Wir mÃ¼ssen die aktuelle LÃ¤nge/Breite berechnen:
                                 if (Sim.GetHour() == 8 || (Sim.GetHour() >= 9 && Sim.GetHour() < 18 && Sim.CallItADay == FALSE) || Minute == 0) {
                                     SLONG Advance = 0; // Prozentrechnung von 0 bis 255
 
@@ -2110,7 +2110,7 @@ void SIM::DoTimeStep() {
 
         // Flugzeuge von allen Spielern:
         for (c = 0; c < Sim.Players.AnzPlayers; c++) {
-            // Für alle Flugzeuge die er besitzt
+            // FÃ¼r alle Flugzeuge die er besitzt
             for (d = 0; d < Sim.Players.Players[c].Planes.AnzEntries(); d++) {
                 if (Sim.Players.Players[c].Planes.IsInAlbum(d) != 0) {
                     CPlane &qPlane = Sim.Players.Players[c].Planes[d];
@@ -2133,7 +2133,7 @@ void SIM::DoTimeStep() {
                     qPlane.Flugplan.UpdateNextFlight();
 
                     for (e = qPlane.Flugplan.Flug.AnzEntries() - 1; e >= 0; e--) {
-                        // Müssen wir den Flug evtl. verschieben?
+                        // MÃ¼ssen wir den Flug evtl. verschieben?
                         if (Sim.Players.Players[c].Owner != 1 && qPlane.Flugplan.Flug[e].ObjectType != 0 &&
                             (qPlane.Flugplan.Flug[e].Startdate * 24 + qPlane.Flugplan.Flug[e].Startzeit - 1 == Sim.Date * 24 + Sim.GetHour())) {
                             BOOL Delay = FALSE;
@@ -2211,7 +2211,7 @@ void SIM::DoTimeStep() {
 
         Airport.RepaintTextBricks();
     }
-    // Alle Flugzeuge zum landen in Anflugposition? (Anschließend zum Gate zum aussteigen)
+    // Alle Flugzeuge zum landen in Anflugposition? (AnschlieÃŸend zum Gate zum aussteigen)
     if (Minute >= 15 && (OldMinute <= 14 || OldMinute > Minute)) {
         count = -100;
 
@@ -2219,19 +2219,19 @@ void SIM::DoTimeStep() {
         for (c = 0; c < Sim.Players.AnzPlayers; c++) {
             PLAYER &qPlayer = Sim.Players.Players[c];
 
-            // Für alle Flugzeuge die er besitzt
+            // FÃ¼r alle Flugzeuge die er besitzt
             for (d = 0; d < qPlayer.Planes.AnzEntries(); d++) {
                 if (qPlayer.Planes.IsInAlbum(d) != 0) {
                     CPlane &qPlane = qPlayer.Planes[d];
 
-                    // Testen, ob sie jetzt landen müssen:
+                    // Testen, ob sie jetzt landen mÃ¼ssen:
                     if (qPlane.Flugplan.NextFlight != -1 && qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].Landezeit == GetHour() &&
                         qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].Landedate == Date) {
                         CFlugplanEintrag &qFPE = qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight];
 
                         City = qFPE.NachCity;
 
-                        // Ersatzteil für reparaturbedürftige Flugzeuge:
+                        // Ersatzteil fÃ¼r reparaturbedÃ¼rftige Flugzeuge:
                         if (qFPE.ObjectType == 2 && qFPE.Passagiere == 0) {
                             SLONG d = 0;
 
@@ -2277,12 +2277,12 @@ void SIM::DoTimeStep() {
 
         // Flugzeuge von allen Spielern:
         for (c = 0; c < Sim.Players.AnzPlayers; c++) {
-            // Für alle Flugzeuge die er besitzt
+            // FÃ¼r alle Flugzeuge die er besitzt
             for (d = 0; d < Sim.Players.Players[c].Planes.AnzEntries(); d++) {
                 if (Sim.Players.Players[c].Planes.IsInAlbum(d) != 0) {
                     CPlane &qPlane = Sim.Players.Players[c].Planes[d];
 
-                    // Testen, ob sie jetzt hinters Fenster müssen; dazu Flugplan durchgehen:
+                    // Testen, ob sie jetzt hinters Fenster mÃ¼ssen; dazu Flugplan durchgehen:
                     if (qPlane.Flugplan.NextFlight != -1) {
                         if ((qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].ObjectType != 0) &&
                             qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].Startdate == Date &&
@@ -2295,7 +2295,7 @@ void SIM::DoTimeStep() {
                             if (City == Sim.HomeAirportId && qPlane.GetFlugplanEintrag()->Gate != -1 && qPlane.GetFlugplanEintrag()->Gate != -2 &&
                                 qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].ObjectType != 3 &&
                                 qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].ObjectType != 4) {
-                                // Füllflüge starten direkt; andere holen erst Leute ab
+                                // FÃ¼llflÃ¼ge starten direkt; andere holen erst Leute ab
                                 if (qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].ObjectType == 3 ||
                                     qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].ObjectType == 4 ||
                                     qPlane.Flugplan.Flug[qPlane.Flugplan.NextFlight].Gate == -1) {
@@ -2344,17 +2344,17 @@ void SIM::DoTimeStep() {
 }
 
 //------------------------------------------------------------------------------
-// Gibt die aktuelle Woche (1,2,3,4) zurück:
+// Gibt die aktuelle Woche (1,2,3,4) zurÃ¼ck:
 //------------------------------------------------------------------------------
 SLONG SIM::GetWeek() const { return (Date % 4); }
 
 //--------------------------------------------------------------------------------------------
-// Gibt die aktuelle Stunde zurück:
+// Gibt die aktuelle Stunde zurÃ¼ck:
 //--------------------------------------------------------------------------------------------
 SLONG SIM::GetHour() const { return (Time / 60000); }
 
 //--------------------------------------------------------------------------------------------
-// Gibt die Jahrezeit zurück. Das ist nicht immer SIM::Jahreszeit. Die Variable enthält, die
+// Gibt die Jahrezeit zurÃ¼ck. Das ist nicht immer SIM::Jahreszeit. Die Variable enthÃ¤lt, die
 // zur Zeit *geladene* Jahreszeit.
 //--------------------------------------------------------------------------------------------
 SLONG SIM::GetSeason() {
@@ -2373,7 +2373,7 @@ SLONG SIM::GetSeason() {
     return (0); // In der Demo nur Winter
 #endif
 
-    // Frühlung: 5.3. - 20.5
+    // FrÃ¼hlung: 5.3. - 20.5
     if (DayOfYear >= 3 * 30 + 5 && DayOfYear <= 5 * 30 + 20) {
         return ((0 + SeasonCheater) % 4);
     }
@@ -2397,7 +2397,7 @@ SLONG SIM::GetSeason() {
 }
 
 //--------------------------------------------------------------------------------------------
-//Überprüft, ob wir die richtigen Bricks geladen haben:
+//ÃœberprÃ¼ft, ob wir die richtigen Bricks geladen haben:
 //--------------------------------------------------------------------------------------------
 void SIM::UpdateSeason() {
     if (GetSeason() != Jahreszeit) {
@@ -2419,17 +2419,17 @@ void SIM::UpdateSeason() {
 }
 
 //--------------------------------------------------------------------------------------------
-// Gibt die aktuelle Minute zurück:
+// Gibt die aktuelle Minute zurÃ¼ck:
 //--------------------------------------------------------------------------------------------
 SLONG SIM::GetMinute() const { return ((Time / 1000) % 60); }
 
 //------------------------------------------------------------------------------
-// Gibt die aktuelle Zeit als String zurück:
+// Gibt die aktuelle Zeit als String zurÃ¼ck:
 //------------------------------------------------------------------------------
 CString SIM::GetTimeString() const { return (bprintf("%2li:%02li", GetHour(), GetMinute())); }
 
 //------------------------------------------------------------------------------
-// Läßt neuen Tag & ggf. Monat beginnen
+// LÃ¤ÃŸt neuen Tag & ggf. Monat beginnen
 //------------------------------------------------------------------------------
 void SIM::NewDay() {
     SLONG c = 0;
@@ -2459,7 +2459,7 @@ void SIM::NewDay() {
         Smokers[c].Smoke.ReSize(0);
     }
 
-    // Wochentag für die Öffnungszeiten:
+    // Wochentag fÃ¼r die Ã–ffnungszeiten:
     {
         time_t Time = Sim.StartTime + Sim.Date * 60 * 60 * 24;
         struct tm *pTimeStruct = localtime(&Time);
@@ -2503,7 +2503,7 @@ void SIM::NewDay() {
       SLONG(Sim.Players.Players[c].Kurse[0])); hprintf ("- Aktien: %li, %li, %li, %li", (LPCTSTR)Sim.Players.Players[c].OwnsAktien[0],
       (LPCTSTR)Sim.Players.Players[c].OwnsAktien[1], (LPCTSTR)Sim.Players.Players[c].OwnsAktien[2], (LPCTSTR)Sim.Players.Players[c].OwnsAktien[3]); hprintf ("-
       Bilanz: %li (Gestern: %li), Image: %li", (LPCTSTR)Sim.Players.Players[c].Bilanz.GetSumme(), (LPCTSTR)Sim.Players.Players[c].BilanzGestern.GetSumme(),
-      (LPCTSTR)Sim.Players.Players[c].Image); hprintf ("- Routen: %li, Aufträge: %li, Flüge (heute): %li, Flugzeuge: %li",
+      (LPCTSTR)Sim.Players.Players[c].Image); hprintf ("- Routen: %li, AuftrÃ¤ge: %li, FlÃ¼ge (heute): %li, Flugzeuge: %li",
       (LPCTSTR)Sim.Players.Players[c].RentRouten.GetNumUsed(), (LPCTSTR)Sim.Players.Players[c].Auftraege.GetNumUsed(),
       (LPCTSTR)Sim.Players.Players[c].NumFlights, (LPCTSTR)Sim.Players.Players[c].Planes.GetNumUsed());
       } */
@@ -2526,7 +2526,7 @@ void SIM::NewDay() {
     Time = 0;
     UpdateSeason();
 
-    // In den Reisebüros die Zettel nachfüllen:
+    // In den ReisebÃ¼ros die Zettel nachfÃ¼llen:
     gFrachten.Random.SRand(Sim.Date);
     LastMinuteAuftraege.Random.SRand(Sim.Date + 1);
     ReisebueroAuftraege.Random.SRand(Sim.Date + 2);
@@ -2602,7 +2602,7 @@ void SIM::NewDay() {
 
     AIRPORT::UpdateStaticDoorImage();
 
-    // Neue Flugzeuge für's Museum:
+    // Neue Flugzeuge fÃ¼r's Museum:
     CreateRandomUsedPlanes();
 
     // Variablen ersetzen
@@ -2631,9 +2631,9 @@ void SIM::NewDay() {
 
                 if (TafelData.City[c].WasInterested != 0) {
                     if (TafelData.City[c].Player == Sim.localPlayer) {
-                        GotIt += bprintf("%s: %sµ", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2610)), LPCTSTR(Cities[TafelData.City[c].ZettelId].Name));
+                        GotIt += bprintf("%s: %s\xb5", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2610)), LPCTSTR(Cities[TafelData.City[c].ZettelId].Name));
                     } else {
-                        GotItNot += bprintf("%s: %sµ", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2610)), LPCTSTR(Cities[TafelData.City[c].ZettelId].Name));
+                        GotItNot += bprintf("%s: %s\xb5", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2610)), LPCTSTR(Cities[TafelData.City[c].ZettelId].Name));
                     }
                 }
 
@@ -2658,11 +2658,11 @@ void SIM::NewDay() {
 
                 if (TafelData.Route[c].WasInterested != 0) {
                     if (TafelData.Route[c].Player == Sim.localPlayer) {
-                        GotIt += bprintf("%s: %s-%sµ", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2611)),
+                        GotIt += bprintf("%s: %s-%s\xb5", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2611)),
                                          LPCTSTR(Cities[Routen[TafelData.Route[c].ZettelId].VonCity].Name),
                                          LPCTSTR(Cities[Routen[TafelData.Route[c].ZettelId].NachCity].Name));
                     } else {
-                        GotItNot += bprintf("%s: %s-%sµ", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2611)),
+                        GotItNot += bprintf("%s: %s-%s\xb5", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2611)),
                                             LPCTSTR(Cities[Routen[TafelData.Route[c].ZettelId].VonCity].Name),
                                             LPCTSTR(Cities[Routen[TafelData.Route[c].ZettelId].NachCity].Name));
                     }
@@ -2685,9 +2685,9 @@ void SIM::NewDay() {
 
                 if (TafelData.Gate[c].WasInterested != 0) {
                     if (TafelData.Gate[c].Player == Sim.localPlayer) {
-                        GotIt += bprintf("%s: %liµ", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2612)), TafelData.Gate[c].ZettelId + 1);
+                        GotIt += bprintf("%s: %li\xb5", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2612)), TafelData.Gate[c].ZettelId + 1);
                     } else {
-                        GotItNot += bprintf("%s: %liµ", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2612)), TafelData.Gate[c].ZettelId + 1);
+                        GotItNot += bprintf("%s: %li\xb5", LPCTSTR(StandardTexte.GetS(TOKEN_MISC, 2612)), TafelData.Gate[c].ZettelId + 1);
                     }
                 }
 
@@ -2719,7 +2719,7 @@ void SIM::NewDay() {
             }
             if (GotItNot.GetLength() > 0) {
                 if (GotIt.GetLength() > 0) {
-                    Letter += "µµ";
+                    Letter += "\xb5\xb5";
                 }
                 Letter += StandardTexte.GetS(TOKEN_MISC, 2603) + GotItNot;
             }
@@ -2732,7 +2732,7 @@ void SIM::NewDay() {
 
     Airport.CreateGateMapper();
 
-    // Aufträge, Routen, Etc.
+    // AuftrÃ¤ge, Routen, Etc.
     TafelData.Randomize(min(Date + 2, 7));
 
     Workers.NewDay();
@@ -2764,7 +2764,7 @@ void SIM::NewDay() {
         }
     }
 
-    // Bei ATFS-Megasabotage-Mission ggf. künstlich Sabotage einfügen:
+    // Bei ATFS-Megasabotage-Mission ggf. kÃ¼nstlich Sabotage einfÃ¼gen:
     if (Sim.Difficulty == DIFF_ATFS06) {
         TEAKRAND SaboRand(Sim.Date + long(Sim.Players.Players[Sim.localPlayer].Money));
 
@@ -2861,7 +2861,7 @@ void SIM::NewDay() {
 }
 
 //--------------------------------------------------------------------------------------------
-// Sucht ein zufälliges Flugzeug für heute aus:
+// Sucht ein zufÃ¤lliges Flugzeug fÃ¼r heute aus:
 //--------------------------------------------------------------------------------------------
 void SIM::CreateRandomUsedPlane(SLONG Index) {
     TEAKRAND rnd;
@@ -2891,7 +2891,7 @@ void SIM::CreateRandomUsedPlane(SLONG Index) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Sucht drei zufällige Flugzeuge für heute aus:
+// Sucht drei zufÃ¤llige Flugzeuge fÃ¼r heute aus:
 //--------------------------------------------------------------------------------------------
 void SIM::CreateRandomUsedPlanes() {
     SLONG c = 0;
@@ -2913,12 +2913,12 @@ void SIM::CreateRandomUsedPlanes() {
 }
 
 //--------------------------------------------------------------------------------------------
-// Füllt nach einiger Zeit die Flieger wieder auf:
+// FÃ¼llt nach einiger Zeit die Flieger wieder auf:
 //--------------------------------------------------------------------------------------------
 void SIM::UpdateUsedPlanes() {
     SLONG c = 0;
     SLONG Anz =
-        min(SLONG(UsedPlanes.AnzEntries()), Sim.TickMuseumRefill / 20); // Normalerweise war das früher Time-Last / 5000, hier aber /100000, also effektiv /20
+        min(SLONG(UsedPlanes.AnzEntries()), Sim.TickMuseumRefill / 20); // Normalerweise war das frÃ¼her Time-Last / 5000, hier aber /100000, also effektiv /20
 
     for (c = 0; c < SLONG(UsedPlanes.AnzEntries()) && Anz > 0; c++) {
         if (UsedPlanes[0x1000000 + c].Name.GetLength() == 0) {
@@ -3068,7 +3068,7 @@ TEAKFILE &operator<<(TEAKFILE &File, const SIM &Sim) {
     File.WriteTrap(100);
     File << Sim.TickReisebueroRefill << Sim.TickLastMinuteRefill << Sim.TickMuseumRefill;
 
-    // Die Ausbauzustände des Flughafens:
+    // Die AusbauzustÃ¤nde des Flughafens:
     File.WriteTrap(100);
     File << Sim.LeftEnd << Sim.CheckIn << Sim.Office << Sim.Entry << Sim.Shops;
     File << Sim.Cafe << Sim.Security << Sim.Suitcase << Sim.WaitZone << Sim.RightEnd;
@@ -3085,7 +3085,7 @@ TEAKFILE &operator<<(TEAKFILE &File, const SIM &Sim) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Lädt ein Sim-Objekt:
+// LÃ¤dt ein Sim-Objekt:
 //--------------------------------------------------------------------------------------------
 TEAKFILE &operator>>(TEAKFILE &File, SIM &Sim) {
     SLONG c = 0;
@@ -3136,7 +3136,7 @@ TEAKFILE &operator>>(TEAKFILE &File, SIM &Sim) {
         File >> Sim.RFTriebwerk >> Sim.RFReifen >> Sim.RFElektronik >> Sim.RFSicherheit;
 
         BOOL bIsHostDummy = 0;
-        File >> bIsHostDummy; // Sim.bIsHost; (bringt probleme, wenn wir den Host so ändern; wir müssen beim DX Wert bleiben)
+        File >> bIsHostDummy; // Sim.bIsHost; (bringt probleme, wenn wir den Host so Ã¤ndern; wir mÃ¼ssen beim DX Wert bleiben)
     } else {
         Sim.ItemGlove = Sim.ItemClips = 1;
         Sim.ItemGlue = 0;
@@ -3182,7 +3182,7 @@ TEAKFILE &operator>>(TEAKFILE &File, SIM &Sim) {
     File.ReadTrap(100);
     File >> Sim.TickReisebueroRefill >> Sim.TickLastMinuteRefill >> Sim.TickMuseumRefill;
 
-    // Die Ausbauzustände des Flughafens:
+    // Die AusbauzustÃ¤nde des Flughafens:
     File.ReadTrap(100);
     File >> Sim.LeftEnd >> Sim.CheckIn >> Sim.Office >> Sim.Entry >> Sim.Shops;
     File >> Sim.Cafe >> Sim.Security >> Sim.Suitcase >> Sim.WaitZone >> Sim.RightEnd;
@@ -3216,7 +3216,7 @@ TEAKFILE &operator>>(TEAKFILE &File, SIM &Sim) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Lädt einen Spielstand:
+// LÃ¤dt einen Spielstand:
 //--------------------------------------------------------------------------------------------
 BOOL SIM::LoadGame(SLONG Number) {
     const char *pNamebaseStr = nullptr;
@@ -3242,7 +3242,7 @@ BOOL SIM::LoadGame(SLONG Number) {
 
     bgIsLoadingSavegame = true;
 
-    // Ein paar Dinge, wenn man vom Hauptmenü kommt:
+    // Ein paar Dinge, wenn man vom HauptmenÃ¼ kommt:
     if (NewgameWantsToLoad != 0) {
         Sim.Gamestate = GAMESTATE_PLAYING | GAMESTATE_WORKING;
         Sim.DayState = 1;
@@ -3323,7 +3323,7 @@ BOOL SIM::LoadGame(SLONG Number) {
         InputFile >> NumSaveGameCities;
     }
 
-    // Das Spielgerüst:
+    // Das SpielgerÃ¼st:
     InputFile >> Sim;
     InputFile.ReadTrap(100);
 
@@ -3413,7 +3413,7 @@ BOOL SIM::LoadGame(SLONG Number) {
         }
     }
 
-    // Manchmal wird der Checkin nicht richtig gespeichert. Warum, weiß ich nicht, aber das hier korrigiert es:
+    // Manchmal wird der Checkin nicht richtig gespeichert. Warum, weiÃŸ ich nicht, aber das hier korrigiert es:
     if (d - 4 + 1 > Sim.CheckIn) {
         Sim.CheckIn = d - 4 + 1;
         Sim.WaitZone = d - 4 + 1;
@@ -3436,7 +3436,7 @@ BOOL SIM::LoadGame(SLONG Number) {
     bgJustDidLotsOfWork = TRUE;
     bgIsLoadingSavegame = false;
 
-    // Postfix zum Laden von alten Spielständen in die Deluxe-Version:
+    // Postfix zum Laden von alten SpielstÃ¤nden in die Deluxe-Version:
     if (NumSaveGameCities != Cities.AnzEntries()) {
         //------------------------
         // Routen + RentRouten:
@@ -3461,7 +3461,7 @@ BOOL SIM::LoadGame(SLONG Number) {
         // Die Routen-Tabelle erweitern:
         Routen.ReInitExtend("routen.csv");
 
-        // Die RentRouten der Players auf die Größe bringen und die neue Reihenfolge mappen
+        // Die RentRouten der Players auf die GrÃ¶ÃŸe bringen und die neue Reihenfolge mappen
         for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
             Sim.Players.Players[c].RentRouten.RentRouten.ReSize(0);
             Sim.Players.Players[c].RentRouten.RentRouten.ReSize(Routen.AnzEntries());
@@ -3477,7 +3477,7 @@ BOOL SIM::LoadGame(SLONG Number) {
         // RentCities:
         //------------------------
 
-        // Die RentCities der Players auf die Größe bringen und die neue Reihenfolge mappen
+        // Die RentCities der Players auf die GrÃ¶ÃŸe bringen und die neue Reihenfolge mappen
         for (d = 0; d < Cities.AnzEntries(); d++) {
             if (Cities[d].bNewInAddOn == 2) {
                 for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
@@ -3580,7 +3580,7 @@ void SIM::SaveGame(SLONG Number, const CString &Name) const {
         OutputFile << NumSaveGameCities;
     }
 
-    // Das Spielgerüst:
+    // Das SpielgerÃ¼st:
     OutputFile << Sim;
     OutputFile.WriteTrap(100);
 
@@ -3631,7 +3631,7 @@ void SIM::SaveGame(SLONG Number, const CString &Name) const {
 }
 
 //--------------------------------------------------------------------------------------------
-// Gibt den Localplayer eines Spielstandes zurück
+// Gibt den Localplayer eines Spielstandes zurÃ¼ck
 //--------------------------------------------------------------------------------------------
 SLONG SIM::GetSavegameLocalPlayer(SLONG Index) {
     CString Filename;
@@ -3673,7 +3673,7 @@ SLONG SIM::GetSavegameLocalPlayer(SLONG Index) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Gibt den UniqueGameId eines Savegames zurück:
+// Gibt den UniqueGameId eines Savegames zurÃ¼ck:
 //--------------------------------------------------------------------------------------------
 DWORD SIM::GetSavegameUniqueGameId(SLONG Index, bool bForceNetwork) {
     CString Filename;
@@ -3842,7 +3842,7 @@ void SIM::ReadSavegameOwners(SLONG Index) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Lädt die Optionen aus der Registry:
+// LÃ¤dt die Optionen aus der Registry:
 //--------------------------------------------------------------------------------------------
 void SIM::LoadOptions() {
     Options.ReadOptions();
@@ -3855,7 +3855,7 @@ void SIM::LoadOptions() {
 void SIM::SaveOptions() { Options.WriteOptions(); }
 
 //--------------------------------------------------------------------------------------------
-// Bringt den Benutzungplan der Räume auf den neusten Stand:
+// Bringt den Benutzungplan der RÃ¤ume auf den neusten Stand:
 //--------------------------------------------------------------------------------------------
 void SIM::UpdateRoomUsage() {
     SLONG c = 0;
@@ -3951,7 +3951,7 @@ void SIM::UpdateRoomUsage() {
 //--------------------------------------------------------------------------------------------
 // Send a message to all players: please refill:
 // Type: 1 - LastMinute
-// Type: 2 - Reisebüro
+// Type: 2 - ReisebÃ¼ro
 // Type: 3 - Fracht
 // Type: 4 - Ausland, City = CityIndex
 //--------------------------------------------------------------------------------------------
@@ -3991,7 +3991,7 @@ void SIM::NetRefill(SLONG Type, SLONG City) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Ein Spieler will einen anderen übernehmen:
+// Ein Spieler will einen anderen Ã¼bernehmen:
 //--------------------------------------------------------------------------------------------
 void SIM::NetSynchronizeOvertake() const { SIM::SendSimpleMessage(ATNET_OVERTAKE, 0, OvertakenAirline, OvertakerAirline, Overtake); }
 
@@ -4002,7 +4002,7 @@ void SIM::AddHighscore(const CString &Name, DWORD UniqueGameId2, __int64 Score) 
     long c = 0;
     long d = 0;
 
-    // Pass 1: Einen existierenden Eintrag der gleichen Session überschreiben?
+    // Pass 1: Einen existierenden Eintrag der gleichen Session Ã¼berschreiben?
     for (c = 0; c < 6; c++) {
         if (UniqueGameId2 == Highscores[c].UniqueGameId2) {
             if (Score > Highscores[c].Score) {
@@ -4029,7 +4029,7 @@ void SIM::AddHighscore(const CString &Name, DWORD UniqueGameId2, __int64 Score) 
         }
     }
 
-    // Pass 2: Eine neue Session hinzufügen:
+    // Pass 2: Eine neue Session hinzufÃ¼gen:
     for (c = 0; c < 6; c++) {
         if (Score > Highscores[c].Score) {
             for (d = 4; d >= c; d--) {
@@ -4331,7 +4331,7 @@ void COptions::ReadOptions() {
         Sim.MaxDifficulty = 0;
     }
 
-    // Schwierigkeitsgrad für AddOn decodieren:
+    // Schwierigkeitsgrad fÃ¼r AddOn decodieren:
     {
         for (c = 0; c < 10; c++) {
             if (MissionKeys2[c] == Sim.MaxDifficulty2) {
@@ -4344,7 +4344,7 @@ void COptions::ReadOptions() {
         }
     }
 
-    // Schwierigkeitsgrad für AddOn Flight Security decodieren:
+    // Schwierigkeitsgrad fÃ¼r AddOn Flight Security decodieren:
     {
         for (c = 0; c < 10; c++) {
             if (MissionKeys3[c] == Sim.MaxDifficulty3) {
@@ -4437,12 +4437,12 @@ void COptions::WriteOptions() {
     }
 
     // Den Intro-Eintrag nur schreiben, wenn wir keine Demo haben. Sonst schaut sich jemand eine
-    // Demo ohne Intro an. Und wenn er dann das richtige Spiel kauft gäbe es keinen Intro.
+    // Demo ohne Intro an. Und wenn er dann das richtige Spiel kauft gÃ¤be es keinen Intro.
 #ifndef NO_INTRO
     reg.WriteRegistryKey_b(&OptionViewedIntro);
 #endif
 
-    // Und fast das gleiche für die Sprechblasen
+    // Und fast das gleiche fÃ¼r die Sprechblasen
 #ifdef NO_D_VOICES
     if (gLanguage == LANGUAGE_D)
         goto dont_save_talking;
@@ -4512,12 +4512,12 @@ void SValue::Init() {
 }
 
 //--------------------------------------------------------------------------------------------
-// Verwaltung für den neuen Tag:
+// Verwaltung fÃ¼r den neuen Tag:
 //--------------------------------------------------------------------------------------------
 void SValue::NewDay() { memmove(Days + 1, Days, 30 * sizeof(Days[0])); }
 
 //--------------------------------------------------------------------------------------------
-// Verwaltung für den neuen Monat:
+// Verwaltung fÃ¼r den neuen Monat:
 //--------------------------------------------------------------------------------------------
 void SValue::NewMonth(BOOL MonthIsSumOfDays) {
     memmove(Months + 1, Months, 11 * sizeof(Months[0]));
