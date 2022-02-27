@@ -263,7 +263,7 @@ class TEAKFILE {
     ULONG MemBufferUsed;
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const bool &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, bool &b) {
@@ -272,7 +272,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const signed char &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, signed char &b) {
@@ -281,7 +281,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const unsigned char &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, unsigned char &b) {
@@ -290,7 +290,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const unsigned short &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, unsigned short &b) {
@@ -299,7 +299,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const signed short &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, signed short &b) {
@@ -308,7 +308,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const unsigned int &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, unsigned int &b) {
@@ -317,7 +317,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const signed int &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, signed int &b) {
@@ -326,7 +326,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const unsigned long &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, unsigned long &b) {
@@ -335,7 +335,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const signed long &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, signed long &b) {
@@ -344,7 +344,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const __int64 &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, __int64 &b) {
@@ -353,7 +353,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const double &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, double &b) {
@@ -362,7 +362,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const float &b) {
-        File.Write((UBYTE *)&b, sizeof(b));
+        File.Write((const UBYTE *)&b, sizeof(b));
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, float &b) {
@@ -371,7 +371,7 @@ class TEAKFILE {
     }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const CPoint &b) {
-        File.Write((UBYTE *)&b, sizeof(CPoint));
+        File.Write((const UBYTE *)&b, sizeof(CPoint));
         return (File);
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, CPoint &b) {
@@ -381,7 +381,7 @@ class TEAKFILE {
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const CString &b) {
         File << b.GetLength() + 1;
-        File.Write((UBYTE *)(PCSTR)b, b.GetLength() + 1);
+        File.Write((const UBYTE *)(PCSTR)b, b.GetLength() + 1);
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, CString &b) {
@@ -470,8 +470,8 @@ class CRLEReader {
 
   private:
     SDL_RWops *Ctx;
-    char SeqLength;
-    char SeqUsed;
+    int8_t SeqLength;
+    int8_t SeqUsed;
     bool IsSeq;
     BYTE Sequence[132];
 
@@ -572,7 +572,7 @@ template <typename T> class TXY {
     bool IfIsWithin(const TXY<T> &a, const TXY<T> &b) const { return a < *this && *this < b; }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const TXY<T> &b) {
-        File.Write((UBYTE *)&b, sizeof(T) * 2);
+        File.Write((const UBYTE *)&b, sizeof(T) * 2);
         return (File);
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, TXY<T> &b) {
@@ -646,7 +646,7 @@ template <typename T> class TXYZ {
     double operator/(const double &b) const { return (x + y + z) / b; }
 
     friend TEAKFILE &operator<<(TEAKFILE &File, const TXYZ<T> &b) {
-        File.Write((UBYTE *)&b, sizeof(T) * 3);
+        File.Write((const UBYTE *)&b, sizeof(T) * 3);
         return (File);
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, TXYZ<T> &b) {
@@ -705,7 +705,7 @@ class TEXTRES {
     char *GetP(ULONG, ULONG);
     char *GetS(ULONG, ULONG);
     // char* GetS(ULONG, char const*);
-    char *GetS(char const *c, ULONG i) { return GetS(*(ULONG *)c, i); }
+    char *GetS(char const *c, ULONG i) { return GetS(*(const ULONG *)c, i); }
 
   private:
     BUFFER_V<char> Path;
