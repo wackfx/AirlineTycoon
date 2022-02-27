@@ -34,7 +34,7 @@ int RoomsPlugin::RoomsPluginParticipantCompByRakString( const RakNet::RakString 
     return strcmp(key.C_String(), data->GetName().C_String());
 }
 
-void RoomsPluginFunc::PrintResult(void) const
+void RoomsPluginFunc::PrintResult() const
 {
     printf("Result for user %s: %s\n", userName.C_String(), RoomsErrorCodeDescription::ToEnglish(resultCode));
 }
@@ -528,7 +528,7 @@ void SearchByFilter_Func::SerializeOut(bool writeToBitstream, RakNet::BitStream 
             roomsOutput[i]->Serialize(true,bitStream);
         } else
         {
-            RoomDescriptor *desc = RakNet::OP_NEW<RoomDescriptor>( _FILE_AND_LINE_ );
+            auto *desc = RakNet::OP_NEW<RoomDescriptor>( _FILE_AND_LINE_ );
             desc->Serialize(false,bitStream);
             roomsOutput.Insert(desc, _FILE_AND_LINE_ );
         }
@@ -636,7 +636,7 @@ void CustomRoomPropertiesSet_Notification::Serialize(bool writeToBitstream, RakN
     bitStream->Serialize(writeToBitstream, roomId);
     if (writeToBitstream)
     {
-        if (tablePtr==0) {
+        if (tablePtr==nullptr) {
             tablePtr=&table;
 }
         TableSerializer::SerializeTable(tablePtr, bitStream);
@@ -751,7 +751,7 @@ void RoomMemberJoinedRoom_Notification::Serialize(bool writeToBitstream, RakNet:
     bitStream->Serialize(writeToBitstream, messageId);
     bitStream->Serialize(writeToBitstream, recipient);
     bitStream->Serialize(writeToBitstream, roomId);
-    if (joinedRoomResult==0 && !writeToBitstream) {
+    if (joinedRoomResult==nullptr && !writeToBitstream) {
         joinedRoomResult = RakNet::OP_NEW<JoinedRoomResult>( _FILE_AND_LINE_ );
 }
     joinedRoomResult->Serialize(writeToBitstream, bitStream);
@@ -813,7 +813,7 @@ RoomsPlugin::RoomsPlugin()
 {
     lastUpdateTime=0;
     orderingChannel=0;
-    profanityFilter=0;
+    profanityFilter=nullptr;
     packetPriority=HIGH_PRIORITY;
     serverAddress=RakNet::UNASSIGNED_SYSTEM_ADDRESS;
     SetRoomsCallback(this);
@@ -891,7 +891,7 @@ bool RoomsPlugin::LoginRoomsParticipant(const RakNet::RakString& userName, Syste
     index=roomsParticipants.GetIndexFromKey(userName, &objectExists);
     if (!objectExists)
     {
-        RoomsPluginParticipant *rpp = RakNet::OP_NEW<RoomsPluginParticipant>( _FILE_AND_LINE_ );
+        auto *rpp = RakNet::OP_NEW<RoomsPluginParticipant>( _FILE_AND_LINE_ );
         rpp->SetSystemAddress(roomsParticipantAddress);
         rpp->SetGUID(guid);
         rpp->SetName(userName);
@@ -919,7 +919,7 @@ bool RoomsPlugin::LogoffRoomsParticipant(const RakNet::RakString& userName, Syst
     }
     return false;
 }
-void RoomsPlugin::ClearRoomMembers(void)
+void RoomsPlugin::ClearRoomMembers()
 {
     unsigned int i;
     for (i=0; i < roomsParticipants.Size(); i++) {
@@ -974,7 +974,7 @@ void RoomsPlugin::RemoveLoginServerAddress(SystemAddress systemAddress)
         loginServers.RemoveAtIndexFast(index);
 }
 }
-void RoomsPlugin::ClearLoginServerAdddresses(void)
+void RoomsPlugin::ClearLoginServerAdddresses()
 {
     loginServers.Clear(false, _FILE_AND_LINE_);
 }
@@ -982,15 +982,15 @@ void RoomsPlugin::SetProfanityFilter(ProfanityFilter *pf)
 {
     profanityFilter=pf;
 }
-void RoomsPlugin::OnDetach(void)
+void RoomsPlugin::OnDetach()
 {
     Clear();
 }
-void RoomsPlugin::OnShutdown(void)
+void RoomsPlugin::OnShutdown()
 {
     Clear();
 }
-void RoomsPlugin::Update(void)
+void RoomsPlugin::Update()
 {
     if (!IsServer()) {
         return;
@@ -1029,7 +1029,7 @@ void RoomsPlugin::Update(void)
             notificationToRoom.joinedRoomResult->agrc=&roomsContainer;
             notificationToRoom.roomId=notificationToRoom.joinedRoomResult->roomDescriptor.lobbyRoomId;
             ExecuteNotificationToOtherRoomMembers(joinedRoomMembers[i].joiningMember->GetRoom(), (RoomsPluginParticipant*)joinedRoomMembers[i].joiningMember, &notificationToRoom);
-            notificationToRoom.joinedRoomResult=0;
+            notificationToRoom.joinedRoomResult=nullptr;
         }
 
         for (i=0; i < dereferencedPointers.Size(); i++) {
@@ -1757,7 +1757,7 @@ void RoomsPlugin::OnClosedConnection(const SystemAddress &systemAddress, RakNetG
     }
 
 }
-void RoomsPlugin::Clear(void)
+void RoomsPlugin::Clear()
 {
     ClearRoomMembers();
     ClearLoginServerAdddresses();
@@ -1767,10 +1767,10 @@ void RoomsPlugin::SetServer(bool isServer) {
     this->isServer = isServer;
 }
 
-bool RoomsPlugin::IsServer(void) const
+bool RoomsPlugin::IsServer() const
 {
     return isServer;
-    RoomsCallback *rc=(RoomsCallback *) this;
+    auto *rc=(RoomsCallback *) this;
     return roomsCallback.GetIndexOf(rc)!=(unsigned int) -1;
 }
 RoomsPlugin::RoomsPluginParticipant* RoomsPlugin::GetParticipantByHandle(const RakNet::RakString& handle, const SystemAddress &senderAddress)
@@ -1787,11 +1787,11 @@ RoomsPlugin::RoomsPluginParticipant* RoomsPlugin::GetParticipantByHandle(const R
             return rp;
 }
         if (rp->GetSystemAddress()!=senderAddress) {
-            return 0;
+            return nullptr;
 }
         return rp;
     }
-    return 0;
+    return nullptr;
 }
 RoomsPlugin::RoomsPluginParticipant* RoomsPlugin::ValidateUserHandle(RoomsPluginFunc* func, const SystemAddress &systemAddress)
 {
@@ -1799,10 +1799,10 @@ RoomsPlugin::RoomsPluginParticipant* RoomsPlugin::ValidateUserHandle(RoomsPlugin
     {
         func->resultCode=REC_USERNAME_IS_EMPTY;
         ExecuteFunc(func, systemAddress);
-        return 0;
+        return nullptr;
     }
     RoomsPluginParticipant* roomsPluginParticipant = GetParticipantByHandle(func->userName, systemAddress);
-    if (roomsPluginParticipant==0)
+    if (roomsPluginParticipant==nullptr)
     {
         func->resultCode=REC_NOT_LOGGED_IN;
         ExecuteFunc(func, systemAddress);
@@ -1815,7 +1815,7 @@ void RoomsPlugin::CreateRoom_Callback( const SystemAddress &senderAddress, Creat
     rcp.networkedRoomCreationParameters=callResult->networkedRoomCreationParameters;
     rcp.gameIdentifier=callResult->gameIdentifier;
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     rcp.firstUser=roomsPluginParticipant;
@@ -1838,7 +1838,7 @@ void RoomsPlugin::EnterRoom_Callback( const SystemAddress &senderAddress, EnterR
     rcp.networkedRoomCreationParameters=callResult->networkedRoomCreationParameters;
     rcp.gameIdentifier=callResult->gameIdentifier;
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     rcp.firstUser=roomsPluginParticipant;
@@ -1856,7 +1856,7 @@ void RoomsPlugin::EnterRoom_Callback( const SystemAddress &senderAddress, EnterR
             notificationToRoom.joinedRoomResult=&callResult->joinedRoomResult;
             notificationToRoom.roomId=notificationToRoom.joinedRoomResult->roomDescriptor.lobbyRoomId;
             ExecuteNotificationToOtherRoomMembers(callResult->joinedRoomResult.roomOutput, roomsPluginParticipant, &notificationToRoom);
-            notificationToRoom.joinedRoomResult=0;
+            notificationToRoom.joinedRoomResult=nullptr;
         }
     }
     ExecuteFunc(callResult, senderAddress);
@@ -1864,7 +1864,7 @@ void RoomsPlugin::EnterRoom_Callback( const SystemAddress &senderAddress, EnterR
 void RoomsPlugin::JoinByFilter_Callback( const SystemAddress &senderAddress, JoinByFilter_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=roomsContainer.JoinByFilter(callResult->gameIdentifier, callResult->roomMemberMode, roomsPluginParticipant, roomsPluginParticipant->lastRoomJoined, &callResult->query, &callResult->joinedRoomResult );
@@ -1878,14 +1878,14 @@ void RoomsPlugin::JoinByFilter_Callback( const SystemAddress &senderAddress, Joi
         notificationToRoom.joinedRoomResult=&callResult->joinedRoomResult;
         notificationToRoom.roomId=notificationToRoom.joinedRoomResult->roomDescriptor.lobbyRoomId;
         ExecuteNotificationToOtherRoomMembers(roomsPluginParticipant->GetRoom(), roomsPluginParticipant, &notificationToRoom);
-        notificationToRoom.joinedRoomResult=0;
+        notificationToRoom.joinedRoomResult=nullptr;
     }
     ExecuteFunc(callResult, senderAddress);
 }
 void RoomsPlugin::LeaveRoom_Callback( const SystemAddress &senderAddress, LeaveRoom_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::LeaveRoom( roomsPluginParticipant, &callResult->removeUserResult );
@@ -1895,7 +1895,7 @@ void RoomsPlugin::LeaveRoom_Callback( const SystemAddress &senderAddress, LeaveR
 void RoomsPlugin::GetInvitesToParticipant_Callback( const SystemAddress &senderAddress, GetInvitesToParticipant_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     DataStructures::List<InvitedUser*> invitedUsers;
@@ -1909,11 +1909,11 @@ void RoomsPlugin::GetInvitesToParticipant_Callback( const SystemAddress &senderA
 void RoomsPlugin::SendInvite_Callback( const SystemAddress &senderAddress, SendInvite_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     RoomsPluginParticipant* inviteeId = GetParticipantByHandle( callResult->inviteeName, UNASSIGNED_SYSTEM_ADDRESS );
-    if (inviteeId==0)
+    if (inviteeId==nullptr)
     {
         callResult->resultCode=REC_SEND_INVITE_RECIPIENT_NOT_ONLINE;
         ExecuteFunc(callResult, senderAddress);
@@ -1936,7 +1936,7 @@ void RoomsPlugin::SendInvite_Callback( const SystemAddress &senderAddress, SendI
 void RoomsPlugin::AcceptInvite_Callback( const SystemAddress &senderAddress, AcceptInvite_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     Room *room;
@@ -1945,7 +1945,7 @@ void RoomsPlugin::AcceptInvite_Callback( const SystemAddress &senderAddress, Acc
     {
         RoomMemberJoinedRoom_Notification notificationToRoom;
         notificationToRoom.joinedRoomResult=RakNet::OP_NEW<JoinedRoomResult>( _FILE_AND_LINE_ );
-        notificationToRoom.joinedRoomResult->acceptedInvitor=0;
+        notificationToRoom.joinedRoomResult->acceptedInvitor=nullptr;
         notificationToRoom.joinedRoomResult->acceptedInvitorName=callResult->inviteSender;
         notificationToRoom.joinedRoomResult->joiningMember=roomsPluginParticipant;
         notificationToRoom.joinedRoomResult->joiningMemberName=roomsPluginParticipant->GetName();
@@ -1960,7 +1960,7 @@ void RoomsPlugin::AcceptInvite_Callback( const SystemAddress &senderAddress, Acc
 void RoomsPlugin::StartSpectating_Callback( const SystemAddress &senderAddress, StartSpectating_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::StartSpectating( roomsPluginParticipant );
@@ -1976,7 +1976,7 @@ void RoomsPlugin::StartSpectating_Callback( const SystemAddress &senderAddress, 
 void RoomsPlugin::StopSpectating_Callback( const SystemAddress &senderAddress, StopSpectating_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::StopSpectating( roomsPluginParticipant );
@@ -1992,11 +1992,11 @@ void RoomsPlugin::StopSpectating_Callback( const SystemAddress &senderAddress, S
 void RoomsPlugin::GrantModerator_Callback( const SystemAddress &senderAddress, GrantModerator_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     RoomsPluginParticipant* newModerator = GetParticipantByHandle( callResult->newModerator, UNASSIGNED_SYSTEM_ADDRESS );
-    if (newModerator==0)
+    if (newModerator==nullptr)
     {
         callResult->resultCode=REC_GRANT_MODERATOR_NEW_MODERATOR_NOT_ONLINE;
         ExecuteFunc(callResult, senderAddress);
@@ -2027,7 +2027,7 @@ void RoomsPlugin::GrantModerator_Callback( const SystemAddress &senderAddress, G
 void RoomsPlugin::ChangeSlotCounts_Callback( const SystemAddress &senderAddress, ChangeSlotCounts_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::ChangeSlotCounts( roomsPluginParticipant, callResult->slots );
@@ -2045,7 +2045,7 @@ void RoomsPlugin::ChangeSlotCounts_Callback( const SystemAddress &senderAddress,
 void RoomsPlugin::SetCustomRoomProperties_Callback( const SystemAddress &senderAddress, SetCustomRoomProperties_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=roomsContainer.SetCustomRoomProperties( roomsPluginParticipant, &callResult->table );
@@ -2061,7 +2061,7 @@ void RoomsPlugin::SetCustomRoomProperties_Callback( const SystemAddress &senderA
 void RoomsPlugin::GetRoomProperties_Callback( const SystemAddress &senderAddress, GetRoomProperties_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
 
@@ -2069,7 +2069,7 @@ void RoomsPlugin::GetRoomProperties_Callback( const SystemAddress &senderAddress
     if (callResult->roomName.IsEmpty())
     {
         room=roomsPluginParticipant->GetRoom();
-        if (room==0)
+        if (room==nullptr)
         {
             callResult->resultCode=REC_GET_ROOM_PROPERTIES_EMPTY_ROOM_NAME_AND_NOT_IN_A_ROOM;
             ExecuteFunc(callResult, senderAddress);
@@ -2080,7 +2080,7 @@ void RoomsPlugin::GetRoomProperties_Callback( const SystemAddress &senderAddress
     else
     {
         room = roomsContainer.GetRoomByName(callResult->roomName);
-        if (room==0)
+        if (room==nullptr)
         {
             callResult->resultCode=REC_GET_ROOM_PROPERTIES_UNKNOWN_ROOM_NAME;
             ExecuteFunc(callResult, senderAddress);
@@ -2095,7 +2095,7 @@ void RoomsPlugin::GetRoomProperties_Callback( const SystemAddress &senderAddress
 void RoomsPlugin::ChangeRoomName_Callback( const SystemAddress &senderAddress, ChangeRoomName_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     RoomNameSet_Notification notification;
@@ -2114,7 +2114,7 @@ void RoomsPlugin::ChangeRoomName_Callback( const SystemAddress &senderAddress, C
 void RoomsPlugin::SetHiddenFromSearches_Callback( const SystemAddress &senderAddress, SetHiddenFromSearches_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::SetHiddenFromSearches( roomsPluginParticipant, callResult->hiddenFromSearches );
@@ -2130,7 +2130,7 @@ void RoomsPlugin::SetHiddenFromSearches_Callback( const SystemAddress &senderAdd
 void RoomsPlugin::SetDestroyOnModeratorLeave_Callback( const SystemAddress &senderAddress, SetDestroyOnModeratorLeave_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::SetDestroyOnModeratorLeave( roomsPluginParticipant, callResult->destroyOnModeratorLeave );
@@ -2139,7 +2139,7 @@ void RoomsPlugin::SetDestroyOnModeratorLeave_Callback( const SystemAddress &send
 void RoomsPlugin::SetReadyStatus_Callback( const SystemAddress &senderAddress, SetReadyStatus_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::SetReadyStatus( roomsPluginParticipant, callResult->isReady );
@@ -2178,10 +2178,10 @@ void RoomsPlugin::SetReadyStatus_Callback( const SystemAddress &senderAddress, S
 void RoomsPlugin::GetReadyStatus_Callback( const SystemAddress &senderAddress, GetReadyStatus_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
-    if (roomsPluginParticipant->GetRoom()==0)
+    if (roomsPluginParticipant->GetRoom()==nullptr)
     {
         callResult->resultCode=REC_GET_READY_STATUS_NOT_IN_ROOM;
         ExecuteFunc(callResult, senderAddress);
@@ -2204,7 +2204,7 @@ void RoomsPlugin::GetReadyStatus_Callback( const SystemAddress &senderAddress, G
 void RoomsPlugin::SetRoomLockState_Callback( const SystemAddress &senderAddress, SetRoomLockState_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::SetRoomLockState( roomsPluginParticipant, callResult->roomLockState );
@@ -2220,10 +2220,10 @@ void RoomsPlugin::SetRoomLockState_Callback( const SystemAddress &senderAddress,
 void RoomsPlugin::GetRoomLockState_Callback( const SystemAddress &senderAddress, GetRoomLockState_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
-    if (roomsPluginParticipant->GetRoom()==0)
+    if (roomsPluginParticipant->GetRoom()==nullptr)
     {
         callResult->resultCode=REC_GET_ROOM_LOCK_STATE_NOT_IN_ROOM;
         ExecuteFunc(callResult, senderAddress);
@@ -2236,10 +2236,10 @@ void RoomsPlugin::GetRoomLockState_Callback( const SystemAddress &senderAddress,
 void RoomsPlugin::AreAllMembersReady_Callback( const SystemAddress &senderAddress, AreAllMembersReady_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
-    if (roomsPluginParticipant->GetRoom()==0)
+    if (roomsPluginParticipant->GetRoom()==nullptr)
     {
         callResult->resultCode=REC_ARE_ALL_MEMBERS_READY_NOT_IN_ROOM;
         ExecuteFunc(callResult, senderAddress);
@@ -2252,11 +2252,11 @@ void RoomsPlugin::AreAllMembersReady_Callback( const SystemAddress &senderAddres
 void RoomsPlugin::KickMember_Callback( const SystemAddress &senderAddress, KickMember_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     RoomsPluginParticipant* kickedMember = GetParticipantByHandle(callResult->kickedMember, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
-    if (kickedMember==0)
+    if (kickedMember==nullptr)
     {
         callResult->resultCode=REC_KICK_MEMBER_TARGET_NOT_ONLINE;
         ExecuteFunc(callResult, senderAddress);
@@ -2282,7 +2282,7 @@ void RoomsPlugin::KickMember_Callback( const SystemAddress &senderAddress, KickM
 void RoomsPlugin::UnbanMember_Callback( const SystemAddress &senderAddress, UnbanMember_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=RakNet::AllGamesRoomsContainer::UnbanMember( roomsPluginParticipant, callResult->bannedMemberName );
@@ -2291,7 +2291,7 @@ void RoomsPlugin::UnbanMember_Callback( const SystemAddress &senderAddress, Unba
 void RoomsPlugin::GetBanReason_Callback( const SystemAddress &senderAddress, GetBanReason_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     Room *room;
@@ -2301,10 +2301,10 @@ void RoomsPlugin::GetBanReason_Callback( const SystemAddress &senderAddress, Get
 void RoomsPlugin::AddUserToQuickJoin_Callback( const SystemAddress &senderAddress, AddUserToQuickJoin_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
-    QuickJoinUser *qju = RakNet::OP_NEW<QuickJoinUser>( _FILE_AND_LINE_ );
+    auto *qju = RakNet::OP_NEW<QuickJoinUser>( _FILE_AND_LINE_ );
     qju->networkedQuickJoinUser=callResult->networkedQuickJoinUser;
     qju->roomsParticipant=roomsPluginParticipant;
     callResult->resultCode=roomsContainer.AddUserToQuickJoin( callResult->gameIdentifier, qju );
@@ -2313,7 +2313,7 @@ void RoomsPlugin::AddUserToQuickJoin_Callback( const SystemAddress &senderAddres
 void RoomsPlugin::RemoveUserFromQuickJoin_Callback( const SystemAddress &senderAddress, RemoveUserFromQuickJoin_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     QuickJoinUser *qju;
@@ -2326,7 +2326,7 @@ void RoomsPlugin::RemoveUserFromQuickJoin_Callback( const SystemAddress &senderA
 void RoomsPlugin::IsInQuickJoin_Callback( const SystemAddress &senderAddress, IsInQuickJoin_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     callResult->resultCode=REC_SUCCESS;
@@ -2336,7 +2336,7 @@ void RoomsPlugin::IsInQuickJoin_Callback( const SystemAddress &senderAddress, Is
 void RoomsPlugin::SearchByFilter_Callback( const SystemAddress &senderAddress, SearchByFilter_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
 
@@ -2355,7 +2355,7 @@ void RoomsPlugin::SearchByFilter_Callback( const SystemAddress &senderAddress, S
 void RoomsPlugin::ChangeHandle_Callback( const SystemAddress &senderAddress, ChangeHandle_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
     if (profanityFilter->HasProfanity(callResult->newHandle.C_String()))
@@ -2389,10 +2389,10 @@ void RoomsPlugin::ChangeHandle_Callback( const SystemAddress &senderAddress, Cha
 void RoomsPlugin::Chat_Callback( const SystemAddress &senderAddress, Chat_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
-    if (roomsPluginParticipant->GetRoom()==0 && callResult->chatDirectedToRoom)
+    if (roomsPluginParticipant->GetRoom()==nullptr && callResult->chatDirectedToRoom)
     {
         callResult->resultCode=REC_CHAT_USER_NOT_IN_ROOM;
         ExecuteFunc(callResult, senderAddress);
@@ -2412,7 +2412,7 @@ void RoomsPlugin::Chat_Callback( const SystemAddress &senderAddress, Chat_Func *
     if (!callResult->privateMessageRecipient.IsEmpty())
     {
         RoomsPluginParticipant* recipient = GetParticipantByHandle(callResult->privateMessageRecipient, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
-        if (recipient==0)
+        if (recipient==nullptr)
         {
             callResult->resultCode=REC_CHAT_RECIPIENT_NOT_ONLINE;
             ExecuteFunc(callResult, senderAddress);
@@ -2421,7 +2421,7 @@ void RoomsPlugin::Chat_Callback( const SystemAddress &senderAddress, Chat_Func *
 
         if (callResult->chatDirectedToRoom)
         {
-            if (recipient->GetRoom()==0)
+            if (recipient->GetRoom()==nullptr)
             {
                 callResult->resultCode=REC_CHAT_RECIPIENT_NOT_IN_ANY_ROOM;
                 ExecuteFunc(callResult, senderAddress);
@@ -2458,10 +2458,10 @@ void RoomsPlugin::Chat_Callback( const SystemAddress &senderAddress, Chat_Func *
 void RoomsPlugin::Bitstream_Callback( const SystemAddress &senderAddress, Bitstream_Func *callResult)
 {
     RoomsPluginParticipant* roomsPluginParticipant = ValidateUserHandle(callResult, senderAddress);
-    if (roomsPluginParticipant==0) {
+    if (roomsPluginParticipant==nullptr) {
         return;
 }
-    if (roomsPluginParticipant->GetRoom()==0 && callResult->directedToRoom)
+    if (roomsPluginParticipant->GetRoom()==nullptr && callResult->directedToRoom)
     {
         callResult->resultCode=REC_BITSTREAM_USER_NOT_IN_ROOM;
         ExecuteFunc(callResult, senderAddress);
@@ -2474,7 +2474,7 @@ void RoomsPlugin::Bitstream_Callback( const SystemAddress &senderAddress, Bitstr
     if (!callResult->privateMessageRecipient.IsEmpty())
     {
         RoomsPluginParticipant* recipient = GetParticipantByHandle(callResult->privateMessageRecipient, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
-        if (recipient==0)
+        if (recipient==nullptr)
         {
             callResult->resultCode=REC_BITSTREAM_RECIPIENT_NOT_ONLINE;
             ExecuteFunc(callResult, senderAddress);
@@ -2483,7 +2483,7 @@ void RoomsPlugin::Bitstream_Callback( const SystemAddress &senderAddress, Bitstr
 
         if (callResult->directedToRoom)
         {
-            if (recipient->GetRoom()==0)
+            if (recipient->GetRoom()==nullptr)
             {
                 callResult->resultCode=REC_BITSTREAM_RECIPIENT_NOT_IN_ANY_ROOM;
                 ExecuteFunc(callResult, senderAddress);
@@ -2542,13 +2542,13 @@ void RoomsPlugin::ProcessRemoveUserResult(RemoveUserResult *removeUserResult)
                     ModeratorChanged_Notification notification;
                     notification.oldModerator=removeUserResult->removedUserName;
                     notification.newModerator=removeUserResult->room->GetModerator()->GetName();
-                    ExecuteNotificationToOtherRoomMembers(removeUserResult->room, 0, &notification);
+                    ExecuteNotificationToOtherRoomMembers(removeUserResult->room, nullptr, &notification);
                 }
 
                 RoomMemberLeftRoom_Notification notification;
                 notification.roomId=removeUserResult->room->GetID();
                 notification.roomMember=removeUserResult->removedUserName;
-                ExecuteNotificationToOtherRoomMembers(removeUserResult->room, 0, &notification);
+                ExecuteNotificationToOtherRoomMembers(removeUserResult->room, nullptr, &notification);
             }
             else
             {
@@ -2556,7 +2556,7 @@ void RoomsPlugin::ProcessRemoveUserResult(RemoveUserResult *removeUserResult)
                 notification.oldModerator=removeUserResult->removedUserName;
                 notification.roomId=removeUserResult->room->GetID();
                 notification.roomDescriptor.FromRoom(removeUserResult->room, &roomsContainer);
-                ExecuteNotificationToOtherRoomMembers(removeUserResult->room, 0, &notification);
+                ExecuteNotificationToOtherRoomMembers(removeUserResult->room, nullptr, &notification);
             }
         }
     }

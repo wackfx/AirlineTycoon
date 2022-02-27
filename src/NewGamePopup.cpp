@@ -10,8 +10,8 @@
 #include "cd_prot.h"
 #include "fillfile.h"
 #include "AtNet.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -117,9 +117,9 @@ void NewGamePopup::Konstruktor(BOOL bHandy, SLONG PlayerNum)
 
     gBroadcastBm.Destroy();
 
-    pNetworkSessions = NULL;
-    pNetworkConnections = NULL;
-    pNetworkPlayers = NULL;
+    pNetworkSessions = nullptr;
+    pNetworkConnections = nullptr;
+    pNetworkPlayers = nullptr;
 
     Sim.bAllowCheating = FALSE;
 
@@ -374,7 +374,7 @@ NewGamePopup::~NewGamePopup()
 //--------------------------------------------------------------------------------------------
 //Aktualisiert die Text-Daten im Klacker-Feld:
 //--------------------------------------------------------------------------------------------
-void NewGamePopup::RefreshKlackerField(void)
+void NewGamePopup::RefreshKlackerField()
 {
     SLONG c;
 
@@ -770,7 +770,7 @@ void NewGamePopup::RefreshKlackerField(void)
 //--------------------------------------------------------------------------------------------
 //Überprüft ob die Namen von Spielern & Fluggesellschaften eindeutig sind:
 //--------------------------------------------------------------------------------------------
-void NewGamePopup::CheckNames(void)
+void NewGamePopup::CheckNames()
 {
     SLONG c;
     SLONG d;
@@ -1566,10 +1566,10 @@ again_heimatflughafen:
                                 Sim.Players.Players[c].NetworkID = 0;
                                 Sim.Players.Players[c].Owner = 1;
 
-                                for (SLONG d = 0; d < 4; d++) {
-                                    if (UnselectedNetworkIDs[d] == 0)
+                                for (unsigned int & UnselectedNetworkID : UnselectedNetworkIDs) {
+                                    if (UnselectedNetworkID == 0)
                                     {
-                                        UnselectedNetworkIDs[d] = gNetwork.GetLocalPlayerID();
+                                        UnselectedNetworkID = gNetwork.GetLocalPlayerID();
                                         break;
                                     }
 }
@@ -1623,9 +1623,9 @@ again_heimatflughafen:
 }
 
 
-                            for (SLONG e = 0; e < 4; e++) {
-                                if (UnselectedNetworkIDs[e] == gNetwork.GetLocalPlayerID()) {
-                                    UnselectedNetworkIDs[e] = 0;
+                            for (unsigned int & UnselectedNetworkID : UnselectedNetworkIDs) {
+                                if (UnselectedNetworkID == gNetwork.GetLocalPlayerID()) {
+                                    UnselectedNetworkID = 0;
 }
 }
 
@@ -1717,11 +1717,11 @@ again_heimatflughafen:
 
                 if (Sim.Options.OptionRandomStartday != 0)
                 {
-                    srand(time(NULL));
+                    srand(time(nullptr));
                     Sim.StartTime = (rand() % 365) * 60 * 60 * 24;
                 }
                 else {
-                    Sim.StartTime = time(NULL);
+                    Sim.StartTime = time(nullptr);
 }
 
                 SBProviderEnum id = SBNetwork::GetProviderID((char*)(LPCTSTR)pNetworkConnections->Get(NetMediumMapper[Selection] + 1));
@@ -2149,7 +2149,7 @@ void NewGamePopup::CheckNetEvents() {
                             else
                             {
                                 PageNum = PAGE_TYPE::MULTIPLAYER_SELECT_SESSION;
-                                if (pNetworkConnections == NULL) {
+                                if (pNetworkConnections == nullptr) {
                                 	pNetworkConnections = gNetwork.GetConnectionList();
                                 }
                                 gNetwork.StartGetSessionListAsync();
@@ -2161,7 +2161,7 @@ void NewGamePopup::CheckNetEvents() {
 
 	                case ATNET_WANNAJOIN2NO:
 	                    PageNum = PAGE_TYPE::MULTIPLAYER_SELECT_SESSION;
-	                    if (pNetworkConnections == NULL) {
+	                    if (pNetworkConnections == nullptr) {
 	                    	pNetworkConnections = gNetwork.GetConnectionList();
                         }
 	                    gNetwork.StartGetSessionListAsync();
@@ -2177,9 +2177,9 @@ void NewGamePopup::CheckNetEvents() {
 
                             Message >> OldIndex >> NewIndex >> PlayerNetworkID;
 
-                            for (SLONG c = 0; c < 4; c++) {
-                                if (UnselectedNetworkIDs[c] == PlayerNetworkID) {
-                                    UnselectedNetworkIDs[c] = 0;
+                            for (unsigned int & UnselectedNetworkID : UnselectedNetworkIDs) {
+                                if (UnselectedNetworkID == PlayerNetworkID) {
+                                    UnselectedNetworkID = 0;
 }
 }
 
@@ -2204,10 +2204,10 @@ void NewGamePopup::CheckNetEvents() {
                             Sim.Players.Players[PlayerIndex].NetworkID = 0;
                             Sim.Players.Players[PlayerIndex].Owner = 1;
 
-                            for (SLONG c = 0; c < 4; c++) {
-                                if (UnselectedNetworkIDs[c] == 0)
+                            for (unsigned int & UnselectedNetworkID : UnselectedNetworkIDs) {
+                                if (UnselectedNetworkID == 0)
                                 {
-                                    UnselectedNetworkIDs[c] = PlayerNetworkID;
+                                    UnselectedNetworkID = PlayerNetworkID;
                                     break;
                                 }
 }
@@ -2232,9 +2232,9 @@ void NewGamePopup::CheckNetEvents() {
                                 }
 }
 
-                            for (SLONG c = 0; c < 4; c++) {
-                                if (UnselectedNetworkIDs[c] == SenderID) {
-                                    UnselectedNetworkIDs[c] = 0;
+                            for (unsigned int & UnselectedNetworkID : UnselectedNetworkIDs) {
+                                if (UnselectedNetworkID == SenderID) {
+                                    UnselectedNetworkID = 0;
 }
 }
 
@@ -2688,7 +2688,7 @@ void NewGamePopup::OnMouseMove(UINT nFlags, CPoint point)
 //--------------------------------------------------------------------------------------------
 //Update all Names:
 //--------------------------------------------------------------------------------------------
-void NewGamePopup::PushNames(void)
+void NewGamePopup::PushNames()
 {
     TEAKFILE Message;
     Message.Announce(30);
@@ -2804,7 +2804,7 @@ bool SIM::SendChatBroadcast(const CString& Message, bool bSayFromWhom, ULONG tar
 bool SIM::ReceiveMemFile(TEAKFILE& file)
 {
     ULONG  Size = 0;
-    UBYTE* p = NULL;
+    UBYTE* p = nullptr;
 
     file.Close();
     file.MemBuffer.ReSize(0);

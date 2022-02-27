@@ -307,7 +307,7 @@ void RAKNetNetwork::Disconnect() {
 }
 
 bool RAKNetNetwork::CreateSession(SBNetworkCreation* create) {
-    RAKSessionInfo *info = new RAKSessionInfo();
+    auto *info = new RAKSessionInfo();
     strcpy(info->sessionName, create->sessionName.c_str());
     info->hostID = mLocalID;
     info->address = mMaster->GetMyGUID();

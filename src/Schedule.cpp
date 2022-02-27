@@ -151,7 +151,7 @@ CFlugplan::CFlugplan ()
 //--------------------------------------------------------------------------------------------
 //Aktualisiert "Next Flight":
 //--------------------------------------------------------------------------------------------
-void CFlugplan::UpdateNextFlight (void)
+void CFlugplan::UpdateNextFlight ()
 {
     NextFlight = -1;
     for (SLONG e=0; e<Flug.AnzEntries(); e++)
@@ -180,7 +180,7 @@ BOOL CFlugplan::ContainsFlight (ULONG ObjectType, SLONG ObjectId1, SLONG ObjectI
 //--------------------------------------------------------------------------------------------
 //Aktualisiert "Next Start":
 //--------------------------------------------------------------------------------------------
-void CFlugplan::UpdateNextStart (void)
+void CFlugplan::UpdateNextStart ()
 {
     NextStart = -1;
     for (SLONG e=0; e<Flug.AnzEntries(); e++) {
@@ -957,7 +957,7 @@ void CFlugplanEintrag::BookFlight (CPlane *Plane, SLONG PlayerNum)
 //--------------------------------------------------------------------------------------------
 //Flug wurde geändert:
 //--------------------------------------------------------------------------------------------
-void CFlugplanEintrag::FlightChanged (void)
+void CFlugplanEintrag::FlightChanged ()
 {
     HoursBefore = UBYTE((Startdate-Sim.Date)*24+(Startzeit-Sim.GetHour()));
 }
