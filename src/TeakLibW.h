@@ -268,9 +268,7 @@ class TEAKFILE
         void Announce(SLONG);
 
         SDL_RWops* Ctx;
-        SLONG Unknown[3];
         char* Path;
-        SLONG Unknown1[7];
         BUFFER<UBYTE> MemBuffer;
         SLONG MemPointer;
         ULONG MemBufferUsed;
@@ -426,7 +424,7 @@ class TEAKRAND
         friend TEAKFILE& operator >> (TEAKFILE& File, TEAKRAND& r);
 
     private:
-        ULONG Seed;
+        ULONG Seed{};
         ULONG Value;
 };
 
@@ -711,7 +709,6 @@ class PALETTE
         void CopyAreaFrom(PALETTE const&, SLONG, SLONG, SLONG);
 
         BUFFER<SDL_Color> Pal;
-        SLONG Unknown;
 };
 
 //static_assert(sizeof(PALETTE) == 16, "PALETTE size check");
@@ -832,7 +829,6 @@ class TECBM
         int ParseHorizontalSubBitmapNumberXInto(SLONG, TECBM&);
 
         SDL_Surface* Surface;
-        SLONG Unknown[6];
 
         XY Size;
 

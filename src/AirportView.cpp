@@ -127,7 +127,7 @@ void AirportView::ReloadBitmaps ()
 //--------------------------------------------------------------------------------------------
 void AirportView::FocusCameraOnPos (XY Pos, BOOL Speed)
 {
-    SLONG  Tmp;
+    SLONG  Tmp = 0;
     SLONG  SizeX=320;
     static SLONG LastScrollTime;
     static SLONG gMouseScrollSpeed=0;
@@ -136,8 +136,8 @@ void AirportView::FocusCameraOnPos (XY Pos, BOOL Speed)
 
     static SLONG LastPlayerPos;
     static SLONG LastPlayerDeltas[5] = { -1000, -1000, -1000, -1000, -1000 };
-    SLONG c;
-    SLONG AvgLastPlayerDelta;
+    SLONG c = 0;
+    SLONG AvgLastPlayerDelta = 0;
 
     static SLONG LastCameraSpeedX=CameraSpeed.x;
     static SLONG AcceptedCameraSpeedX=CameraSpeed.x;
@@ -479,7 +479,7 @@ void AirportView::CenterCameraOnPlayer ()
         if (PlayerIndex!=0xffffffff)
         {
             SLONG PosX=Sim.Persons[PlayerIndex].ScreenPos.x;
-            SLONG SizeX;
+            SLONG SizeX = 0;
             XY   &ViewPos = Sim.Players.Players[(SLONG)PlayerNum].ViewPos;
 
             //Spielfigur in X-Richtung zentrieren:
@@ -515,10 +515,10 @@ void AirportView::CenterCameraOnPlayer ()
 //--------------------------------------------------------------------------------------------
 void AirportView::OnPaint()
 {
-    ULONG c;
-    ULONG d;
-    ULONG t1;
-    ULONG t2;
+    ULONG c = 0;
+    ULONG d = 0;
+    ULONG t1 = 0;
+    ULONG t2 = 0;
     static SLONG Pos=0;
     static UWORD Alpha=0;
     static UWORD r=10;
@@ -692,7 +692,7 @@ void AirportView::OnPaint()
             //Parallax Horizont mit Clipping einbauen:
             {
                 SLONG sizes[5];
-                SLONG c;
+                SLONG c = 0;
                 SLONG RangeDrawn=0;
 
                 sizes[0]=Bricks[ParallaxIndex[0]].GetBitmapDimension().x;
@@ -721,7 +721,7 @@ void AirportView::OnPaint()
 
                     if (Airport.ClipMarkers[c-1].Type!=RUNE_CLIPFULL && Airport.ClipMarkers[c].Position>=ViewPos.x)
                     {
-                        SLONG d;
+                        SLONG d = 0;
 
                         switch (Airport.ClipMarkers[c-1].Type)
                         {
@@ -863,7 +863,7 @@ void AirportView::OnPaint()
             //Draw Builds & Persons:
             c=d=0;
 
-            BUILDS *pBuilds;
+            BUILDS *pBuilds = nullptr;
 
             //Was nehmen wir? Den ganzen Flughafen oder die Hash-Bricks?
             if (Editor!=EDITOR_NONE) {
@@ -1975,7 +1975,7 @@ void AirportView::OnRButtonDown(UINT nFlags, CPoint point)
 //--------------------------------------------------------------------------------------------
 void AirportView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    SLONG c;
+    SLONG c = 0;
     XY   &ViewPos = Sim.Players.Players[(SLONG)PlayerNum].ViewPos;
 
     //Sowas darf nur das Hauptfenster, was immer links oben ist und nicht verdeckt wird:
@@ -2212,8 +2212,8 @@ XY AIRPORT::GetRandomExit (TEAKRAND *pRand)
 void AIRPORT::GetRandomShop (XY &ReturnPosition, SLONG &ReturnStatePar, SLONG ClanType, UBYTE *pMood, TEAKRAND *pRand)
 {
     ULONG Buffer[20];    //Bis zu 20 Möglichkeiten werden hier zwischengespeichert
-    SLONG c;
-    SLONG Anz;           //Zahl der Elementer in "Buffer"
+    SLONG c = 0;
+    SLONG Anz = 0;           //Zahl der Elementer in "Buffer"
 
     Anz = 0;
 
@@ -2262,8 +2262,8 @@ nofreetravelagents:
     //Spezialfix für Personen zu Reisebüro / LastMinute
     if (Runes[(SLONG)Buffer[c]].Par==ROOM_REISEBUERO)
     {
-        SLONG d;
-        SLONG n;
+        SLONG d = 0;
+        SLONG n = 0;
 
         if (pRand != nullptr) { n=pRand->Rand(256);
         } else { n=rand()%256;
@@ -2291,8 +2291,8 @@ nofreetravelagents:
     }
     else if (Runes[(SLONG)Buffer[c]].Par==ROOM_LAST_MINUTE)
     {
-        SLONG d;
-        SLONG n;
+        SLONG d = 0;
+        SLONG n = 0;
 
         if (pRand != nullptr) { n=pRand->Rand(256);
         } else { n=rand()%256;
@@ -2320,8 +2320,8 @@ nofreetravelagents:
     }
     else if (Runes[(SLONG)Buffer[c]].Par==ROOM_MONITOR1)
     {
-        SLONG d;
-        SLONG n;
+        SLONG d = 0;
+        SLONG n = 0;
 
         if (pRand != nullptr) { n=pRand->Rand(256);
         } else { n=rand()%256;
@@ -2378,9 +2378,9 @@ nofreetravelagents:
 //--------------------------------------------------------------------------------------------
 SLONG AIRPORT::IsInMarkedArea (const XY &Pos)
 {
-    SLONG c;
-    SLONG d;
-    SLONG BestSize;
+    SLONG c = 0;
+    SLONG d = 0;
+    SLONG BestSize = 0;
     SLONG NumFound=0;
     BUFFER<SLONG> Sizes(AreaMarkers.AnzEntries());
 
@@ -2441,7 +2441,7 @@ SLONG AIRPORT::IsInMarkedArea (const XY &Pos)
 //--------------------------------------------------------------------------------------------
 XY AIRPORT::GetNextWaypointRune (UBYTE StartingWaypoint, UBYTE *CurrentWaypoint, ULONG *Gimmick)
 {
-    SLONG c;
+    SLONG c = 0;
 
     //Aktuellen WayPoint wg. Warten raussuchen:
     for (c=SLONG(Runes.AnzEntries())-1; c>=0; c--) {
@@ -2495,7 +2495,7 @@ BOOL AIRPORT::DoesRuneExist (ULONG BrickId, UBYTE Par)
 XY AIRPORT::GetRandomTypedRune (ULONG BrickId, UBYTE Par, bool AcceptError, TEAKRAND *pRand)
 {
     ULONG Buffer[20];    //Bis zu 20 Möglichkeiten werden hier zwischengespeichert
-    SLONG c;
+    SLONG c = 0;
     SLONG Anz=0;         //Zahl der Elementer in "Buffer"
 
     for (c=SLONG(Runes.AnzEntries())-1; c>=0; c--) {
@@ -2531,8 +2531,8 @@ XY AIRPORT::GetRandomTypedRune (ULONG BrickId, UBYTE Par, bool AcceptError, TEAK
 //--------------------------------------------------------------------------------------------
 SLONG AIRPORT::GetNumberOfShops (ULONG BrickId)
 {
-    SLONG c;
-    SLONG Anz;           //Zahl der Elemente
+    SLONG c = 0;
+    SLONG Anz = 0;           //Zahl der Elemente
 
     Anz = 0;
 
@@ -2550,11 +2550,11 @@ SLONG AIRPORT::GetNumberOfShops (ULONG BrickId)
 //--------------------------------------------------------------------------------------------
 SLONG AIRPORT::GetNumberOfFreeGates ()
 {
-    SLONG c;
-    SLONG d;
-    SLONG e;
-    SLONG rc;
-    SLONG Anz;
+    SLONG c = 0;
+    SLONG d = 0;
+    SLONG e = 0;
+    SLONG rc = 0;
+    SLONG Anz = 0;
 
     rc = Anz = GetNumberOfShops (RUNE_2WAIT);
 
@@ -2581,9 +2581,9 @@ SLONG AIRPORT::GetNumberOfFreeGates ()
 //--------------------------------------------------------------------------------------------
 XY AIRPORT::GetBestStairs (UBYTE Par, SLONG x1, SLONG x2)
 {
-    SLONG c;
-    SLONG bestc;
-    SLONG bestdist;
+    SLONG c = 0;
+    SLONG bestc = 0;
+    SLONG bestdist = 0;
 
     bestdist=9999999; bestc=-1;
 
@@ -2609,7 +2609,7 @@ XY AIRPORT::GetBestStairs (UBYTE Par, SLONG x1, SLONG x2)
 //--------------------------------------------------------------------------------------------
 UBYTE AIRPORT::GetRuneParNear (const XY &Pos, const XY &MaxDist, ULONG RuneType)
 {
-    SLONG c;
+    SLONG c = 0;
 
     //Alle durchsuchen:
     for (c=SLONG(Runes.AnzEntries())-1; c>=0; c--) {
@@ -2629,7 +2629,7 @@ UBYTE AIRPORT::GetRuneParNear (const XY &Pos, const XY &MaxDist, ULONG RuneType)
 //--------------------------------------------------------------------------------------------
 BUILD *AIRPORT::GetBuildNear (const XY &Pos, const XY &MaxDist, ULONG BrickId)
 {
-    SLONG c;
+    SLONG c = 0;
 
     //Alle durchsuchen:
     for (c=SLONG(Builds.AnzEntries())-1; c>=0; c--) {
@@ -2651,10 +2651,10 @@ BUILD *AIRPORT::GetBuildNear (const XY &Pos, const XY &MaxDist, ULONG BrickId)
 //--------------------------------------------------------------------------------------------
 void AIRPORT::Load (SLONG Hall, SLONG Level)
 {
-    SLONG d;
-    SLONG e;
-    SLONG BestE;
-    SLONG Diletation;
+    SLONG d = 0;
+    SLONG e = 0;
+    SLONG BestE = 0;
+    SLONG Diletation = 0;
 
     HallNum		 = Hall;
     HallLevel[0] = Level;
@@ -2704,12 +2704,12 @@ void AIRPORT::Save () const
 //--------------------------------------------------------------------------------------------
 void AIRPORT::LoadAirport (SLONG LeftEnd, SLONG CheckIn, SLONG Office, SLONG Entry, SLONG Shops, SLONG Cafe, SLONG Security, SLONG Suitcase, SLONG WaitZone, SLONG RightEnd)
 {
-    SLONG  c;
-    SLONG  d;
-    SLONG  e;
-    SLONG  TotalMem;
-    SLONG  BestD;
-    SLONG  BestE;
+    SLONG  c = 0;
+    SLONG  d = 0;
+    SLONG  e = 0;
+    SLONG  TotalMem = 0;
+    SLONG  BestD = 0;
+    SLONG  BestE = 0;
     BUILDS localBuilds[10];  //Die verschiedenen Abschnitte des Flughafens
     SLONG  Diletation[10];   //Die Verschiebung der Abschnitte; Diletation[0] ist immer 0
     SLONG  Count[10];        //Fünf Counter, da alle fünf Abschnitte zugleich zusammengefügt werden
@@ -2869,8 +2869,8 @@ void AIRPORT::NewDay ()
     if (Sim.Players.Players[3].IsOut == 0) { Sim.Persons+=PERSON (Clans.GetPlayerId (CLAN_PLAYER4), Airport.GetRandomBirthplace(TRUE, 4), 0, 99, 0, 0);
 }
 
-    SLONG c;
-    SLONG d;
+    SLONG c = 0;
+    SLONG d = 0;
 
     //WayPoint-Figuren hinzufügen:
     for (c=d=0; c<(SLONG)Builds.AnzEntries(); c++)
@@ -2905,8 +2905,8 @@ SLONG AIRPORT::CalcPlateXPosition (SLONG BuildIndex, SLONG BrickXOffset, SLONG A
 //--------------------------------------------------------------------------------------------
 SLONG AIRPORT::CalcPlateXPosition (BUILD &qBuild, SLONG BrickXOffset, SLONG Alignment) const
 {
-    SLONG rc;
-    SLONG AddX;
+    SLONG rc = 0;
+    SLONG AddX = 0;
 
     switch (Alignment)
     {
@@ -2950,7 +2950,7 @@ SLONG AIRPORT::CalcPlateYPosition (SLONG BuildIndex, SLONG BrickYOffset)
 //--------------------------------------------------------------------------------------------
 SLONG AIRPORT::CalcPlateYPosition (BUILD &qBuild, SLONG BrickYOffset)
 {
-    SLONG rc;
+    SLONG rc = 0;
 
     //Ist der Build in der oberen oder unteren Ebene:
     if (Bricks[qBuild.BrickId].GetBitmapDimension().y-2+qBuild.ScreenPos.y<210)
@@ -2975,14 +2975,14 @@ SLONG AIRPORT::CalcPlateYPosition (BUILD &qBuild, SLONG BrickYOffset)
 //--------------------------------------------------------------------------------------------
 void AIRPORT::CalcPlates ()
 {
-    SLONG c;
-    SLONG d;
-    SLONG e;          //Indices
-    SLONG x;
-    SLONG y;
-    SLONG x2;         //Koordinaten
-    SLONG BestD;
-    SLONG BestE;     //Index-Speicherungen
+    SLONG c = 0;
+    SLONG d = 0;
+    SLONG e = 0;          //Indices
+    SLONG x = 0;
+    SLONG y = 0;
+    SLONG x2 = 0;         //Koordinaten
+    SLONG BestD = 0;
+    SLONG BestE = 0;     //Index-Speicherungen
     SLONG AnzDoors=0;
     SLONG AnzTriggers=0;
     SLONG AnzClipMarkers=0;
@@ -3483,7 +3483,7 @@ void AIRPORT::CalcPlates ()
     for (x=0; x<AnzClipMarkers-1; x++) {
         if (ClipMarkers[x].Position>ClipMarkers[x+1].Position)
         {
-            CClipMarker tmp;
+            CClipMarker tmp{};
 
             tmp=ClipMarkers[x]; ClipMarkers[x]=ClipMarkers[x+1]; ClipMarkers[x+1]=tmp;
 
@@ -3511,7 +3511,7 @@ void AIRPORT::CalcPlates ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::PumpDoors ()
 {
-    SLONG c;
+    SLONG c = 0;
     SLONG ArabIndex = Bricks((SLONG)0x10000000+727);
 
     for (c=Doors.AnzEntries()-1; c>=0; c--)
@@ -3615,7 +3615,7 @@ void AIRPORT::PumpDoors ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::TryDoor (XY ArrayPos, BOOL Player, SLONG PlayerNum)
 {
-    SLONG c;
+    SLONG c = 0;
 
     if (Sim.CallItADay != 0) { return;
 }
@@ -3761,11 +3761,11 @@ void AIRPORT::TryDoor (XY ArrayPos, BOOL Player, SLONG PlayerNum)
 //--------------------------------------------------------------------------------------------
 void AIRPORT::UpdateStaticDoorImage ()
 {
-    SLONG c;
+    SLONG c = 0;
 
     for (c=0; c<4; c++)
     {
-        long door;
+        long door = 0;
         if (c==0) { door=700;
         } else if (c==1) { door=707;
         } else if (c==2) { door=708;
@@ -3792,12 +3792,12 @@ void AIRPORT::UpdateStaticDoorImage ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::CalcCoordinates ()
 {
-    SLONG c;
-    SLONG d;
-    SLONG e;
-    SLONG best;
-    SLONG BestE;
-    SLONG AnzRunes;
+    SLONG c = 0;
+    SLONG d = 0;
+    SLONG e = 0;
+    SLONG best = 0;
+    SLONG BestE = 0;
+    SLONG AnzRunes = 0;
     SLONG AnzAreaMarkers=0;
 
     AnzRunes = 0;
@@ -3925,8 +3925,8 @@ void AIRPORT::CalcCoordinates ()
         if ((Builds.IsInAlbum(c) != 0) && Bricks[Builds[c].BrickId].ObstacleType==OBST_RUNE) {
             if ((Builds[c].BrickId>=0x10000000+RUNE_CREATION && Builds[c].BrickId<=0x10000000+RUNE_PCREATION2) || (Builds[c].BrickId>=0x10000000+RUNE_CHECKIN && Builds[c].BrickId<=0x10000000+RUNE_2WAIT) || Builds[c].BrickId==0x10000000+RUNE_AREALO || Builds[c].BrickId==0x10000000+RUNE_AREARU || Builds[c].BrickId==0x10000000+RUNE_WAITPLANE || Builds[c].BrickId==0x10000000+RUNE_DROPSUITCASE || Builds[c].BrickId==0x10000000+RUNE_EXIT_SUITCASE || Builds[c].BrickId==0x10000000+RUNE_CREATE_SUITCASE || Builds[c].BrickId==0x10000000+RUNE_2CHECKIN_EXIT || Builds[c].BrickId==0x10000000+RUNE_WAYPOINT_START || Builds[c].BrickId==0x10000000+RUNE_WAYPOINT || Builds[c].BrickId==0x10000000+RUNE_WAYPOINT_G || Builds[c].BrickId==0x10000000+RUNE_WAYPOINT_WAIT || Builds[c].BrickId==0x10000000+RUNE_CONDBLOCK || Builds[c].BrickId==0x10000000+RUNE_DURCHLEUCHTER)
             {
-                SLONG x;
-                SLONG y;
+                SLONG x = 0;
+                SLONG y = 0;
 
                 Runes[AnzRunes]=Builds[c];
 
@@ -3960,8 +3960,8 @@ void AIRPORT::CalcCoordinates ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::RemoveRunes ()
 {
-    SLONG c;
-    SLONG d;
+    SLONG c = 0;
+    SLONG d = 0;
 
     for (c=d=0; c<(SLONG)Builds.AnzEntries(); c++)
     {
@@ -4008,7 +4008,7 @@ char *AIRPORT::GetHallFilename ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::UnassociateBuilds ()
 {
-    SLONG c;
+    SLONG c = 0;
 
     for (c=0; c<(SLONG)Builds.AnzEntries(); c++) {
         if (Builds.IsInAlbum(c) != 0) {
@@ -4024,8 +4024,8 @@ void AIRPORT::UnassociateBuilds ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::DoHashBuilds ()
 {
-    SLONG c;
-    SLONG d;
+    SLONG c = 0;
+    SLONG d = 0;
 
     HashBuilds.ReSize (0);
     HashBuilds.ReSize ((RightEnd-LeftEnd)/BUILDHASHSIZE);
@@ -4054,10 +4054,10 @@ void AIRPORT::DoHashBuilds ()
 void AIRPORT::CalcSeats ()
 {
     ULONG SeatsIndex[6]={0x10000000+370,0x10000000+371,0x10000000+372,0,0,0};
-    SLONG c;
-    SLONG d;
-    SLONG x;
-    SLONG y;
+    SLONG c = 0;
+    SLONG d = 0;
+    SLONG x = 0;
+    SLONG y = 0;
 
     for (c=0; c<3; c++) {
         SeatsIndex[c+3]=Bricks(SeatsIndex[c]);
@@ -4120,8 +4120,8 @@ void AIRPORT::SetConditionBlock (SLONG Id, BOOL Blocking)
 //--------------------------------------------------------------------------------------------
 void AIRPORT::CreateGateMapper ()
 {
-    SLONG c;
-    SLONG d;
+    SLONG c = 0;
+    SLONG d = 0;
     SLONG AnzGates= GetNumberOfShops (RUNE_2WAIT);
 
     GateMapper.ReSize(AnzGates*2);
@@ -4149,10 +4149,10 @@ void AIRPORT::CreateGateMapper ()
 //--------------------------------------------------------------------------------------------
 void AIRPORT::RepaintTextBricks ()
 {
-    SLONG c;
-    SLONG d;
-    SLONG e;
-    CFlugplan *Plan;
+    SLONG c = 0;
+    SLONG d = 0;
+    SLONG e = 0;
+    CFlugplan *Plan = nullptr;
 
     BUFFER<SLONG> TextPrinted(TextBricks.AnzEntries());
 
