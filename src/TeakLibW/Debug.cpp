@@ -74,7 +74,7 @@ void HDU::HercPrintf(int /*unused*/, const char* format, ...)
     if (Log == nullptr) {
         return;
 }
-    va_list args;
+    va_list args = nullptr;
     va_start(args, format);
     //vfprintf(Log, format, args);
     V_AT_Log_I("Herc",format, args);
@@ -86,7 +86,7 @@ void HDU::HercPrintf(const char* format, ...)
     if (Log == nullptr) {
         return;
 }
-    va_list args;
+    va_list args = nullptr;
     va_start(args, format);
     //vfprintf(Log, format, args);
     V_AT_Log_I("Herc", format, args);
@@ -101,7 +101,7 @@ void here(char *file, SLONG line)
 SLONG TeakLibW_Exception(char* file, SLONG line, const char* format, ...)
 {
     char buffer[128];
-    va_list args;
+    va_list args = nullptr;
     va_start(args, format);
     vsnprintf(buffer, sizeof(buffer), format, args);
     va_end(args);

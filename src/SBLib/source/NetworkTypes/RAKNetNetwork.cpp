@@ -429,8 +429,9 @@ bool RAKNetNetwork::Receive(UBYTE** buffer, ULONG& size) {
         isHostMigrating = false;
         return true;
     }
-    
-    Packet* p;
+
+
+    Packet* p = nullptr;
     if ((p = mMaster->Receive()) != nullptr) { //Game loop network messages:
         if (p == nullptr) {
             return false;
