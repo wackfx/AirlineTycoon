@@ -28,7 +28,6 @@ SLONG NewgameWantsToLoad = FALSE;
 SLONG NewgameToOptions = FALSE;
 SLONG gNetworkSavegameLoading = -1; // Komm-Variable, über die der Options-Screen mitteilt, welcher Spielstand für's Netzwerk geladen werden soll
 
-extern CJumpingVar<ULONG> gPhysicalCdRomBitlist;
 extern CJumpingVar<CString> gCDPath;
 
 extern SLONG gLoadGameNumber;
@@ -78,26 +77,6 @@ void NewGamePopup::Konstruktor(BOOL /*bHandy*/, SLONG /*PlayerNum*/) {
     bNewGamePopupIsOpen = true;
 
     SessionMissionID = 0;
-
-#ifdef CD_PROTECTION
-    union {
-        void (NewGamePopup::*p_member)(BOOL bHandy, SLONG PlayerNum);
-        void *func;
-    } MyUnion;
-
-    MyUnion.p_member = &NewGamePopup::Konstruktor;
-
-    // Create a new security manager
-    SecurityManager *manager = new SecurityManager((char *)(LPCTSTR)FullFilename("plain_r.mcf", MiscPath), 0, 11771);
-
-    // Decrypt the GetCode Function
-    manager->DecryptFunction(MyUnion.func);
-
-    delete manager;
-
-    // Put a marker
-    PUTSTARTMARK;
-#endif
 
     gBroadcastBm.Destroy();
 
@@ -783,8 +762,6 @@ void NewGamePopup::OnPaint() {
     SLONG Line = (gMousePosition.y - 63) / 22;
     SLONG Column = (gMousePosition.x - 128) / 16;
     XY GridPos = XY(Column, Line);
-
-    gPhysicalCdRomBitlist.Pump();
 
     if (TimerFailure != 0) {
         KlackerTafel.Klack(); // Tafel notfalls asynchron aktualisieren
