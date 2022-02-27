@@ -1910,12 +1910,12 @@ void CTakeOffApp::GameLoop(void*)
                                     {
                                         TEAKRAND LocalRand (Sim.Date+Sim.StartTime+Sim.GetHour());
                                         if (LocalRand.Rand(10)==0)
-                                            VoiceScheduler.AddVoice ("Fahrzeug");
+                                            VoiceScheduler.AddVoice ("fahrzeug");
                                         else
                                             if (((Sim.GetHour()/2)&1)==0)
-                                                VoiceScheduler.AddVoice ("ZoneOK");
+                                                VoiceScheduler.AddVoice ("zoneok");
                                             else
-                                                VoiceScheduler.AddVoice ("Hinweis");
+                                                VoiceScheduler.AddVoice ("hinweis");
                                     }
                                 }
 
