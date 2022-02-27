@@ -881,7 +881,7 @@ void RoomsPlugin::SetServerAddress( SystemAddress systemAddress )
         RemoveRoomsCallback(this);
     }
 }
-bool RoomsPlugin::LoginRoomsParticipant(RakNet::RakString userName, SystemAddress roomsParticipantAddress, RakNetGUID guid, SystemAddress loginServerAddress)
+bool RoomsPlugin::LoginRoomsParticipant(const RakNet::RakString& userName, SystemAddress roomsParticipantAddress, RakNetGUID guid, SystemAddress loginServerAddress)
 {
     if (loginServerAddress!=RakNet::UNASSIGNED_SYSTEM_ADDRESS && loginServers.GetIndexOf(loginServerAddress)==(unsigned int) -1) {
         return false;
@@ -900,7 +900,7 @@ bool RoomsPlugin::LoginRoomsParticipant(RakNet::RakString userName, SystemAddres
     }
     return false;
 }
-bool RoomsPlugin::LogoffRoomsParticipant(RakNet::RakString userName, SystemAddress loginServerAddress)
+bool RoomsPlugin::LogoffRoomsParticipant(const RakNet::RakString& userName, SystemAddress loginServerAddress)
 {
     if (loginServerAddress!=RakNet::UNASSIGNED_SYSTEM_ADDRESS && loginServers.GetIndexOf(loginServerAddress)==(unsigned int) -1) {
         return false;
@@ -927,7 +927,7 @@ void RoomsPlugin::ClearRoomMembers(void)
 }
     roomsParticipants.Clear(false, _FILE_AND_LINE_);
 }
-void RoomsPlugin::SerializeLogin(RakNet::RakString userName, SystemAddress userAddress, RakNetGUID guid, RakNet::BitStream *bs)
+void RoomsPlugin::SerializeLogin(const RakNet::RakString& userName, SystemAddress userAddress, RakNetGUID guid, RakNet::BitStream *bs)
 {
     bs->Write((MessageID)ID_ROOMS_LOGON_STATUS);
     bs->Write(userName);
@@ -935,19 +935,19 @@ void RoomsPlugin::SerializeLogin(RakNet::RakString userName, SystemAddress userA
     bs->Write(userAddress);
     bs->Write(guid);
 }
-void RoomsPlugin::SerializeLogoff(RakNet::RakString userName, RakNet::BitStream *bs)
+void RoomsPlugin::SerializeLogoff(const RakNet::RakString& userName, RakNet::BitStream *bs)
 {
     bs->Write((MessageID)ID_ROOMS_LOGON_STATUS);
     bs->Write(userName);
     bs->Write(false);
 }
-void RoomsPlugin::SerializeChangeHandle(RakNet::RakString oldHandle, RakNet::RakString newHandle, RakNet::BitStream *bs)
+void RoomsPlugin::SerializeChangeHandle(const RakNet::RakString& oldHandle, const RakNet::RakString& newHandle, RakNet::BitStream *bs)
 {
     bs->Write((MessageID)ID_ROOMS_HANDLE_CHANGE);
     bs->Write(oldHandle);
     bs->Write(newHandle);
 }
-void RoomsPlugin::ChangeHandle(RakNet::RakString oldHandle, RakNet::RakString newHandle)
+void RoomsPlugin::ChangeHandle(const RakNet::RakString& oldHandle, const RakNet::RakString& newHandle)
 {
     RoomMemberHandleSet_Notification notification;
     notification.oldName=oldHandle;
@@ -1773,7 +1773,7 @@ bool RoomsPlugin::IsServer(void) const
     RoomsCallback *rc=(RoomsCallback *) this;
     return roomsCallback.GetIndexOf(rc)!=(unsigned int) -1;
 }
-RoomsPlugin::RoomsPluginParticipant* RoomsPlugin::GetParticipantByHandle(RakNet::RakString handle, const SystemAddress &senderAddress)
+RoomsPlugin::RoomsPluginParticipant* RoomsPlugin::GetParticipantByHandle(const RakNet::RakString& handle, const SystemAddress &senderAddress)
 {
     (void) senderAddress;
     if (roomsParticipants.HasData(handle))
