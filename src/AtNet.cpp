@@ -51,11 +51,11 @@ void SetNetworkBitmap (SLONG Number, SLONG WaitingType)
 }
         }
 
-        if (Number==1) { pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("network1.gli", GliPath), &pGLib, L_LOCMEM);
+        if (Number==1) { pGfxMain->LoadLib (const_cast<char*>((LPCTSTR)FullFilename ("network1.gli", GliPath)), &pGLib, L_LOCMEM);
 }
-        if (Number==2) { pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("network2.gli", GliPath), &pGLib, L_LOCMEM);
+        if (Number==2) { pGfxMain->LoadLib (const_cast<char*>((LPCTSTR)FullFilename ("network2.gli", GliPath)), &pGLib, L_LOCMEM);
 }
-        if (Number==3) { pGfxMain->LoadLib ((char*)(LPCTSTR)FullFilename ("network3.gli", GliPath), &pGLib, L_LOCMEM);
+        if (Number==3) { pGfxMain->LoadLib (const_cast<char*>((LPCTSTR)FullFilename ("network3.gli", GliPath)), &pGLib, L_LOCMEM);
 }
 
         if (pGLib != nullptr)
@@ -113,14 +113,14 @@ void DisplayBroadcastMessage (CString str, SLONG FromPlayer)
     if (gBroadcastBm.Size.y!=TempBm.Size.y)
     {
         SB_CBitmapKey Key(*XBubbleBms[9].pBitmap);
-        gBroadcastBm.FillWith (*(UWORD*)Key.Bitmap);
+        gBroadcastBm.FillWith (*static_cast<UWORD*>(Key.Bitmap));
     }
     gBroadcastBm.BlitFrom (TempBm);
 
     TempBm.ReSize (320, sy+5);
     {
         SB_CBitmapKey Key(*XBubbleBms[9].pBitmap);
-        TempBm.FillWith (*(UWORD*)Key.Bitmap);
+        TempBm.FillWith (*static_cast<UWORD*>(Key.Bitmap));
     }
     TempBm.PrintAt (str, FontSmallBlack, TEC_FONT_LEFT, XY(10, 0), XY(320, 1000));
     gBroadcastBm.BlitFrom (TempBm, 0, offy);
@@ -226,9 +226,9 @@ void PumpNetwork ()
             {
                 case ATNET_SETSPEED:
                     Message >> Par1 >> Par2;
-                    Sim.Players.Players[(SLONG)Par1].GameSpeed=Par2;
+                    Sim.Players.Players[static_cast<SLONG>(Par1)].GameSpeed=Par2;
                     if (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr) {
-                        ((CStdRaum*)Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount=3;
+                        (Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount=3;
 }
                     break;
 
@@ -237,7 +237,7 @@ void PumpNetwork ()
                     for (c=0; c<4; c++) { Sim.Players.Players[c].GameSpeed=Par1;
 }
                     if (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr) {
-                        ((CStdRaum*)Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount=3;
+                        (Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount=3;
 }
                     break;
 
@@ -354,7 +354,7 @@ void PumpNetwork ()
                 case ATNET_OPTIONS:
                     Message >> Par1 >> Par2;
                     nOptionsOpen+=Par1;
-                    nPlayerOptionsOpen[(SLONG)Par2]+=Par1;
+                    nPlayerOptionsOpen[static_cast<SLONG>(Par2)]+=Par1;
                     SetNetworkBitmap (static_cast<int>(nOptionsOpen>0)*1);
                     break;
 
@@ -362,8 +362,8 @@ void PumpNetwork ()
                     Message >> Par1 >> Par2;
                     nAppsDisabled+=Par1;
                     nOptionsOpen+=Par1;
-                    nPlayerOptionsOpen[(SLONG)Par2]+=Par1;
-                    nPlayerAppsDisabled[(SLONG)Par2]+=Par1;
+                    nPlayerOptionsOpen[static_cast<SLONG>(Par2)]+=Par1;
+                    nPlayerAppsDisabled[static_cast<SLONG>(Par2)]+=Par1;
                     SetNetworkBitmap (static_cast<int>(nOptionsOpen>0)*2);
                     break;
 
@@ -415,7 +415,7 @@ void PumpNetwork ()
 
                         Sim.TimeSlice = MessageTime;
                         /*hprintf ("Diff=%li", LocalTime-Sim.TimeSlice);*/
-                        if (qPlayer.GetRoom()==ROOM_AIRPORT && (qPlayer.IsTalking == 0) && (qPlayer.LocationWin==nullptr || ((*(CStdRaum*)qPlayer.LocationWin).CurrentMenu!=MENU_WC_F && (*(CStdRaum*)qPlayer.LocationWin).CurrentMenu!=MENU_WC_M))) {
+                        if (qPlayer.GetRoom()==ROOM_AIRPORT && (qPlayer.IsTalking == 0) && (qPlayer.LocationWin==nullptr || ((*qPlayer.LocationWin).CurrentMenu!=MENU_WC_F && (*qPlayer.LocationWin).CurrentMenu!=MENU_WC_M))) {
                             while (Sim.TimeSlice<LocalTime)
                             {
                                 qPerson.DoOnePlayerStep ();
@@ -466,7 +466,7 @@ void PumpNetwork ()
 
                         Message >> PlayerNum >> Mode;
 
-                        PERSON &qPerson = Sim.Persons.Persons[(SLONG)Sim.Persons.GetPlayerIndex(PlayerNum)];
+                        PERSON &qPerson = Sim.Persons.Persons[static_cast<SLONG>(Sim.Persons.GetPlayerIndex(PlayerNum))];
 
                         if (Mode==1)
                         {
@@ -495,7 +495,7 @@ void PumpNetwork ()
 
                         Message >> PlayerNum >> Dir;
 
-                        Sim.Persons.Persons[(SLONG)Sim.Persons.GetPlayerIndex(PlayerNum)].LookAt(Dir);
+                        Sim.Persons.Persons[static_cast<SLONG>(Sim.Persons.GetPlayerIndex(PlayerNum))].LookAt(Dir);
                     }
                     break;
 
@@ -846,7 +846,7 @@ void PumpNetwork ()
                         PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
 
                         qPlayer.Sympathie[SympathieTarget] += Anz;
-                        Limit ((SLONG)-1000, qPlayer.Sympathie[SympathieTarget], (SLONG)1000);
+                        Limit (static_cast<SLONG>(-1000), qPlayer.Sympathie[SympathieTarget], static_cast<SLONG>(1000));
                     }
                     break;
 
@@ -860,10 +860,10 @@ void PumpNetwork ()
                         Message >> PlayerNum >> RouteId >> Ticketpreis >> TicketpreisFC;
 
                         PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
-                        if (qPlayer.RentRouten.RentRouten[(SLONG)Routen(RouteId)].Ticketpreis!=Ticketpreis) {
+                        if (qPlayer.RentRouten.RentRouten[Routen(RouteId)].Ticketpreis!=Ticketpreis) {
                             DebugBreak();
 }
-                        if (qPlayer.RentRouten.RentRouten[(SLONG)Routen(RouteId)].TicketpreisFC!=TicketpreisFC) {
+                        if (qPlayer.RentRouten.RentRouten[Routen(RouteId)].TicketpreisFC!=TicketpreisFC) {
                             DebugBreak();
 }
 
@@ -1269,7 +1269,7 @@ void PumpNetwork ()
                 case ATNET_DIALOG_REQUEST:
                     {
                         PLAYER   &qPlayer = Sim.Players.Players[Sim.localPlayer];
-                        auto *pRaum   = (CStdRaum*)qPlayer.LocationWin;
+                        auto *pRaum   = qPlayer.LocationWin;
 
                         SLONG RequestingPlayer = 0;
 
@@ -1277,7 +1277,7 @@ void PumpNetwork ()
                         if (qPlayer.GetRoom()==ROOM_AIRPORT && (qPlayer.IsStuck == 0) &&
                                 (pRaum != nullptr) && pRaum->MenuIsOpen()==FALSE && pRaum->IsDialogOpen()==FALSE)
                         {
-                            PERSON &qPerson = Sim.Persons.Persons[(SLONG)Sim.Persons.GetPlayerIndex(Sim.localPlayer)];
+                            PERSON &qPerson = Sim.Persons.Persons[static_cast<SLONG>(Sim.Persons.GetPlayerIndex(Sim.localPlayer))];
 
                             qPlayer.WalkStopEx();
                             qPlayer.IsTalking = TRUE;
@@ -1313,7 +1313,7 @@ void PumpNetwork ()
 
                         Message >> TargetPlayer >> Phase;
 
-                        Sim.Persons.Persons[(SLONG)Sim.Persons.GetPlayerIndex(TargetPlayer)].Phase=UBYTE(Phase);
+                        Sim.Persons.Persons[static_cast<SLONG>(Sim.Persons.GetPlayerIndex(TargetPlayer))].Phase=UBYTE(Phase);
 
                         if (!qPlayer.bDialogStartSent) {
                             qPlayer.IsWalking2Player=TargetPlayer;
@@ -1326,7 +1326,7 @@ void PumpNetwork ()
                         PLAYER &qPlayer = Sim.Players.Players[Sim.localPlayer];
                         SLONG   OtherPlayerNum = 0;
 
-                        auto *pRaum   = (CStdRaum*)qPlayer.LocationWin;
+                        auto *pRaum   = qPlayer.LocationWin;
 
                         Message >> OtherPlayerNum;
 
@@ -1340,7 +1340,7 @@ void PumpNetwork ()
                                 >> qPerson.Phase      >> qPerson.LookDir;
 
                             if (qPlayer.LocationWin != nullptr) {
-                                ((CStdRaum*)qPlayer.LocationWin)->StartDialog (TALKER_COMPETITOR, MEDIUM_AIR, OtherPlayerNum, 1);
+                                (qPlayer.LocationWin)->StartDialog (TALKER_COMPETITOR, MEDIUM_AIR, OtherPlayerNum, 1);
 }
 
                             qPlayer.PlayerDialogState = -1;
@@ -1371,7 +1371,7 @@ void PumpNetwork ()
                         qPlayer.WalkStop ();
                         qPlayer.NewDir=8;
 
-                        if (qPlayer.LocationWin != nullptr) { ((CStdRaum*)qPlayer.LocationWin)->StopDialog ();
+                        if (qPlayer.LocationWin != nullptr) { (qPlayer.LocationWin)->StopDialog ();
 }
                     }
                     break;
@@ -1387,7 +1387,7 @@ void PumpNetwork ()
                         MouseClickId   = 1;
                         MouseClickPar1 = id;
 
-                        if (qPlayer.LocationWin != nullptr) { ((CStdRaum*)qPlayer.LocationWin)->PreLButtonDown (CPoint (0,0));
+                        if (qPlayer.LocationWin != nullptr) { (qPlayer.LocationWin)->PreLButtonDown (CPoint (0,0));
 }
                     }
                     break;
@@ -1401,7 +1401,7 @@ void PumpNetwork ()
 
                         Message >> TextAlign >> id >> Answer;
 
-                        if (qPlayer.LocationWin != nullptr) { ((CStdRaum*)qPlayer.LocationWin)->MakeSayWindow (static_cast<BOOL>(TextAlign) == 0, id, Answer, ((CStdRaum*)qPlayer.LocationWin)->pFontNormal);
+                        if (qPlayer.LocationWin != nullptr) { (qPlayer.LocationWin)->MakeSayWindow (static_cast<BOOL>(TextAlign) == 0, id, Answer, (qPlayer.LocationWin)->pFontNormal);
 }
                     }
                     break;
@@ -1410,7 +1410,7 @@ void PumpNetwork ()
                     {
                         PLAYER &qPlayer = Sim.Players.Players[Sim.localPlayer];
 
-                        if (qPlayer.LocationWin != nullptr) { ((CStdRaum*)qPlayer.LocationWin)->PreLButtonDown (CPoint (0,0));
+                        if (qPlayer.LocationWin != nullptr) { (qPlayer.LocationWin)->PreLButtonDown (CPoint (0,0));
 }
                     }
                     break;
@@ -1449,7 +1449,7 @@ void PumpNetwork ()
                     {
                         PLAYER &qPlayer = Sim.Players.Players[Sim.localPlayer];
 
-                        if (qPlayer.LocationWin != nullptr) { ((CStdRaum*)qPlayer.LocationWin)->StopDialog ();
+                        if (qPlayer.LocationWin != nullptr) { (qPlayer.LocationWin)->StopDialog ();
 }
 
                         qPlayer.PlayerDialogState = -1;
@@ -1492,7 +1492,7 @@ void PumpNetwork ()
 
                         if (qPlayer.LocationWin != nullptr)
                         {
-                            CStdRaum &qRoom = *((CStdRaum*)qPlayer.LocationWin);
+                            CStdRaum &qRoom = *(qPlayer.LocationWin);
 
                             bool bImpossible = false; //Kein Telefonat annehmen, wenn wir gerade den Höhrer in die Hand nehmen:
                             if (qPlayer.GetRoom()==ROOM_BURO_A+Sim.localPlayer*10 && ((dynamic_cast<CBuero*>(qPlayer.LocationWin))->KommVarTelefon!=0)) {
@@ -1538,7 +1538,7 @@ void PumpNetwork ()
                         Message >> OtherPlayerNum >> bHandy;
 
                         if (qPlayer.LocationWin != nullptr) {
-                            ((CStdRaum*)qPlayer.LocationWin)->StartDialog (TALKER_COMPETITOR, MEDIUM_HANDY, OtherPlayerNum, 0);
+                            (qPlayer.LocationWin)->StartDialog (TALKER_COMPETITOR, MEDIUM_HANDY, OtherPlayerNum, 0);
 }
 
                         qPlayer.GameSpeed = 0;
@@ -1555,7 +1555,7 @@ void PumpNetwork ()
 
                         if (qPlayer.LocationWin != nullptr)
                         {
-                            CStdRaum &qRoom = *((CStdRaum*)qPlayer.LocationWin);
+                            CStdRaum &qRoom = *(qPlayer.LocationWin);
 
                             qRoom.DialBusyFX.ReInit ("busypure.raw"); //busy pure (without dialing first)
                             qRoom.DialBusyFX.Play(0, Sim.Options.OptionEffekte*100/7);
@@ -1573,7 +1573,7 @@ void PumpNetwork ()
 
                         if (qPlayer.LocationWin != nullptr)
                         {
-                            CStdRaum &qRoom = *((CStdRaum*)qPlayer.LocationWin);
+                            CStdRaum &qRoom = *(qPlayer.LocationWin);
 
                             qRoom.DialBusyFX.ReInit ("noanpure.raw"); //No Answer pure (without dialing first)
                             qRoom.DialBusyFX.Play(0, Sim.Options.OptionEffekte*100/7);
@@ -1596,7 +1596,7 @@ void PumpNetwork ()
                         PLAYER &qPlayer = Sim.Players.Players[Sim.localPlayer];
 
                         if (qPlayer.LocationWin != nullptr) {
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuStop();
+                            (qPlayer.LocationWin)->MenuStop();
 }
                     }
                     break;
@@ -1610,9 +1610,9 @@ void PumpNetwork ()
 
                         if (qPlayer.LocationWin != nullptr)
                         {
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuBms[1].ShiftUp (10);
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuBms[1].PrintAt (str, FontSmallRed, TEC_FONT_LEFT, 6, 119, 279, 147);
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuRepaint();
+                            (qPlayer.LocationWin)->MenuBms[1].ShiftUp (10);
+                            (qPlayer.LocationWin)->MenuBms[1].PrintAt (str, FontSmallRed, TEC_FONT_LEFT, 6, 119, 279, 147);
+                            (qPlayer.LocationWin)->MenuRepaint();
                         }
                     }
                     break;
@@ -1630,9 +1630,9 @@ void PumpNetwork ()
 
                         if (qPlayer.LocationWin != nullptr)
                         {
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuBms[1].ShiftUp (10);
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuBms[1].PrintAt (bprintf (StandardTexte.GetS (TOKEN_MISC, 3010), Money), FontNormalGrey, TEC_FONT_LEFT, 6, 119, 279, 147);
-                            ((CStdRaum*)qPlayer.LocationWin)->MenuRepaint();
+                            (qPlayer.LocationWin)->MenuBms[1].ShiftUp (10);
+                            (qPlayer.LocationWin)->MenuBms[1].PrintAt (bprintf (StandardTexte.GetS (TOKEN_MISC, 3010), Money), FontNormalGrey, TEC_FONT_LEFT, 6, 119, 279, 147);
+                            (qPlayer.LocationWin)->MenuRepaint();
                         }
                     }
                     break;
@@ -1681,8 +1681,8 @@ void PumpNetwork ()
                 case ATNET_WAITFORPLAYER:
                     Message >> Par1 >> Par2;
                     nWaitingForPlayer+=Par1;
-                    nPlayerWaiting[(SLONG)Par2]+=Par1;
-                    if (nPlayerWaiting[(SLONG)Par2]<0) { nPlayerWaiting[(SLONG)Par2]=0;
+                    nPlayerWaiting[static_cast<SLONG>(Par2)]+=Par1;
+                    if (nPlayerWaiting[static_cast<SLONG>(Par2)]<0) { nPlayerWaiting[static_cast<SLONG>(Par2)]=0;
 }
                     SetNetworkBitmap (static_cast<int>(nWaitingForPlayer>0)*3);
                     break;
@@ -1794,7 +1794,7 @@ void PumpNetwork ()
                             Sim.SendSimpleMessage (ATNET_IO_LOADREQUEST_BAD, Sim.Players.Players[FromPlayer].NetworkID, Sim.localPlayer);
 
                             if (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr) {
-                                ((CStdRaum*)Sim.Players.Players[Sim.localPlayer].LocationWin)->MenuStart (MENU_REQUEST, MENU_REQUEST_NET_LOADTHIS);
+                                (Sim.Players.Players[Sim.localPlayer].LocationWin)->MenuStart (MENU_REQUEST, MENU_REQUEST_NET_LOADTHIS);
 }
                         }
                     }
@@ -1835,7 +1835,7 @@ void PumpNetwork ()
                         Sim.Players.Players[Sim.localPlayer].bReadyForBriefing=1;
 
                         if (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr) {
-                            ((CStdRaum*)Sim.Players.Players[Sim.localPlayer].LocationWin)->MenuStart (MENU_REQUEST, MENU_REQUEST_NET_LOADONE);
+                            (Sim.Players.Players[Sim.localPlayer].LocationWin)->MenuStart (MENU_REQUEST, MENU_REQUEST_NET_LOADONE);
 }
                     }
                     break;
