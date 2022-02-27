@@ -26,7 +26,6 @@ SLONG NewgameToOptions = FALSE;
 SLONG gNetworkSavegameLoading = -1; // Komm-Variable, über die der Options-Screen mitteilt, welcher Spielstand für's Netzwerk geladen werden soll
 
 extern SLONG gLoadGameNumber;
-extern FILE *CreditsSmackerFileHandle;
 extern BOOL gSpawnOnly;
 
 // {7EAFE365-9362-11d2-BA6A-080000278763}
