@@ -78,7 +78,7 @@ inline void MB() {}
 template <typename T> class BUFFER_V : public std::vector<T> {
   public:
     BUFFER_V() = default;
-    BUFFER_V(int size) : std::vector<T>(size) { }
+    BUFFER_V(int size) : std::vector<T>(size) {}
     void ReSize(SLONG anz) {
         Offset = 0;
         std::vector<T>::resize(anz);
@@ -94,14 +94,14 @@ template <typename T> class BUFFER_V : public std::vector<T> {
     }
 
     // operator T *() const { return std::vector<T>::data(); }
-    const T* getData() const { return std::vector<T>::data() + Offset; }
-    T* getData() { return std::vector<T>::data() + Offset; }
+    const T *getData() const { return std::vector<T>::data() + Offset; }
+    T *getData() { return std::vector<T>::data() + Offset; }
 
     // void operator+=(int rhs) { DelPointer += rhs; }
     void incIter(int i) { Offset += i; }
     SLONG getIter() const { return Offset; }
 
-    private:
+  private:
     SLONG Offset{0};
 };
 
@@ -352,7 +352,7 @@ class TEAKFILE {
         return File;
     }
     friend TEAKFILE &operator>>(TEAKFILE &File, double &b) {
-            File.Read((UBYTE *)&b, sizeof(b));
+        File.Read((UBYTE *)&b, sizeof(b));
         return File;
     }
 
@@ -1317,8 +1317,7 @@ template <typename T> class ALBUM_V {
             std::swap(List[idxA], List[idxB]);
             std::swap(ListInit[idxA], ListInit[idxB]);
             return;
-        }
-        else if (a < 0x1000000 && b < 0x1000000) {
+        } else if (a < 0x1000000 && b < 0x1000000) {
             auto idA = ListInit[a];
             auto idB = ListInit[b];
             if (Hash.end() != Hash.find(idA)) {
