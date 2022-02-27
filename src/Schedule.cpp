@@ -574,6 +574,7 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
     __int64 Saldo = 0;
     SLONG Einnahmen = 0;
     SLONG AusgabenKerosin = 0;
+    SLONG AusgabenKerosinOhneTank = 0;
     SLONG AusgabenEssen = 0;
     CString CityString;
     PLAYER &qPlayer = Sim.Players.Players[PlayerNum];
@@ -626,37 +627,6 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
     // Insgesamt geflogene Meilen:
     qPlayer.NumMiles += Cities.CalcDistance(VonCity, NachCity) / 1609;
 
-    if (ObjectType == 2 && Okay != 0) {
-        AusgabenKerosin = GetRealAusgaben(PlayerNum, *Plane, Plane->Name);
-        // AusgabenKerosin  = GetRealAusgaben(PlayerNum, Plane->TypeId, Plane->Name);
-    } else if (ObjectType == 4) {
-        AusgabenKerosin = GetRealAusgaben(PlayerNum, *Plane, Plane->Name);
-
-        if (qPlayer.Frachten[ObjectId].TonsLeft > 0) {
-            qPlayer.NumFracht += min(qPlayer.Frachten[ObjectId].TonsLeft, Plane->ptPassagiere / 10);
-
-            if (qPlayer.Frachten[ObjectId].Praemie == 0) {
-                qPlayer.NumFrachtFree += min(qPlayer.Frachten[ObjectId].TonsLeft, Plane->ptPassagiere / 10);
-            }
-
-            qPlayer.Frachten[ObjectId].TonsLeft -= Plane->ptPassagiere / 10;
-
-            if (qPlayer.Frachten[ObjectId].TonsLeft <= 0) {
-                qPlayer.Frachten[ObjectId].TonsLeft = 0;
-                Einnahmen = GetEinnahmen(PlayerNum, *Plane);
-            }
-        }
-    } else {
-        // Einnahmen = GetEinnahmen(PlayerNum, Plane->TypeId);
-        Einnahmen = GetEinnahmen(PlayerNum, *Plane);
-        AusgabenKerosin = GetRealAusgaben(PlayerNum, *Plane, Plane->Name);
-        // AusgabenKerosin  = GetRealAusgaben(PlayerNum, Plane->TypeId, Plane->Name);
-    }
-
-    if (ObjectType == 1 || ObjectType == 2) {
-        AusgabenEssen += Passagiere * FoodCosts[Plane->Essen];
-    }
-
     // Für den Statistik-Screen:
     if (ObjectType == 1 || ObjectType == 2) {
         qPlayer.Statistiken[STAT_PASSAGIERE].AddAtPastDay(0, Passagiere);
@@ -679,6 +649,36 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
                 break;
             }
         }
+    }
+
+    if (ObjectType == 4) {
+        if (qPlayer.Frachten[ObjectId].TonsLeft > 0) {
+            qPlayer.NumFracht += min(qPlayer.Frachten[ObjectId].TonsLeft, Plane->ptPassagiere / 10);
+
+            if (qPlayer.Frachten[ObjectId].Praemie == 0) {
+                qPlayer.NumFrachtFree += min(qPlayer.Frachten[ObjectId].TonsLeft, Plane->ptPassagiere / 10);
+            }
+
+            qPlayer.Frachten[ObjectId].TonsLeft -= Plane->ptPassagiere / 10;
+
+            if (qPlayer.Frachten[ObjectId].TonsLeft <= 0) {
+                qPlayer.Frachten[ObjectId].TonsLeft = 0;
+                Einnahmen = GetEinnahmen(PlayerNum, *Plane);
+            }
+        }
+    } else {
+        Einnahmen = GetEinnahmen(PlayerNum, *Plane);
+    }
+    if (ObjectType == 2 && Okay != 0) {
+        Einnahmen = 0;
+    }
+
+    AusgabenKerosin = CalculateRealFlightCost(VonCity, NachCity, Plane->ptVerbrauch, Plane->ptGeschwindigkeit, PlayerNum);
+    AusgabenKerosinOhneTank = CalculateFlightCostNoTank(VonCity, NachCity, Plane->ptVerbrauch, Plane->ptGeschwindigkeit, PlayerNum);
+    qPlayer.Bilanz.KerosinGespart += (AusgabenKerosinOhneTank - AusgabenKerosin);
+
+    if (ObjectType == 1 || ObjectType == 2) {
+        AusgabenEssen += Passagiere * FoodCosts[Plane->Essen];
     }
 
     Plane->Salden[0] -= AusgabenKerosin;
@@ -716,7 +716,6 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
 
     // Kerosin aus dem Vorrat verbuchen:
     if (Sim.Players.Players[PlayerNum].TankOpen != 0) {
-        // SLONG Kerosin = CalculateFlightKerosin (VonCity, NachCity, PlaneTypes[Plane->TypeId].Verbrauch, PlaneTypes[Plane->TypeId].Geschwindigkeit);
         SLONG Kerosin = CalculateFlightKerosin(VonCity, NachCity, Plane->ptVerbrauch, Plane->ptGeschwindigkeit);
         SLONG tmp = min(qPlayer.TankInhalt, Kerosin);
         qPlayer.TankInhalt -= tmp;
@@ -730,8 +729,6 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
         }
 
         auto kosten = SLONG(tmp * qPlayer.TankPreis);
-        // qPlayer.Bilanz.Kerosin += kosten; // Kalkulatorische Kosten
-        // qPlayer.Statistiken[STAT_A_KEROSIN].AddAtPastDay(0, -kosten);
         Plane->Salden[0] -= kosten;
     }
 
@@ -982,13 +979,6 @@ SLONG CFlugplanEintrag::GetEinnahmen(SLONG PlayerNum, const CPlane &qPlane) cons
 //--------------------------------------------------------------------------------------------
 SLONG CFlugplanEintrag::GetAusgaben(SLONG PlayerNum, const CPlane &qPlane) const {
     return (CalculateFlightCost(VonCity, NachCity, qPlane.ptVerbrauch, qPlane.ptGeschwindigkeit, PlayerNum));
-}
-
-//--------------------------------------------------------------------------------------------
-// Sagt, wieviel der Flug kosten wird und verbucht das Kerosin:
-//--------------------------------------------------------------------------------------------
-SLONG CFlugplanEintrag::GetRealAusgaben(SLONG PlayerNum, const CPlane &qPlane, const CString &Name) const {
-    return (CalculateRealFlightCost(VonCity, NachCity, qPlane.ptVerbrauch, qPlane.ptGeschwindigkeit, PlayerNum, Name));
 }
 
 //--------------------------------------------------------------------------------------------
