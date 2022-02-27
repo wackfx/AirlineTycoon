@@ -185,7 +185,7 @@ void PumpNetwork (void)
 
         if (timeGetTime()-LastTime>1000)
         {
-            Sim.SendSimpleMessage (ATNET_TIMEPING, NULL, Sim.TimeSlice);
+            Sim.SendSimpleMessage (ATNET_TIMEPING, 0, Sim.TimeSlice);
             LastTime = timeGetTime();
         }
     }
@@ -234,7 +234,7 @@ void PumpNetwork (void)
 
                 case ATNET_WANNAJOIN:
                     if (Sim.bIsHost)
-                        Sim.SendSimpleMessage (ATNET_SORRYFULL, NULL);
+                        Sim.SendSimpleMessage (ATNET_SORRYFULL, 0);
                     break;
 
                 case ATNET_CHATBROADCAST:
@@ -1404,7 +1404,7 @@ void PumpNetwork (void)
                                     gUniversalFx.Play(DSBPLAY_NOSTOP, Sim.Options.OptionEffekte*100/7);
 
                                     qPlayer.GameSpeed = 0;
-                                    Sim.SendSimpleMessage (ATNET_SETSPEED, NULL, Sim.localPlayer, qPlayer.GameSpeed);
+                                    Sim.SendSimpleMessage (ATNET_SETSPEED, 0, Sim.localPlayer, qPlayer.GameSpeed);
 
                                     qRoom.StartDialog (TALKER_COMPETITOR, MEDIUM_HANDY, OtherPlayerNum, 1);
                                     qRoom.PayingForCall=FALSE;
@@ -1430,7 +1430,7 @@ void PumpNetwork (void)
                             ((CStdRaum*)qPlayer.LocationWin)->StartDialog (TALKER_COMPETITOR, MEDIUM_HANDY, OtherPlayerNum, 0);
 
                         qPlayer.GameSpeed = 0;
-                        Sim.SendSimpleMessage (ATNET_SETSPEED, NULL, Sim.localPlayer, qPlayer.GameSpeed);
+                        Sim.SendSimpleMessage (ATNET_SETSPEED, 0, Sim.localPlayer, qPlayer.GameSpeed);
 
                         qPlayer.DisplayAsTelefoning();
                         Sim.Players.Players[OtherPlayerNum].DisplayAsTelefoning();
@@ -1626,7 +1626,7 @@ void PumpNetwork (void)
 
                         if (qPlayer.CallItADay==0)
                         {
-                            Sim.SendSimpleMessage (ATNET_DAYFINISH, NULL, Sim.localPlayer);
+                            Sim.SendSimpleMessage (ATNET_DAYFINISH, 0, Sim.localPlayer);
                             Sim.SendSimpleMessage (ATNET_DAYFINISH, qPlayer.NetworkID, Sim.localPlayer);
                         }
                     }
@@ -1692,8 +1692,8 @@ void PumpNetwork (void)
                         if (c==4)
                         {
                             nOptionsOpen--;
-                            Sim.SendSimpleMessage (ATNET_OPTIONS, NULL, -1, Sim.localPlayer);
-                            Sim.SendSimpleMessage (ATNET_IO_LOADREQUEST_DOIT, NULL, Index);
+                            Sim.SendSimpleMessage (ATNET_OPTIONS, 0, -1, Sim.localPlayer);
+                            Sim.SendSimpleMessage (ATNET_IO_LOADREQUEST_DOIT, 0, Index);
                             Sim.LoadGame (Index);
                         }
                     }
@@ -1703,7 +1703,7 @@ void PumpNetwork (void)
                     if (Sim.Players.Players[Sim.localPlayer].bReadyForBriefing==false)
                     {
                         nOptionsOpen--;
-                        Sim.SendSimpleMessage (ATNET_OPTIONS, NULL, -1, Sim.localPlayer);
+                        Sim.SendSimpleMessage (ATNET_OPTIONS, 0, -1, Sim.localPlayer);
                         Sim.Players.Players[Sim.localPlayer].bReadyForBriefing=true;
 
                         if (Sim.Players.Players[Sim.localPlayer].LocationWin)
@@ -1902,7 +1902,7 @@ void NetGenericSync (long SyncId)
     if (!Sim.bNetwork) return;
     if (Sim.localPlayer<0 || Sim.localPlayer>3) return;
 
-    Sim.SendSimpleMessage (ATNET_GENERICSYNC, NULL, Sim.localPlayer, SyncId);  //Requesting Sync
+    Sim.SendSimpleMessage (ATNET_GENERICSYNC, 0, Sim.localPlayer, SyncId);  //Requesting Sync
 
     GenericSyncIds[Sim.localPlayer]=SyncId;
 
@@ -1983,7 +1983,7 @@ void NetGenericAsync (long SyncId, long Par, long player)
 
     if (player==-1)
     {
-        Sim.SendSimpleMessage (ATNET_GENERICASYNC, NULL, Sim.localPlayer, SyncId, Par);  //Requesting Sync
+        Sim.SendSimpleMessage (ATNET_GENERICASYNC, 0, Sim.localPlayer, SyncId, Par);  //Requesting Sync
         player=Sim.localPlayer;
     }
 

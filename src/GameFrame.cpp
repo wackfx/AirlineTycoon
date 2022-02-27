@@ -888,7 +888,7 @@ void GameFrame::OnActivateApp(BOOL bActive, DWORD hTask)
 
             CRect rect (2,2,638, 478);
 
-            if (Sim.bNetwork) Sim.SendSimpleMessage (ATNET_ACTIVATEAPP, NULL, -1, Sim.localPlayer);
+            if (Sim.bNetwork) Sim.SendSimpleMessage (ATNET_ACTIVATEAPP, 0, -1, Sim.localPlayer);
 
             //if (bFullscreen) ClipCursor (&rect);
 
@@ -926,7 +926,7 @@ void GameFrame::OnActivateApp(BOOL bActive, DWORD hTask)
 #endif
 #endif
 
-            if (Sim.bNetwork) Sim.SendSimpleMessage (ATNET_ACTIVATEAPP, NULL, 1, Sim.localPlayer);
+            if (Sim.bNetwork) Sim.SendSimpleMessage (ATNET_ACTIVATEAPP, 0, 1, Sim.localPlayer);
 
             //if (bFullscreen) ClipCursor (NULL);
             Pause(true);	// AG:
@@ -1696,7 +1696,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 CheatSound ();
 
                 Sim.SendChatBroadcast (bprintf (StandardTexte.GetS (TOKEN_MISC, 7011), (LPCTSTR)Sim.Players.Players[Sim.localPlayer].NameX));
-                Sim.SendSimpleMessage (ATNET_CHEAT, NULL, Sim.localPlayer, 0);
+                Sim.SendSimpleMessage (ATNET_CHEAT, 0, Sim.localPlayer, 0);
             }
         }
 
@@ -1721,7 +1721,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 CheatSound ();
 
                 Sim.SendChatBroadcast (bprintf (StandardTexte.GetS (TOKEN_MISC, 7011), (LPCTSTR)Sim.Players.Players[Sim.localPlayer].NameX));
-                Sim.SendSimpleMessage (ATNET_CHEAT, NULL, Sim.localPlayer, 0);
+                Sim.SendSimpleMessage (ATNET_CHEAT, 0, Sim.localPlayer, 0);
             }
         }
 
@@ -1768,7 +1768,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 CheatSound ();
 
                 Sim.SendChatBroadcast (bprintf (StandardTexte.GetS (TOKEN_MISC, 7015), (LPCTSTR)Sim.Players.Players[Sim.localPlayer].NameX));
-                Sim.SendSimpleMessage (ATNET_CHEAT, NULL, Sim.localPlayer, 0);
+                Sim.SendSimpleMessage (ATNET_CHEAT, 0, Sim.localPlayer, 0);
             }
         }
 
@@ -1792,7 +1792,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 CheatSound ();
 
                 Sim.SendChatBroadcast (bprintf (StandardTexte.GetS (TOKEN_MISC, 7016), (LPCTSTR)Sim.Players.Players[Sim.localPlayer].NameX));
-                Sim.SendSimpleMessage (ATNET_CHEAT, NULL, Sim.localPlayer, 0);
+                Sim.SendSimpleMessage (ATNET_CHEAT, 0, Sim.localPlayer, 0);
             }
         }
 
@@ -1835,7 +1835,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 CheatSound ();
 
                 Sim.SendChatBroadcast (bprintf (StandardTexte.GetS (TOKEN_MISC, 7013), (LPCTSTR)Sim.Players.Players[Sim.localPlayer].NameX));
-                Sim.SendSimpleMessage (ATNET_CHEAT, NULL, Sim.localPlayer, 1);
+                Sim.SendSimpleMessage (ATNET_CHEAT, 0, Sim.localPlayer, 1);
             }
         }
 
@@ -1854,7 +1854,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 CheatSound ();
 
                 Sim.SendChatBroadcast (bprintf (StandardTexte.GetS (TOKEN_MISC, 7014), (LPCTSTR)Sim.Players.Players[Sim.localPlayer].NameX));
-                Sim.SendSimpleMessage (ATNET_CHEAT, NULL, Sim.localPlayer, 2);
+                Sim.SendSimpleMessage (ATNET_CHEAT, 0, Sim.localPlayer, 2);
             }
         }
 
@@ -2278,7 +2278,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
     if (nChar==VK_PAUSE && (gDisablePauseKey==FALSE || Sim.bPause) && (Sim.Gamestate&15)==GAMESTATE_PLAYING)
     {
-        if (Sim.bNetwork) Sim.SendSimpleMessage (ATNET_PAUSE, NULL);
+        if (Sim.bNetwork) Sim.SendSimpleMessage (ATNET_PAUSE, 0);
 
         Pause(!Sim.bPause);
     }
@@ -2361,7 +2361,7 @@ void GameFrame::OnChar(UINT nChar, UINT, UINT)
                             Sim.InvalidateHint(HINT_GAMESPEED);
                             Sim.Players.Players[Sim.localPlayer].GameSpeed = (Sim.Players.Players[Sim.localPlayer].GameSpeed+1)%4;
 
-                            Sim.SendSimpleMessage (ATNET_SETSPEED, NULL, Sim.localPlayer, Sim.Players.Players[Sim.localPlayer].GameSpeed);
+                            Sim.SendSimpleMessage (ATNET_SETSPEED, 0, Sim.localPlayer, Sim.Players.Players[Sim.localPlayer].GameSpeed);
 
                             if (Sim.Players.Players[Sim.localPlayer].LocationWin)
                                 ((CStdRaum*)Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount=3;
@@ -2371,7 +2371,7 @@ void GameFrame::OnChar(UINT nChar, UINT, UINT)
                             Sim.InvalidateHint(HINT_GAMESPEED);
                             Sim.Players.Players[Sim.localPlayer].GameSpeed = (Sim.Players.Players[Sim.localPlayer].GameSpeed+3)%4;
 
-                            Sim.SendSimpleMessage (ATNET_SETSPEED, NULL, Sim.localPlayer, Sim.Players.Players[Sim.localPlayer].GameSpeed);
+                            Sim.SendSimpleMessage (ATNET_SETSPEED, 0, Sim.localPlayer, Sim.Players.Players[Sim.localPlayer].GameSpeed);
 
                             if (Sim.Players.Players[Sim.localPlayer].LocationWin)
                                 ((CStdRaum*)Sim.Players.Players[Sim.localPlayer].LocationWin)->StatusCount=3;
