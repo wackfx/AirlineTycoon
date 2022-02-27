@@ -50,4 +50,7 @@ typedef CStdStringA CString;
 #include "Werkstat.h"    //Die Werkstatthalle
 
 #include "global.h" //Deklarationen der globalen Variablen
+
+#ifdef _MSC_VER
 #pragma hdrstop
+#endif
