@@ -364,7 +364,7 @@ void RAKNetNetwork::CloseSession() {
 
 ULONG RAKNetNetwork::GetLocalPlayerID() { return mLocalID; }
 
-void RAKNetNetwork::RequestHostedClients(RakNetGUID serverGuid) {}
+void RAKNetNetwork::RequestHostedClients(RakNetGUID  /*serverGuid*/) {}
 
 bool RAKNetNetwork::IsSessionFinished() { return mState == SBNETWORK_SESSION_FINISHED; }
 
