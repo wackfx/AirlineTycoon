@@ -622,6 +622,7 @@ END_NAME_MAP
 // Wo befindet sich ein Worker?
 #define WORKER_RESERVE 100 // Ist in der stillen Reserve
 #define WORKER_JOBLESS 101 // Sucht einen Job
+#define WORKER_EXPIRED 102 //Hat aufgegeben
 
 // Die Leute die sprechen können:
 #define TALKER_NONE -1
