@@ -830,6 +830,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
         qPlayer.Bilanz.Clear();
         qPlayer.BilanzGestern.Clear();
         qPlayer.BilanzGesamt.Clear();
+        qPlayer.BilanzWoche.Clear();
 
         for (d = 0; d < STAT_ANZ; d++) {
             qPlayer.Statistiken[d].Init();
@@ -2812,6 +2813,7 @@ void SIM::NewDay() {
         Players.Players[c].History.AddEntry(0, "-------------------------------------");
         Players.Players[c].CallItADay = FALSE;
 
+        Players.Players[c].BilanzWoche.NeuerTag(Players.Players[c].Bilanz);
         Players.Players[c].BilanzGesamt += Players.Players[c].Bilanz;
         Players.Players[c].BilanzGestern = Players.Players[c].Bilanz;
         Players.Players[c].Bilanz.Clear();
