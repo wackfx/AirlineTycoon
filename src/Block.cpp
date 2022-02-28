@@ -1826,6 +1826,10 @@ void BLOCK::ZeigeFinanzBericht(XY ClientArea, const CBilanz &ref) {
         return;
     }
     if (Page == 0) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 80) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::tuple<SLONG, __int64, __int64> > tmp =
                                                 {{3601, ref.GetHaben(), INT_MIN},
                                                 {3602, ref.GetSoll(), INT_MIN},
@@ -1844,6 +1848,10 @@ void BLOCK::ZeigeFinanzBericht(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10150);
         idx = PrintList(ClientArea, tmp2, idx);
     } else if (Page == 1) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 90) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         auto summe = ref.HabenZinsen + ref.HabenRendite + ref.SollZinsen + ref.SollRendite + ref.Steuer;
         std::vector< std::tuple<SLONG, __int64, __int64> > tmp =
                                                 {{3401, ref.HabenZinsen, INT_MIN},
@@ -1867,9 +1875,6 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         return;
     }
 
-    if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 80) {
-        Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
-    }
     // TODO: KerosinGespart
     if (Page == 0) {
         std::vector< std::pair<SLONG, __int64> > tmp = {{3403, ref.Tickets},
@@ -1884,6 +1889,10 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10050);
         idx = PrintList(ClientArea, tmp, idx);
     } else if (Page == 1) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 20) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::pair<SLONG, __int64> > tmp = {{3504, ref.Personal},
                                             {3507, ref.Gatemiete},
                                             {3508, ref.Citymiete},
@@ -1892,6 +1901,10 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10051);
         idx = PrintList(ClientArea, tmp, idx);
     } else if (Page == 2) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 30) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::pair<SLONG, __int64> > tmp = {{3401, ref.HabenZinsen},
                                             {3402, ref.HabenRendite},
                                             {10004, ref.KreditNeu},
@@ -1903,6 +1916,10 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10052);
         idx = PrintList(ClientArea, tmp, idx);
     } else if (Page == 3) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 40) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::pair<SLONG, __int64> > tmp = {{10020, ref.Aktienverkauf},
                                             {10021, ref.AktienEmission},
                                             {10022, ref.AktienEmissionKompErh},
@@ -1913,6 +1930,10 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10053);
         idx = PrintList(ClientArea, tmp, idx);
     } else if (Page == 4) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 50) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::pair<SLONG, __int64> > tmp = {{10026, ref.FlugzeugVerkauf},
                                             {10027, ref.Takeovers},
                                             {10028, ref.FlugzeugKauf},
@@ -1925,6 +1946,10 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10054);
         idx = PrintList(ClientArea, tmp, idx);
     } else if (Page == 5) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 60) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::pair<SLONG, __int64> > tmp = {{10007, ref.SabotageGeklaut},
                                             {10008, ref.SabotageKomp},
                                             {10009, ref.Sabotage},
@@ -1934,6 +1959,10 @@ void BLOCK::ZeigeTagesBilanz(XY ClientArea, const CBilanz &ref) {
         PrintLine(ClientArea, idx++, 10055);
         idx = PrintList(ClientArea, tmp, idx);
     } else if (Page == 6) {
+        if (Sim.Players.Players[PlayerNum].HasBerater(BERATERTYP_GELD) < 70) {
+            Bitmap.PrintAt(StandardTexte.GetS(TOKEN_EXPERT, 3001), FontSmallBlack, TEC_FONT_LEFT, ClientArea + XY(2, 27), ClientArea + XY(172, 170));
+            return;
+        }
         std::vector< std::pair<SLONG, __int64> > tmp = {{10012, ref.BodyguardRabatt},
                                             {10013, ref.GeldErhalten},
                                             {10014, ref.SonstigeEinnahmen},
