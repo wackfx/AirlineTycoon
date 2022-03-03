@@ -19,6 +19,7 @@ HDU::HDU() : Log(nullptr) {
     strcpy(path.data(), base);
     strcat(path.data(), file);
     Log = fopen(path.data(), "w");
+    SDL_free(base);
 
     SDL_LogOutputFunction defaultOut;
     SDL_LogGetOutputFunction(&defaultOut, nullptr);
@@ -45,6 +46,7 @@ HDU::HDU() : Log(nullptr) {
             fprintf(Hdu.Log, "%s\n", finalMessage);
             fflush(Hdu.Log);
         }
+}
 
         if(modified)
             delete[] finalMessage;
