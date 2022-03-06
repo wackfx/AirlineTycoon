@@ -695,7 +695,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
         qPlayer.RentGate(c, 1000);
 
         // Statussymbole:
-        qPlayer.BadKerosin = 0;
+        qPlayer.KerosinQuali = 1.0;
         qPlayer.KerosinKind = 1; // Normales Kerosin
         qPlayer.Tank = 100;
         qPlayer.TankOpen = FALSE;
@@ -1823,7 +1823,7 @@ void SIM::DoTimeStep() {
                                         PictureId = GetIdFromString("SUPERMAN");
                                         break;
                                     default:
-                                        printf("cpp: Default case should not be reached.");
+                                        printf("Sim.cpp: Default case should not be reached.");
                                         DebugBreak();
                                     }
                                     if (qOpfer.Kurse[0] < 0) {
@@ -1990,7 +1990,7 @@ void SIM::DoTimeStep() {
                                         }
                                         break;
                                     default:
-                                        printf("cpp: Default case should not be reached.");
+                                        printf("Sim.cpp: Default case should not be reached.");
                                         DebugBreak();
                                     }
 
@@ -2748,7 +2748,7 @@ void SIM::NewDay() {
                             qPlayer.ArabMode3 = -(SaboRand.Rand(5) + 1);
                             break;
                         default:
-                            printf("cpp: Default case should not be reached.");
+                            printf("Sim.cpp: Default case should not be reached.");
                             DebugBreak();
                         }
 
@@ -3941,7 +3941,7 @@ void SIM::NetRefill(SLONG Type, SLONG City) const {
     case 5:
         break;
     default:
-        printf("cpp: Default case should not be reached.");
+        printf("Sim.cpp: Default case should not be reached.");
         DebugBreak();
     }
 
@@ -4092,6 +4092,21 @@ void SIM::LoadHighscores() {
         }
     } catch (...) {
     }
+}
+
+SLONG SIM::HoleKerosinPreis(SLONG typ) const {
+    switch (typ) {
+    case 0:
+        return Kerosin * 2;
+    case 1:
+        return Kerosin;
+    case 2:
+        return Kerosin / 2;
+    default:
+        printf("Sim.cpp: Default case should not be reached.");
+        DebugBreak();
+    }
+    return 0;
 }
 
 //--------------------------------------------------------------------------------------------
