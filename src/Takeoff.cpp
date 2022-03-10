@@ -133,7 +133,7 @@ extern "C"
     }
 
     if (!run_regression()) {
-        printf("Regression test failed!\n");
+        hprintf("Regression test failed!");
         return 1;
     }
 
