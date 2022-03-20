@@ -2426,7 +2426,7 @@ void PLAYER::PlanGates() {
                 auslastungProGate[n][i.zeit + 1] = true;
                 ++Gates.Auslastung[i.zeit + 1];
             }
-            
+
             found = true;
         }
 
