@@ -753,7 +753,7 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
 
     GameLoop(nullptr);
 
-    if (FrameWnd) {
+    if (FrameWnd != nullptr) {
         delete FrameWnd;
         FrameWnd = nullptr;
     }
