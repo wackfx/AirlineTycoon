@@ -619,6 +619,7 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
 
     Plane->Kilometer += Cities.CalcDistance(VonCity, NachCity) / 1000;
     Plane->SummePassagiere += Passagiere;
+    Plane->SummePassagiere += PassagiereFC;
 
     // Insgesamt geflogene Meilen:
     qPlayer.NumMiles += Cities.CalcDistance(VonCity, NachCity) / 1609;
@@ -635,9 +636,13 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
         }
     }
 
+    if (ObjectType == 1 || ObjectType == 2) {
+        Sim.Players.Players[PlayerNum].NumPassengers += Passagiere + PassagiereFC;
+    }
+
     if (ObjectType == 1) {
         // In beide Richtungen vermerken:
-        qPlayer.RentRouten.RentRouten[Routen(ObjectId)].HeuteBefoerdert += Passagiere;
+        qPlayer.RentRouten.RentRouten[Routen(ObjectId)].HeuteBefoerdert += Passagiere + PassagiereFC;
 
         for (SLONG c = Routen.AnzEntries() - 1; c >= 0; c--) {
             if ((Routen.IsInAlbum(c) != 0) && Routen[c].VonCity == Routen[ObjectId].NachCity && Routen[c].NachCity == Routen[ObjectId].VonCity) {
@@ -920,10 +925,6 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
             Limit(static_cast<UBYTE>(0), qPlayer.RentRouten.RentRouten[Routen(ObjectId)].Image, static_cast<UBYTE>(100));
         }
         Limit(SLONG(-1000), qPlayerX.Image, SLONG(1000));
-    }
-
-    if (ObjectType == 1 || ObjectType == 2) {
-        Sim.Players.Players[PlayerNum].NumPassengers += Passagiere;
     }
 
     // Flugzeugabnutzung verbuchen:
