@@ -2181,6 +2181,7 @@ void CTakeOffApp::LadeWeitereStandardTexte() {
     const char TOKEN_AKTIE[] = "Akti";
     const char TOKEN_JOBS[] = "Jobs";
     const char TOKEN_ARAB[] = "Arab";
+    const char TOKEN_MISC[] = "Misc";
 
     StandardTexte.AddText(TOKEN_STAT, 10000, "Bodyguard-Rabatt");
     StandardTexte.AddText(TOKEN_STAT, 10001, "Zinsen");
@@ -2322,4 +2323,6 @@ void CTakeOffApp::LadeWeitereStandardTexte() {
     }
 
     StandardTexte.AddText(TOKEN_JOBS, 2003, "Routenberaterin");
+
+    StandardTexte.UpdateText(TOKEN_MISC, 3201, "\xD6""ffnungszeiten.\xB5 \xB5Mo-Sa:10-19 Uhr\xB5So:geschlossen");
 }
