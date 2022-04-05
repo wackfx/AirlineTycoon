@@ -28,7 +28,6 @@ class GameFrame {
     void UpdateWindow() const;
     void UpdateFrameSize() const;
     void RePostMessage(const CPoint &Pos) const;
-    void RePostClick(SLONG PlayerNum, UINT message, WPARAM wParam, LPARAM lParam);
     static void PrepareFade(void);
     static bool Pause(bool fPause); // AG
     void TranslatePointToGameSpace(CPoint *p) const;
@@ -38,7 +37,6 @@ class GameFrame {
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(GameFrame)
   protected:
-    virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
     //}}AFX_VIRTUAL
 
     // Implementation
