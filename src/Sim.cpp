@@ -40,7 +40,7 @@ static long InitMoney[] = {1500000, 0,        2000000, 0,                       
                            3000000, 0,        3000000, 0,                                                        // DIFF_ATFS09
                            3000000, 0,        3000000, 0};                                                       // DIFF_ATFS10
 
-static long MonthLength[] = {31, 28, 31, 30, 31, 30, 30, 31, 30, 31, 30, 31};
+static SLONG MonthLength[] = {31, 28, 31, 30, 31, 30, 30, 31, 30, 31, 30, 31};
 
 char chRegKey[] = R"(Software\Spellbound Software\Airline Tycoon Deluxe\1.0)";
 char chRegKeyOld[] = R"(Software\Spellbound Software\Airline Tycoon Evolution\1.0)";
@@ -84,22 +84,22 @@ extern ULONG rChkLMA, rChkRBA, rChkAA[MAX_CITIES], rChkFrachen;
 extern SLONG rChkGeneric, CheckGeneric;
 extern SLONG rChkActionId[5 * 4];
 
-extern long GenericSyncIds[4];
-extern long GenericSyncIdPars[4];
-extern long GenericAsyncIds[4 * 100];
-extern long GenericAsyncIdPars[4 * 100];
+extern SLONG GenericSyncIds[4];
+extern SLONG GenericSyncIdPars[4];
+extern SLONG GenericAsyncIds[4 * 100];
+extern SLONG GenericAsyncIdPars[4 * 100];
 
-void DumpAASeedSum(long /*CallerId*/);
+void DumpAASeedSum(SLONG /*CallerId*/);
 #ifdef _DEBUG
-void DumpAASeedSum(long CallerId) {
-    long long sum = 0;
-    for (long c = 0; c < MAX_CITIES; c++)
+void DumpAASeedSum(SLONG CallerId) {
+    __int64 sum = 0;
+    for (SLONG c = 0; c < MAX_CITIES; c++)
         sum += AuslandsAuftraege[c].Random.GetSeed();
 
     AT_Log("AA Seed sum for %li is %lli\n", CallerId, sum);
 }
 #else
-void DumpAASeedSum(long /*CallerId*/) {}
+void DumpAASeedSum(SLONG /*CallerId*/) {}
 #endif
 
 //--------------------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ SIM::~SIM() { SaveOptions(); }
 //--------------------------------------------------------------------------------------------
 // Fügt einen Smacker im Flughafen hinzu:
 //--------------------------------------------------------------------------------------------
-void SIM::AddSmacker(const CString &Filename, long BrickId, XY Offset) {
+void SIM::AddSmacker(const CString &Filename, SLONG BrickId, XY Offset) {
     AirportSmacks.ReSize(AirportSmacks.AnzEntries() + 1);
     AirportSmacks[AirportSmacks.AnzEntries() - 1].Open(Filename);
     AirportSmacks[AirportSmacks.AnzEntries() - 1].BrickId = BrickId;
@@ -642,7 +642,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
         DropDownPosY = 0;
 
         for (auto &p : StatiArray) {
-            for (bool &i : p) {
+            for (auto &i : p) {
                 i = true;
             }
         }
@@ -812,11 +812,11 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
         if (Difficulty >= DIFF_ATFS01 && Difficulty <= DIFF_ATFS10) {
             qPlayer.Money = InitMoney[(Difficulty - DIFF_ATFS01 + 22) * 4 + 0];
             qPlayer.Bonus =
-                InitMoney[(Difficulty - DIFF_ATFS01 + 22) * 4 + 0 + static_cast<int>(qPlayer.Owner == 1) * 2] - InitMoney[(Difficulty - DIFF_ATFS01 + 22) * 4];
+                InitMoney[(Difficulty - DIFF_ATFS01 + 22) * 4 + 0 + static_cast<SLONG>(qPlayer.Owner == 1) * 2] - InitMoney[(Difficulty - DIFF_ATFS01 + 22) * 4];
             qPlayer.Credit = InitMoney[(Difficulty - DIFF_ATFS01 + 22) * 4 + 1];
         } else {
             qPlayer.Money = InitMoney[(Difficulty + 1) * 4 + 0];
-            qPlayer.Bonus = InitMoney[(Difficulty + 1) * 4 + 0 + static_cast<int>(qPlayer.Owner == 1) * 2] - InitMoney[(Difficulty + 1) * 4];
+            qPlayer.Bonus = InitMoney[(Difficulty + 1) * 4 + 0 + static_cast<SLONG>(qPlayer.Owner == 1) * 2] - InitMoney[(Difficulty + 1) * 4];
             qPlayer.Credit = InitMoney[(Difficulty + 1) * 4 + 1];
             if (qPlayer.Bonus < 0) {
                 qPlayer.Bonus = -qPlayer.Bonus;
@@ -988,7 +988,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
         SLONG f = 0;
         SLONG Dist = 0;
         SLONG DistD = 0;
-        long LoopCount = 0;
+        SLONG LoopCount = 0;
 
         // Eine Route anmieten:
         for (c = 0; c < 4; c++) {
@@ -1335,7 +1335,7 @@ void SIM::DoTimeStep() {
             TickFrachtRefill++;
             TickMuseumRefill++;
 
-            for (long c = 0; c < SLONG(Cities.AnzEntries()); c++) {
+            for (SLONG c = 0; c < SLONG(Cities.AnzEntries()); c++) {
                 // NetGenericSync (1310+c, AuslandsRefill[c]);
                 AuslandsRefill[c]++;
                 AuslandsFRefill[c]++;
@@ -1353,7 +1353,7 @@ void SIM::DoTimeStep() {
                 rChkFrachen = gFrachten.Random.GetSeed();
                 rChkGeneric = CheckGeneric;
 
-                for (long c = 0; c < MAX_CITIES; c++) {
+                for (SLONG c = 0; c < MAX_CITIES; c++) {
                     rChkAA[c] = AuslandsAuftraege[c].Random.GetSeed();
                 }
 
@@ -1491,9 +1491,9 @@ void SIM::DoTimeStep() {
                 PLAYER &qPlayer = qLocalPlayer;
 
                 if (qPlayer.StrikeHours == 0 && qPlayer.StrikePlanned == 0) {
-                    if ((Workers.GetAverageHappyness(localPlayer) - static_cast<int>(Workers.GetMinHappyness(localPlayer) < 0) * 10 < 20 &&
+                    if ((Workers.GetAverageHappyness(localPlayer) - static_cast<SLONG>(Workers.GetMinHappyness(localPlayer) < 0) * 10 < 20 &&
                          qPlayer.DaysWithoutStrike > 7) ||
-                        (Workers.GetAverageHappyness(localPlayer) - static_cast<int>(Workers.GetMinHappyness(localPlayer) < 0) * 10 < 0 &&
+                        (Workers.GetAverageHappyness(localPlayer) - static_cast<SLONG>(Workers.GetMinHappyness(localPlayer) < 0) * 10 < 0 &&
                          qPlayer.DaysWithoutStrike > 3)) {
                         qPlayer.StrikePlanned = TRUE;
                     }
@@ -1552,7 +1552,7 @@ void SIM::DoTimeStep() {
                             qPlayer.DaysWithoutStrike = 0;
 
                             Headlines.AddOverride(1, bprintf(StandardTexte.GetS(TOKEN_MISC, 2090), qPlayer.AirlineX.c_str()), GetIdFromString("STREIK"),
-                                                  25 + static_cast<int>(c == localPlayer) * 10);
+                                                  25 + static_cast<SLONG>(c == localPlayer) * 10);
                         }
                     } else if (qPlayer.StrikeHours != 0) {
                         qPlayer.StrikeHours--;
@@ -1584,7 +1584,7 @@ void SIM::DoTimeStep() {
                                         SLONG Extra = 0;
 
                                         qPlayer.Planes[c].Problem =
-                                            4 + (LocalRand.Rand(101 - qPlayer.Planes[c].Zustand)) / 3 + static_cast<int>((LocalRand.Rand(4)) == 0) * 15;
+                                            4 + (LocalRand.Rand(101 - qPlayer.Planes[c].Zustand)) / 3 + static_cast<SLONG>((LocalRand.Rand(4)) == 0) * 15;
 
                                         if (qPlayer.Planes[c].GetFlugplanEintrag()->NachCity == static_cast<ULONG>(HomeAirportId)) {
                                             qPlayer.Planes[c].Problem = max(4, qPlayer.Planes[c].Problem - 15);
@@ -1837,7 +1837,7 @@ void SIM::DoTimeStep() {
 
                                     Headlines.AddOverride(
                                         0, bprintf(StandardTexte.GetS(TOKEN_MISC, 2000 + Players.Players[c].ArabMode), (LPCTSTR)qOpfer.AirlineX), PictureId,
-                                        static_cast<int>(Players.Players[c].ArabOpfer == localPlayer) * 50 + Players.Players[c].ArabMode);
+                                        static_cast<SLONG>(Players.Players[c].ArabOpfer == localPlayer) * 50 + Players.Players[c].ArabMode);
                                     Limit(SLONG(-1000), qOpfer.Image, SLONG(1000));
 
                                     // Araber meldet sich, oder Fax oder Brief sind da.
@@ -2537,7 +2537,7 @@ void SIM::NewDay() {
     }
 
     TEAKRAND KerosinRand(Date);
-    Kerosin += (KerosinRand.Rand(21)) - 10 + static_cast<int>(KerosinRand.Rand(20) < 3) * ((KerosinRand.Rand(41)) - 20) +
+    Kerosin += (KerosinRand.Rand(21)) - 10 + static_cast<SLONG>(KerosinRand.Rand(20) < 3) * ((KerosinRand.Rand(41)) - 20) +
                SLONG(sin((Date + KerosinRand.Rand(6)) / 3.0) * 20) + SLONG(sin(Date * 1.7) * 20);
     if (Difficulty == DIFF_ATFS09 || (Difficulty == DIFF_ATFS10 && ((Date >= 3 && Date <= 10) || (Date >= 35 && Date <= 55)))) {
         if (KerosinRand.Rand(20) > 2) {
@@ -2547,7 +2547,7 @@ void SIM::NewDay() {
         }
         Limit(SLONG(300), Kerosin, SLONG(700));
         for (c = 0; c < 20; c++) {
-            Kerosin += (KerosinRand.Rand(21)) - 10 + static_cast<int>(KerosinRand.Rand(20) < 3) * ((KerosinRand.Rand(41)) - 20);
+            Kerosin += (KerosinRand.Rand(21)) - 10 + static_cast<SLONG>(KerosinRand.Rand(20) < 3) * ((KerosinRand.Rand(41)) - 20);
         }
     }
 
@@ -2703,17 +2703,17 @@ void SIM::NewDay() {
             if (c != d && Players.Players[c].Sympathie[d] < 25 && Players.Players[d].Bilanz.GetSumme() > 0) {
                 if (Players.Players[c].Sympathie[d] < -50 && Players.Players[d].Bilanz.GetSumme() > Players.Players[c].Bilanz.GetSumme()) {
                     if (Players.Players[d].Bilanz.GetSumme() > Players.Players[c].Bilanz.GetSumme() + 1000000) {
-                        Players.Players[c].Sympathie[d] -= 10 * static_cast<int>(Players.Players[d].Owner != 1);
+                        Players.Players[c].Sympathie[d] -= 10 * static_cast<SLONG>(Players.Players[d].Owner != 1);
                     }
                     if (Players.Players[d].Bilanz.GetSumme() > Players.Players[c].Bilanz.GetSumme() + 100000) {
-                        Players.Players[c].Sympathie[d] -= 2 * static_cast<int>(Players.Players[d].Owner != 1);
+                        Players.Players[c].Sympathie[d] -= 2 * static_cast<SLONG>(Players.Players[d].Owner != 1);
                     }
                 } else if (Players.Players[d].Bilanz.GetSumme() > Players.Players[c].Bilanz.GetSumme() * 2) {
                     if (Players.Players[d].Bilanz.GetSumme() > Players.Players[c].Bilanz.GetSumme() + 1000000) {
-                        Players.Players[c].Sympathie[d] -= 5 * static_cast<int>(Players.Players[d].Owner != 1);
+                        Players.Players[c].Sympathie[d] -= 5 * static_cast<SLONG>(Players.Players[d].Owner != 1);
                     }
                     if (Players.Players[d].Bilanz.GetSumme() > Players.Players[c].Bilanz.GetSumme() + 100000) {
-                        Players.Players[c].Sympathie[d] -= 1 * static_cast<int>(Players.Players[d].Owner != 1);
+                        Players.Players[c].Sympathie[d] -= 1 * static_cast<SLONG>(Players.Players[d].Owner != 1);
                     }
                 }
             }
@@ -2726,7 +2726,7 @@ void SIM::NewDay() {
 
     // Bei ATFS-Megasabotage-Mission ggf. künstlich Sabotage einfügen:
     if (Difficulty == DIFF_ATFS06) {
-        TEAKRAND SaboRand(Date + long(Players.Players[localPlayer].Money));
+        TEAKRAND SaboRand(Date + SLONG(Players.Players[localPlayer].Money));
 
         for (c = 0; c < Players.AnzPlayers; c++) {
             if (c != localPlayer) {
@@ -3007,7 +3007,7 @@ TEAKFILE &operator<<(TEAKFILE &File, const SIM &Sim) {
     File << Sim.RFEssen << Sim.RFTabletts << Sim.RFDeco;
 
     // Die Statistik:
-    File.Write(reinterpret_cast<const UBYTE *>(&Sim.StatfGraphVisible), sizeof(Sim.StatfGraphVisible));
+    File << Sim.StatfGraphVisible;
     File << Sim.Statgroup << Sim.Statdays << Sim.StatnewDays << Sim.DropDownPosY;
     File << Sim.StatplayerMask;
     File << Sim.StatiArray;
@@ -3960,8 +3960,8 @@ void SIM::NetSynchronizeOvertake() const { SIM::SendSimpleMessage(ATNET_OVERTAKE
 //
 //--------------------------------------------------------------------------------------------
 void SIM::AddHighscore(const CString &Name, DWORD UniqueGameId2, __int64 Score) {
-    long c = 0;
-    long d = 0;
+    SLONG c = 0;
+    SLONG d = 0;
 
     // Pass 1: Einen existierenden Eintrag der gleichen Session überschreiben?
     for (c = 0; c < 6; c++) {
