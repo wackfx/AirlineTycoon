@@ -121,7 +121,7 @@ void MessagePump() {
   SLONG c=0;
   SLONG t, t2;
 
-  t=timeGetTime();
+  t=AtGetTime();
 
   while (1)
   {
@@ -137,7 +137,7 @@ c++;
 
 if ((c%100)==0)
 {
-t2=timeGetTime();
+t2=AtGetTime();
 hprintf ("%f Frames pro Sekunde", 100000.0/(t2-t));
 t=t2;
 }
@@ -476,43 +476,40 @@ void GameFrame::ProcessEvent(const SDL_Event &event) const {
     case SDL_TEXTINPUT:
         FrameWnd->OnChar(event.text.text[0], 0, 0);
 
-            FrameWnd->OnKeyDown(event.text.text[0], 0, InputFlags::FromTextInput);
-            break;
-        case SDL_KEYDOWN:
-        {
-           //UINT nFlags = event.key.keysym.scancode | ((SDL_GetModState() & KMOD_LALT) << 5);
-           FrameWnd->OnKeyDown(toupper(event.key.keysym.sym), event.key.repeat, InputFlags::None);
-        }
+        FrameWnd->OnKeyDown(event.text.text[0], 0, InputFlags::FromTextInput);
         break;
-        case SDL_MOUSEBUTTONDOWN:
-        {
-          CPoint pos = CPoint(event.button.x, event.button.y);
-          TranslatePointToGameSpace(&pos);
-          if (event.button.button == SDL_BUTTON_LEFT)
-          {
-             if (event.button.clicks == 2)
-                FrameWnd->OnLButtonDblClk(WM_LBUTTONDBLCLK, pos);
-             else
-                FrameWnd->OnLButtonDown(WM_LBUTTONDOWN, pos);
-          }
-          else if (event.button.button == SDL_BUTTON_RIGHT)
-             FrameWnd->OnRButtonDown(WM_RBUTTONDOWN, pos);
+    case SDL_KEYDOWN:
+    {
+		//UINT nFlags = event.key.keysym.scancode | ((SDL_GetModState() & KMOD_LALT) << 5);
+		FrameWnd->OnKeyDown(KeycodeToUpper(event.key.keysym.sym), event.key.repeat, InputFlags::None);
+    } break;
+    case SDL_MOUSEBUTTONDOWN:
+    {
+		CPoint pos = CPoint(event.button.x, event.button.y);
+		TranslatePointToGameSpace(&pos);
+		if (event.button.button == SDL_BUTTON_LEFT) {
+			if (event.button.clicks == 2){
+				FrameWnd->OnLButtonDblClk(WM_LBUTTONDBLCLK, pos);
+            } else {
+				FrameWnd->OnLButtonDown(WM_LBUTTONDOWN, pos);
+            }
+		} else if (event.button.button == SDL_BUTTON_RIGHT){
+			FrameWnd->OnRButtonDown(WM_RBUTTONDOWN, pos);
         }
-        break;
-        case SDL_KEYUP:
-        {
-          FrameWnd->OnKeyUp(event.key.keysym.sym, event.key.repeat, 0);
-        }
-        break;
-        case SDL_MOUSEBUTTONUP:
-        {
-           CPoint pos = CPoint(event.button.x, event.button.y);
-           TranslatePointToGameSpace(&pos);
-          if (event.button.button == SDL_BUTTON_LEFT) {
-             FrameWnd->OnLButtonUp(WM_LBUTTONUP, pos);
-          } else if (event.button.button == SDL_BUTTON_RIGHT) {
-            FrameWnd->OnRButtonUp(WM_RBUTTONUP, pos);
-        }
+    } break;
+    case SDL_KEYUP:
+    {
+		FrameWnd->OnKeyUp(event.key.keysym.sym, event.key.repeat, 0);
+    } break;
+    case SDL_MOUSEBUTTONUP:
+    {
+		CPoint pos = CPoint(event.button.x, event.button.y);
+		TranslatePointToGameSpace(&pos);
+		if (event.button.button == SDL_BUTTON_LEFT) {
+			FrameWnd->OnLButtonUp(WM_LBUTTONUP, pos);
+		} else if (event.button.button == SDL_BUTTON_RIGHT) {
+			FrameWnd->OnRButtonUp(WM_RBUTTONUP, pos);
+		}
     } break;
     default:
         break;
@@ -601,7 +598,7 @@ void GameFrame::OnPaint() {
     static DWORD LastTime = 0xffffffff;
     static SLONG LastMouseLook = -1;
     static SLONG LastFeet = -1;
-    DWORD Time = timeGetTime();
+    DWORD Time = AtGetTime();
     SLONG c = 0;
 
     // Ggf. die Cursor bewegen:
@@ -641,12 +638,12 @@ void GameFrame::OnPaint() {
                 if (::ToolTipPos.y > 460) {
                     ::ToolTipPos.y -= 64;
                 }
-                ToolTipTimer = timeGetTime();
+                ToolTipTimer = AtGetTime();
                 ToolTipState = FALSE;
             } else {
-                if (timeGetTime() - ToolTipTimer > 5000) {
+                if (AtGetTime() - ToolTipTimer > 5000) {
                     ToolTipState = FALSE;
-                } else if (ToolTipState == FALSE && timeGetTime() - ToolTipTimer > 600) {
+                } else if (ToolTipState == FALSE && AtGetTime() - ToolTipTimer > 600) {
                     gToolTipBm.ReSize(500, 25);
 
                     CString str;
@@ -968,7 +965,7 @@ void GameFrame::OnCaptureChanged(void * /*unused*/) {}
 BOOL GameFrame::OnHelpInfo(void * /*unused*/) {
     ToolTipState = FALSE;
 
-    ToolTipTimer = timeGetTime() - 601;
+    ToolTipTimer = AtGetTime() - 601;
 
     return (TRUE);
 }
@@ -980,7 +977,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     static char TypeBuffer[30]; // Für Cheats
     SLONG nTargetRoom = 0;
 
-    if (nChar == VK_RETURN) {
+    if (nChar == ATKEY_RETURN) {
         if (Sim.localPlayer != -1 && Sim.Players.Players.AnzEntries() == 4 && (Sim.Players.Players[Sim.localPlayer].LocationWin != nullptr)) {
             SLONG CurrentMenu = (Sim.Players.Players[Sim.localPlayer].LocationWin)->CurrentMenu;
 
@@ -1003,7 +1000,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
     if (gLanguage == LANGUAGE_D || gLanguage == LANGUAGE_N) {
         // Deutsch, Niederländisch
-        switch (toupper(nChar)) {
+        switch (nChar) {
         case 'J':
             nTargetRoom = 'J';
             break;
@@ -1075,7 +1072,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         }
     } else if (gLanguage == LANGUAGE_O) {
         // Portugisisch
-        switch (toupper(nChar)) {
+        switch (nChar) {
         case 'J':
             nTargetRoom = 'J';
             break;
@@ -1141,7 +1138,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         }
     } else {
         // Englisch, Sonstige:
-        switch (toupper(nChar)) {
+        switch (nChar) {
         case 'J':
             nTargetRoom = 'J';
             break;
@@ -1231,8 +1228,8 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     char CheatPanic1[] = "SPAN";
     char CheatPanic2[] = "SIC";
 
-    // if (nChar==VK_SPACE) hprintf ("---------------------<SPACE PRESSED>---------------------");
-    /*if (nChar==VK_SPACE)
+    // if (nChar==ATKEY_SPACE) hprintf ("---------------------<SPACE PRESSED>---------------------");
+    /*if (nChar==ATKEY_SPACE)
       {
       for (SLONG c=0; c<4; c++)
       if (c!=1)
@@ -1274,11 +1271,11 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                         if (qPlayer.GetRoom() != ROOM_OPTIONS) {
                             BOOL doRun = FALSE;
 
-                            if (TypeBuffer[29] == static_cast<char>(nChar) && timeGetTime() - LastKeyTime < 300) {
+                            if (TypeBuffer[29] == static_cast<char>(nChar) && AtGetTime() - LastKeyTime < 300) {
                                 doRun = TRUE;
                             }
 
-                            LastKeyTime = timeGetTime();
+                            LastKeyTime = AtGetTime();
 
                             SLONG StatePar = Sim.Persons[Sim.Persons.GetPlayerIndex(Sim.localPlayer)].StatePar;
 
@@ -1324,7 +1321,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
                                         case ROOM_WERBUNG:
                                             Sim.InvalidateHint(HINT_WERBUNG);
-                                            if ((qPlayer.IsLocationInQueue(ROOM_WERBUNG) == 0) && GetAsyncKeyState(VK_SHIFT) / 256 == 0) {
+                                            if ((qPlayer.IsLocationInQueue(ROOM_WERBUNG) == 0) && AtGetAsyncKeyState(ATKEY_SHIFT) / 256 == 0) {
                                                 qPlayer.WalkToRoom(ROOM_WERBUNG);
                                                 qPlayer.LeaveAllRooms();
                                             }
@@ -1488,39 +1485,39 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
                                             break;
                                         }
 
-
                                         if (nFlags != InputFlags::FromTextInput) {
-                                            switch (nChar) {
-                                                case VK_TAB:
-                                                    (qPlayer.LocationWin)->MenuStart (MENU_REQUEST, MENU_REQUEST_CALLITADAY, 0);
-                                                    (qPlayer.LocationWin)->MenuSetZoomStuff (XY(320,220), 0.17, FALSE);
-                                                    nChar=0;
-                                                    break;
+                                    		switch (nChar) {
+	                                        case ATKEY_TAB:
+	                                            (qPlayer.LocationWin)->MenuStart(MENU_REQUEST, MENU_REQUEST_CALLITADAY, 0);
+	                                            (qPlayer.LocationWin)->MenuSetZoomStuff(XY(320, 220), 0.17, FALSE);
+	                                            nChar = 0;
+	                                            break;
 
-                                        case VK_ESCAPE:
-                                        case VK_F2:
-                                            if (qPlayer.IsLocationInQueue(ROOM_OPTIONS) == 0) {
-                                                qPlayer.EnterRoom(ROOM_OPTIONS);
-                                            } else {
-                                                qPlayer.LeaveRoom();
-                                            }
-                                            break;
+	                                        case ATKEY_ESCAPE:
+	                                        case ATKEY_F2:
+	                                            if (qPlayer.IsLocationInQueue(ROOM_OPTIONS) == 0) {
+	                                                qPlayer.EnterRoom(ROOM_OPTIONS);
+	                                            } else {
+	                                                qPlayer.LeaveRoom();
+	                                            }
+	                                            break;
 
-                                        case VK_F3:
-                                            if (qPlayer.IsLocationInQueue(ROOM_OPTIONS) == 0) {
-                                                OptionsShortcut = 5;
-                                                qPlayer.EnterRoom(ROOM_OPTIONS);
-                                            }
-                                            break;
+	                                        case ATKEY_F3:
+	                                            if (qPlayer.IsLocationInQueue(ROOM_OPTIONS) == 0) {
+	                                                OptionsShortcut = 5;
+	                                                qPlayer.EnterRoom(ROOM_OPTIONS);
+	                                            }
+	                                            break;
 
-                                        case VK_F4:
-                                            if (qPlayer.IsLocationInQueue(ROOM_OPTIONS) == 0) {
-                                                OptionsShortcut = 6;
-                                                qPlayer.EnterRoom(ROOM_OPTIONS);
-                                            }
-                                            break;
-                                        default:
-                                            break;
+	                                        case ATKEY_F4:
+	                                            if (qPlayer.IsLocationInQueue(ROOM_OPTIONS) == 0) {
+	                                                OptionsShortcut = 6;
+	                                                qPlayer.EnterRoom(ROOM_OPTIONS);
+	                                            }
+	                                            break;
+	                                        default:
+	                                            break;
+	                                        }
                                         }
                                     }
                                 }
@@ -1537,7 +1534,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         }
     }
 
-    if (nChar == VK_ESCAPE || nChar == 'N') {
+    if (nChar == ATKEY_ESCAPE || nChar == 'N') {
         if (Sim.localPlayer != -1 && Sim.Players.Players.AnzEntries() == 4 && (qPlayer.LocationWin != nullptr)) {
             if ((qPlayer.LocationWin)->CurrentMenu == MENU_REQUEST) {
                 ::MouseClickPar1 = 2;
@@ -1548,7 +1545,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         }
     }
 
-    if (nChar == VK_ESCAPE && (TopWin != nullptr)) {
+    if (nChar == ATKEY_ESCAPE && (TopWin != nullptr)) {
         if (Sim.Gamestate == (GAMESTATE_INTRO | GAMESTATE_WORKING)) {
             (dynamic_cast<CIntro *>(TopWin))->OnKeyDown(nChar, nRepCnt, nFlags);
         }
@@ -1612,7 +1609,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         }
     }
 
-    if (nChar == VK_SPACE) {
+    if (nChar == ATKEY_SPACE) {
         if (qPlayer.LocationWin != nullptr) {
             if ((qPlayer.LocationWin)->CalculatorIsOpen != 0) {
                 SBFX *pTargetFx = new SBFX;
@@ -1715,14 +1712,14 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         if (TypeBuffer[22] == 'A' && TypeBuffer[23] == 'T' && TypeBuffer[24] == 'T' && TypeBuffer[25] == 'E' && TypeBuffer[26] == 'S' &&
             TypeBuffer[27] == 'T' && TypeBuffer[28] == 'I' && TypeBuffer[29] == 'T') {
             CheatTestGame ^= 1;
-            srand(timeGetTime());
+            srand(AtGetTime());
             CheatSound();
         }
         // ATTESTXX
         if (TypeBuffer[22] == 'A' && TypeBuffer[23] == 'T' && TypeBuffer[24] == 'T' && TypeBuffer[25] == 'E' && TypeBuffer[26] == 'S' &&
             TypeBuffer[27] == 'T' && TypeBuffer[28] == 'X' && TypeBuffer[29] == 'X') {
             CheatTestGame ^= 2;
-            srand(timeGetTime());
+            srand(AtGetTime());
             CheatSound();
         }
 
@@ -2004,7 +2001,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             CheatSound();
         }
 
-        if (nChar == VK_F5) {
+        if (nChar == ATKEY_F5) {
             SLONG x = 0;
             x++;
 
@@ -2075,7 +2072,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     }
 
     if (Editor == EDITOR_NONE) {
-        if (nChar == VK_F6) {
+        if (nChar == ATKEY_F6) {
             // Sim.Players.Players[(SLONG)0].ArabMode2   = 3;
             // Sim.Players.Players[(SLONG)0].ArabOpfer2  = 1; //Sim.localPlayer;
             // Sim.Players.Players[(SLONG)0].NetSynchronizeSabotage ();
@@ -2083,12 +2080,12 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             // Sim.Players.Players[(SLONG)0].ArabPlane   = qPlayer.Planes.GetRandomUsedIndex();
         }
 
-        /*if (nChar==VK_F6)
+        /*if (nChar==ATKEY_F6)
           {
           qPlayer.Money+=30000000;
           }*/
 
-        /*if (nChar==VK_F6)
+        /*if (nChar==ATKEY_F6)
           {
           static n=0;  n++;
 
@@ -2100,15 +2097,15 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           Sim.KerosinPast[9]=Sim.Kerosin;
           } */
 
-        // if (nChar==VK_F12) DebugBreak();
+        // if (nChar==ATKEY_F12) DebugBreak();
 
-        /*if (nChar==VK_TAB)
+        /*if (nChar==ATKEY_TAB)
           {
           Sim.localPlayer=(Sim.localPlayer+1)&3;
           hprintf ("Sim.localPlayer now is Player %li", Sim.localPlayer+1);
           } */
 
-        if (nChar == VK_F5) {
+        if (nChar == ATKEY_F5) {
             for (SLONG d = 0; d < 4; d++) {
                 if (Sim.Players.Players[d].Owner == 1) {
                     for (SLONG c = Sim.Players.Players[d].Planes.AnzEntries() - 1; c >= 0; c--) {
@@ -2121,7 +2118,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             }
         }
 
-        if (nChar == VK_F6) {
+        if (nChar == ATKEY_F6) {
             /*if (Sim.Players.Players[0].Sympathie[1]<200)
               Sim.Players.Players[0].Sympathie[1]=250;
               else
@@ -2186,7 +2183,7 @@ void GameFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
     RePostMessage(CPoint(0, 0));
 
-    if (nChar == VK_PAUSE && (gDisablePauseKey == FALSE || (Sim.bPause != 0)) && (Sim.Gamestate & 15) == GAMESTATE_PLAYING) {
+    if (nChar == ATKEY_PAUSE && (gDisablePauseKey == FALSE || (Sim.bPause != 0)) && (Sim.Gamestate & 15) == GAMESTATE_PLAYING) {
         if (Sim.bNetwork != 0) {
             SIM::SendSimpleMessage(ATNET_PAUSE, 0);
         }
@@ -2381,9 +2378,9 @@ void DefaultOnLButtonDown() {
         FrameWnd->Pause(Sim.bPause == 0);
     }
 
-    ToolTipTimer = timeGetTime() - 8000;
+    ToolTipTimer = AtGetTime() - 8000;
 
-    gMouseLButtonDownTimer = timeGetTime();
+    gMouseLButtonDownTimer = AtGetTime();
 
     for (SLONG c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
         if (Sim.Players.Players[c].Owner == 0 && gMousePosition.IfIsWithin(Sim.Players.Players[c].WinP1, Sim.Players.Players[c].WinP2)) {
