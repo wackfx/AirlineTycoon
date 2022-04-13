@@ -379,7 +379,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
     gTimerCorrection = 0;
 
     bCompatibleRoutes = 0;
-    UniqueGameId2 = ((timeGetTime() ^ DWORD(rand() % 30000) ^ gMousePosition.x ^ gMousePosition.y) & 0x7fffffff);
+    UniqueGameId2 = ((AtGetTime() ^ DWORD(rand() % 30000) ^ gMousePosition.x ^ gMousePosition.y) & 0x7fffffff);
 
     // Das Referenzflugzeug
     PlanePropId = -1;
@@ -799,7 +799,7 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
 
         if (GlobalUse(USE_TRAVELHOLDING) && Difficulty != DIFF_ADDON09) {
             if (bNetwork == 0) {
-                qPlayer.Auftraege.Random.SRand(timeGetTime());
+                qPlayer.Auftraege.Random.SRand(AtGetTime());
             }
 
             a.RefillForBegin(0, &qPlayer.Auftraege.Random);
@@ -1116,9 +1116,9 @@ void SIM::ChooseStartup(BOOL /*GameModeQuick*/) {
     LastMinuteAuftraege.Random.SRand(Date + 1);
     ReisebueroAuftraege.Random.SRand(Date + 2);
     if (bNetwork == 0) {
-        gFrachten.Random.SRand(timeGetTime());
-        LastMinuteAuftraege.Random.SRand(timeGetTime());
-        ReisebueroAuftraege.Random.SRand(timeGetTime());
+        gFrachten.Random.SRand(AtGetTime());
+        LastMinuteAuftraege.Random.SRand(AtGetTime());
+        ReisebueroAuftraege.Random.SRand(AtGetTime());
     }
 
     gFrachten.Fill();
