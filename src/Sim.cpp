@@ -2828,7 +2828,7 @@ void SIM::NewDay() {
 CPlane SIM::CreateRandomUsedPlane(SLONG seed) const {
     TEAKRAND rnd;
 
-    rnd.SRand(Date + seed);
+    rnd.SRand((Date + seed) * 0x504020 + static_cast<ULONG>(StartTime));
 
 
 	//Get Random Time: Now > Desired Time > Release Year
