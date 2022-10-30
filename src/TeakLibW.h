@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 extern void memswap(void *, void *, ULONG);
 extern char *bprintf(char const *, ...);
 extern char *bitoa(SLONG);

@@ -40,21 +40,19 @@ HDU::HDU() : Log(nullptr) {
             modified = true;
         }
 
-        SDL_LogOutputFunction func = (SDL_LogOutputFunction)(userdata);
+        const SDL_LogOutputFunction func = static_cast<SDL_LogOutputFunction>(userdata);
         func(userdata, category, priority, finalMessage);
 
         if(Hdu.Log){
             fprintf(Hdu.Log, "%s\n", finalMessage);
             fflush(Hdu.Log);
         }
-}
 
         if(modified)
             delete[] finalMessage;
     };
 
     SDL_LogSetOutputFunction(func, defaultOut);
-
 }
 
 HDU::~HDU()

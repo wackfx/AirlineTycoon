@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MessageIdentifiers.h"
-#include "SbLib.h"
 
 // Direct play identifiers
 constexpr auto DPPLAYERTYPE_GROUP = 0x0000;
@@ -42,33 +41,30 @@ struct SBNetworkPlayer {
     // RAKNetworkPeer peer;
 };
 
-enum class SBSessionEnum
-{
-	SBNETWORK_SESSION_DEFAULT,
-	SBNETWORK_SESSION_SEARCHING,
-	// User is server host
-	SBNETWORK_SESSION_MASTER,
-	// User is client
-	SBNETWORK_SESSION_CLIENT,
-	// Session is over
-	SBNETWORK_SESSION_FINISHED
+enum class SBSessionEnum {
+    SBNETWORK_SESSION_DEFAULT,
+    SBNETWORK_SESSION_SEARCHING,
+    // User is server host
+    SBNETWORK_SESSION_MASTER,
+    // User is client
+    SBNETWORK_SESSION_CLIENT,
+    // Session is over
+    SBNETWORK_SESSION_FINISHED
 };
 
-enum class SBProviderEnum
-{
-	SBNETWORK_NONE = -1,
-	SBNETWORK_RAKNET_DIRECT_JOIN,
-	SBNETWORK_RAKNET_DIRECT_HOST,
-	SBNETWORK_RAKNET_NAT_JOIN,
-	SBNETWORK_RAKNET_NAT_HOST,
-	SBNETWORK_ENET,
+enum class SBProviderEnum {
+    SBNETWORK_NONE = -1,
+    SBNETWORK_RAKNET_DIRECT_JOIN,
+    SBNETWORK_RAKNET_DIRECT_HOST,
+    SBNETWORK_RAKNET_NAT_JOIN,
+    SBNETWORK_RAKNET_NAT_HOST,
+    SBNETWORK_ENET,
 };
 
-enum SBCapabilitiesFlags
-{
-	SBNETWORK_NONE = 0,
-	SBNETWORK_HAS_SERVER_BROWSER = 1 << 0,
-	SBNETWORK_HAS_NAT = 1 << 1,
+enum SBCapabilitiesFlags {
+    SBNETWORK_NONE = 0,
+    SBNETWORK_HAS_SERVER_BROWSER = 1 << 0,
+    SBNETWORK_HAS_NAT = 1 << 1,
 };
 
 enum SBEventEnum {
@@ -79,8 +75,8 @@ enum SBEventEnum {
 };
 
 enum class SBCreationFlags {
-    SBNETWORK_CREATE_NONE = (1 << 0),
-    SBNETWORK_CREATE_TRY_NAT = (1 << 1),
+    SBNETWORK_CREATE_NONE = 0,
+    SBNETWORK_CREATE_TRY_NAT = 1 << 0,
 };
 
 struct SBNetworkCreation {
@@ -95,12 +91,12 @@ struct SBSessionInfo {
 };
 
 class IServerSearchable {
-public:
-	IServerSearchable() {  }
-	virtual ~IServerSearchable() = default;
-	virtual SBList<std::shared_ptr<SBStr>>* GetSessionListAsync() = 0;
-	virtual bool StartGetSessionListAsync() = 0;
-	virtual bool JoinSession(const SBStr&, SBStr) = 0;
+  public:
+    IServerSearchable() {}
+    virtual ~IServerSearchable() = default;
+    virtual SBList<std::shared_ptr<SBStr>> *GetSessionListAsync() = 0;
+    virtual bool StartGetSessionListAsync() = 0;
+    virtual bool JoinSession(const SBStr &, SBStr) = 0;
 };
 
 class BaseNetworkType {
@@ -165,21 +161,19 @@ class BaseNetworkType {
     /// </summary>
     virtual SBList<SBNetworkPlayer *> *GetAllPlayers() = 0;
 
-	/// <summary>Retrieves a summary of all active provider capabilities</summary>
-	virtual SBCapabilitiesFlags GetCapabilities() = 0;
+    /// <summary>Retrieves a summary of all active provider capabilities</summary>
+    virtual SBCapabilitiesFlags GetCapabilities() = 0;
 
-	virtual bool IsServerSearchable() = 0;
-	virtual IServerSearchable *GetServerSearcher() = 0;
+    virtual bool IsServerSearchable() = 0;
+    virtual IServerSearchable *GetServerSearcher() = 0;
 
-	SBSessionEnum GetState() const {
-		return mState;
-	}
+    SBSessionEnum GetState() const { return mState; }
 
   protected:
     bool isHostMigrating = false;
     ULONG mLocalID = -1;
 
-	SBList<SBNetworkPlayer*> mPlayers{};
-	
-	SBSessionEnum mState = SBSessionEnum::SBNETWORK_SESSION_DEFAULT;
+    SBList<SBNetworkPlayer *> mPlayers{};
+
+    SBSessionEnum mState = SBSessionEnum::SBNETWORK_SESSION_DEFAULT;
 };

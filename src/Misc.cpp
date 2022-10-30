@@ -1791,12 +1791,12 @@ TEAKRAND::TEAKRAND() { Seed = Value = 0; }
 //--------------------------------------------------------------------------------------------
 // Kondtruktor mit Seed Angabe
 //--------------------------------------------------------------------------------------------
-TEAKRAND::TEAKRAND(ULONG Seed) { Seed = Value = Seed; }
+TEAKRAND::TEAKRAND(ULONG Seed) { this->Seed = Value = Seed; }
 
 //--------------------------------------------------------------------------------------------
 // nachträglicher Kondtruktor
 //--------------------------------------------------------------------------------------------
-void TEAKRAND::SRand(ULONG Seed) { Seed = Value = Seed; }
+void TEAKRAND::SRand(ULONG Seed) { this->Seed = Value = Seed; }
 
 //--------------------------------------------------------------------------------------------
 // nachträglicher Kondtruktor mit Seed aus Uhrzeit

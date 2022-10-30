@@ -2420,7 +2420,7 @@ void NewGamePopup::OnTimer(UINT nIDEvent) {
     }
 
     if (((counter++) & 15) == 0) {
-        if (PageNum == 13) {
+        if (PageNum == PAGE_TYPE::MULTIPLAYER_SELECT_NETWORK) {
             pNetworkConnections = gNetwork.GetConnectionList();
         }
         else if (PageNum == PAGE_TYPE::MULTIPLAYER_SELECT_SESSION) {
@@ -2502,7 +2502,8 @@ void NewGamePopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         CStdRaum::OnKeyDown(nChar, nRepCnt, nFlags);
     }
 
-    if (CursorY != -1 && (PageNum == 2 || PageNum == 14 || PageNum == 18)) {
+    if (CursorY != -1 &&
+        (PageNum == PAGE_TYPE::SELECT_PLAYER_SINGLEPLAYER || PageNum == PAGE_TYPE::SELECT_PLAYER_CAMPAIGN || PageNum == PAGE_TYPE::SELECT_PLAYER_MULTIPLAYER)) {
         if (nChar == ATKEY_LEFT) {
             if (CursorX > 0) {
                 CursorX--;

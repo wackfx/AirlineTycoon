@@ -1,14 +1,14 @@
 #include "StdAfx.h"
-#include "ENetNetwork.hpp"
 #include "SbLib.h"
 #include "network.h"
+#include "ENetNetwork.hpp"
 
 ENetNetwork::ENetNetwork() : mServer(), mHost(nullptr), mMaster(nullptr), mSocket() {
     TEAKRAND rand;
     rand.SRandTime();
     mLocalID = rand.Rand();
 
-    auto *player = new ENetNetworkPlayer();
+    ENetNetworkPlayer *player = new ENetNetworkPlayer();
     player->ID = mLocalID;
     player->peer = nullptr;
     mPlayers.Add(player);
@@ -24,7 +24,7 @@ SLONG ENetNetwork::GetMessageCount() {
     ENetAddress address;
     ENetBuffer buf;
     if (mState == SBSessionEnum::SBNETWORK_SESSION_MASTER) {
-        SLONG clientID = 0;
+        SLONG clientID;
         buf.data = &clientID;
         buf.dataLength = sizeof(SLONG);
         if (enet_socket_receive(mSocket, &address, &buf, 1) > 0) {
@@ -35,16 +35,15 @@ SLONG ENetNetwork::GetMessageCount() {
             }
         }
     } else if (mState == SBSessionEnum::SBNETWORK_SESSION_SEARCHING) {
-        auto *info = new ENetSessionInfo();
+        ENetSessionInfo *info = new ENetSessionInfo();
         buf.data = info;
         buf.dataLength = sizeof(ENetSessionInfo);
         if (enet_socket_receive(mSocket, &address, &buf, 1) > 0) {
             if (info->hostID != mLocalID) {
                 if (mSessionInfo.GetNumberOfElements() > 0) {
                     /* Check if we already know about the session */
-                    for (mSessionInfo.GetFirst(); !mSessionInfo.IsLast() && mSessionInfo.GetLastAccessed()->hostID != info->hostID; mSessionInfo.GetNext()) {
+                    for (mSessionInfo.GetFirst(); !mSessionInfo.IsLast() && mSessionInfo.GetLastAccessed()->hostID != info->hostID; mSessionInfo.GetNext())
                         ;
-                    }
                 }
 
                 if (mSessionInfo.GetNumberOfElements() == 0 || mSessionInfo.IsLast()) {
@@ -56,24 +55,20 @@ SLONG ENetNetwork::GetMessageCount() {
         }
 
         /* Automatically refresh every 5 seconds */
-        if (enet_time_get() - mSearchTime > 5000) {
+        if (enet_time_get() - mSearchTime > 5000)
             StartGetSessionListAsync();
-        }
     }
 
-    if (mHost == nullptr) {
+    if (!mHost)
         return 0;
-    }
 
     /* We'll call this regularly so no need to block. */
     while (enet_host_service(mHost, &event, 0) > 0) {
         switch (event.type) {
-        case ENET_EVENT_TYPE_NONE:
-            break;
         case ENET_EVENT_TYPE_CONNECT:
             /* Store any relevant client information here. */
             if (event.data != 0) {
-                auto *player = new ENetNetworkPlayer();
+                ENetNetworkPlayer *player = new ENetNetworkPlayer();
                 player->ID = event.data;
                 player->peer = event.peer;
                 player->peer->data = &mPlayers.Add(player);
@@ -83,24 +78,22 @@ SLONG ENetNetwork::GetMessageCount() {
                     ENetNetworkPeer peer;
                     peer.ID = event.data;
                     peer.address = event.peer->address;
-                    ENetPacket* packet = enet_packet_create(&peer, sizeof(ENetNetworkPeer), ENET_PACKET_FLAG_RELIABLE);
+                    ENetPacket *packet = enet_packet_create(&peer, sizeof(ENetNetworkPeer), ENET_PACKET_FLAG_RELIABLE);
                     enet_host_broadcast(mHost, 1, packet);
                 }
             }
             break;
         case ENET_EVENT_TYPE_RECEIVE:
-            if (event.channelID == 1)
-            {
+            if (event.channelID == 1) {
                 if (event.packet->dataLength != sizeof(ENetNetworkPeer))
                     break;
 
-                auto *peer = reinterpret_cast<ENetNetworkPeer *>(event.packet->data);
-                if (peer->ID == mLocalID) {
+                ENetNetworkPeer *peer = (ENetNetworkPeer *)event.packet->data;
+                if (peer->ID == mLocalID)
                     break;
-                }
 
                 /* Initiate the connection, allocating the two channels 0 and 1. */
-                auto *player = new ENetNetworkPlayer();
+                ENetNetworkPlayer *player = new ENetNetworkPlayer();
                 player->ID = peer->ID;
                 player->peer = enet_host_connect(mHost, &peer->address, 2, mLocalID);
                 player->peer->data = &mPlayers.Add(player);
@@ -111,9 +104,9 @@ SLONG ENetNetwork::GetMessageCount() {
 
         case ENET_EVENT_TYPE_DISCONNECT:
             /* Delete the player and inform the multiplayer code */
-            if (event.peer->data != nullptr) {
-                auto *player = static_cast<SBNetworkPlayer *>(event.peer->data);
-                DPPacket dp{};
+            if (event.peer->data) {
+                SBNetworkPlayer *player = (SBNetworkPlayer *)event.peer->data;
+                DPPacket dp;
                 dp.messageType = DPSYS_DESTROYPLAYERORGROUP;
                 dp.playerType = DPPLAYERTYPE_PLAYER;
                 dp.dpId = player->ID;
@@ -132,19 +125,18 @@ SLONG ENetNetwork::GetMessageCount() {
 
             /* Handle host migration and inform the multiplayer code */
             if (event.peer == mMaster) {
-                auto *master = static_cast<ENetNetworkPlayer *>(mPlayers.GetFirst());
+                ENetNetworkPlayer *master = static_cast<ENetNetworkPlayer *>(mPlayers.GetFirst());
                 for (mPlayers.GetNext(); !mPlayers.IsLast(); mPlayers.GetNext()) {
-                    if (mPlayers.GetLastAccessed()->ID < master->ID) {
+                    if (mPlayers.GetLastAccessed()->ID < master->ID)
                         master = static_cast<ENetNetworkPlayer *>(mPlayers.GetLastAccessed());
-                    }
                 }
 
                 if (master->ID == mLocalID) {
-                    DPPacket dp{};
+                    DPPacket dp;
                     dp.messageType = DPSYS_HOST;
                     dp.playerType = DPPLAYERTYPE_PLAYER;
                     dp.dpId = master->ID;
-                    ENetPacket* packet = enet_packet_create(&dp, sizeof(DPPacket), ENET_PACKET_FLAG_RELIABLE);
+                    ENetPacket *packet = enet_packet_create(&dp, sizeof(DPPacket), ENET_PACKET_FLAG_RELIABLE);
                     mPackets.Add(packet);
                     mState = SBSessionEnum::SBNETWORK_SESSION_MASTER;
                 }
@@ -153,7 +145,7 @@ SLONG ENetNetwork::GetMessageCount() {
             }
 
             /* Reset the peer's client information. */
-            event.peer->data = nullptr;
+            event.peer->data = NULL;
         }
     }
 
@@ -161,14 +153,12 @@ SLONG ENetNetwork::GetMessageCount() {
 }
 
 bool ENetNetwork::Connect(const char *host) {
-    if (enet_initialize() != 0) {
+    if (enet_initialize() != 0)
         return false;
-    }
 
     mSocket = enet_socket_create(ENET_SOCKET_TYPE_DATAGRAM);
-    if (mSocket == ENET_SOCKET_NULL) {
+    if (mSocket == ENET_SOCKET_NULL)
         return false;
-    }
 
     enet_socket_set_option(mSocket, ENET_SOCKOPT_REUSEADDR, 1);
     enet_socket_set_option(mSocket, ENET_SOCKOPT_NONBLOCK, 1);
@@ -199,7 +189,7 @@ void ENetNetwork::Disconnect() {
 }
 
 bool ENetNetwork::CreateSession(SBNetworkCreation *sessionSettings) {
-    auto *info = new ENetSessionInfo();
+    ENetSessionInfo *info = new ENetSessionInfo();
     strcpy(info->sessionName, sessionSettings->sessionName.c_str());
     info->hostID = mLocalID;
     info->address.host = ENET_HOST_ANY;
@@ -212,33 +202,24 @@ bool ENetNetwork::CreateSession(SBNetworkCreation *sessionSettings) {
     return true;
 }
 
-void ENetNetwork::CloseSession() {
-    mState = SBSessionEnum::SBNETWORK_SESSION_FINISHED;
-}
+void ENetNetwork::CloseSession() { mState = SBSessionEnum::SBNETWORK_SESSION_FINISHED; }
 
 ULONG ENetNetwork::GetLocalPlayerID() { return mLocalID; }
 
-bool ENetNetwork::IsSessionFinished() {
-    return mState == SBSessionEnum::SBNETWORK_SESSION_FINISHED;
-}
+bool ENetNetwork::IsSessionFinished() { return mState == SBSessionEnum::SBNETWORK_SESSION_FINISHED; }
 
-bool ENetNetwork::IsInSession() {
-    return mState == SBSessionEnum::SBNETWORK_SESSION_MASTER || mState == SBSessionEnum::SBNETWORK_SESSION_CLIENT;
-}
+bool ENetNetwork::IsInSession() { return mState == SBSessionEnum::SBNETWORK_SESSION_MASTER || mState == SBSessionEnum::SBNETWORK_SESSION_CLIENT; }
 
-bool ENetNetwork::Send(BUFFER<UBYTE> &buffer, ULONG length, ULONG peerID, bool /*compression*/) {
+bool ENetNetwork::Send(BUFFER<UBYTE> &buffer, ULONG length, ULONG peerID, bool compression) {
     ENetPacket *packet = enet_packet_create(buffer, length, ENET_PACKET_FLAG_RELIABLE);
 
-    if (peerID != 0U) {
-        for (mPlayers.GetFirst(); !mPlayers.IsLast(); mPlayers.GetNext()) {
-            if (mPlayers.GetLastAccessed()->ID == peerID && static_cast<ENetNetworkPlayer *>(mPlayers.GetLastAccessed())->peer != nullptr) {
+    if (peerID) {
+        for (mPlayers.GetFirst(); !mPlayers.IsLast(); mPlayers.GetNext())
+            if (mPlayers.GetLastAccessed()->ID == peerID && static_cast<ENetNetworkPlayer *>(mPlayers.GetLastAccessed())->peer != nullptr)
                 enet_peer_send(static_cast<ENetNetworkPlayer *>(mPlayers.GetLastAccessed())->peer, 0, packet);
-            }
-        }
 
-        if (mPlayers.IsLast()) {
+        if (mPlayers.IsLast())
             return false;
-        }
     } else {
         enet_host_broadcast(mHost, 0, packet);
     }
@@ -248,9 +229,8 @@ bool ENetNetwork::Send(BUFFER<UBYTE> &buffer, ULONG length, ULONG peerID, bool /
 
 bool ENetNetwork::Receive(UBYTE **buffer, ULONG &length) {
     mPackets.GetFirst();
-    if (mPackets.IsLast()) {
+    if (mPackets.IsLast())
         return false;
-    }
 
     ENetPacket *packet = mPackets.GetLastAccessed();
     length = packet->dataLength;
@@ -265,19 +245,13 @@ bool ENetNetwork::Receive(UBYTE **buffer, ULONG &length) {
 
 SBList<SBNetworkPlayer *> *ENetNetwork::GetAllPlayers() { return &mPlayers; }
 
-SBCapabilitiesFlags ENetNetwork::GetCapabilities() {
-	return SBCapabilitiesFlags::SBNETWORK_NONE;
-}
+SBCapabilitiesFlags ENetNetwork::GetCapabilities() { return SBCapabilitiesFlags::SBNETWORK_NONE; }
 
-bool ENetNetwork::IsServerSearchable() {
-    return true;
-}
+bool ENetNetwork::IsServerSearchable() { return true; }
 
 IServerSearchable *ENetNetwork::GetServerSearcher() { return this; }
 
-SBList<std::shared_ptr<SBStr>>* ENetNetwork::GetSessionListAsync() {
-    return &mSessions;
-}
+SBList<std::shared_ptr<SBStr>> *ENetNetwork::GetSessionListAsync() { return &mSessions; }
 
 bool ENetNetwork::StartGetSessionListAsync() {
     ENetBuffer buf;
@@ -289,27 +263,24 @@ bool ENetNetwork::StartGetSessionListAsync() {
     return true;
 }
 
-bool ENetNetwork::JoinSession(const SBStr &session, SBStr /*unused*/) {
-    ENetSessionInfo *info = nullptr;
+bool ENetNetwork::JoinSession(const SBStr &session, SBStr) {
+    ENetSessionInfo *info = NULL;
     for (mSessionInfo.GetFirst(); !mSessionInfo.IsLast(); mSessionInfo.GetNext()) {
-        if (session == mSessionInfo.GetLastAccessed()->sessionName) {
+        if (session == mSessionInfo.GetLastAccessed()->sessionName)
             info = static_cast<ENetSessionInfo *>(mSessionInfo.GetLastAccessed());
-        }
     }
 
-    if (info == nullptr) {
+    if (!info)
         return false;
-    }
 
     /* Initiate the connection, allocating the two channels 0 and 1. */
     ENetEvent event;
-    auto *player = new ENetNetworkPlayer();
+    ENetNetworkPlayer *player = new ENetNetworkPlayer();
     player->ID = info->hostID;
     player->peer = enet_host_connect(mHost, &info->address, 2, mLocalID);
     player->peer->data = &mPlayers.Add(player);
     enet_peer_timeout(player->peer, 100000, 0, 100000000);
     mMaster = player->peer;
     mState = SBSessionEnum::SBNETWORK_SESSION_CLIENT;
-    return enet_host_service(mHost, &event, 5000) > 0 &&
-        event.type == ENET_EVENT_TYPE_CONNECT;
+    return enet_host_service(mHost, &event, 5000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT;
 }
