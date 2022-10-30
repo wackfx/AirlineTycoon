@@ -2,6 +2,7 @@
 
 #include <list>
 #include <map>
+#include <unordered_map>
 
 typedef unsigned short word;
 typedef unsigned int dword;

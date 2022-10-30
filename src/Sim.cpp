@@ -2841,12 +2841,12 @@ CPlane SIM::CreateRandomUsedPlane(SLONG seed) const {
     CPlane usedPlane = CPlane(PlaneNames.GetUnused(&rnd), PlaneTypes.GetRandomExistingType(&rnd), 100, 0);
 
     if(thisYear < usedPlane.ptErstbaujahr) {
-	    TeakLibW_Exception(FNL, "Tried to add used plane that was built before this year (%d < %d)", thisYear, usedPlane->ptErstbaujahr);
+	    TeakLibW_Exception(FNL, "Tried to add used plane that was built before this year (%d < %d)", thisYear, usedPlane.ptErstbaujahr);
     }
 
     usedPlane.Baujahr = thisYear - rnd.Rand(thisYear - usedPlane.ptErstbaujahr);
     usedPlane.Zustand = static_cast<UBYTE>(usedPlane.Baujahr - usedPlane.ptErstbaujahr + 25 + rnd.Rand(40) - 20);
-    usedPlane.Zustand = static_cast<UBYTE>(max(20, min(usedPlane->Zustand, 100)));
+    usedPlane.Zustand = static_cast<UBYTE>(max(20, min(usedPlane.Zustand, 100)));
     usedPlane.TargetZustand = usedPlane.Zustand;
 
     return usedPlane;

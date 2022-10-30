@@ -1,10 +1,10 @@
 #include "StdAfx.h"
-#include "BaseNetworkType.hpp"
-#include "BitStream.h"
-#include "ENetNetwork.hpp"
-#include "RAKNetNetwork.hpp"
 #include "SbLib.h"
 #include "network.h"
+#include "BitStream.h"
+#include "BaseNetworkType.hpp"
+#include "RAKNetNetwork.hpp"
+#include "ENetNetwork.hpp"
 
 #ifdef ENET_NETWORK
 SBNetwork::SBNetwork(bool) : mState(SBNETWORK_SESSION_FINISHED), mHost(NULL), mMaster(NULL), mSearchTime(0), mServer(), mSocket() {
@@ -294,11 +294,9 @@ SBList<SBNetworkPlayer> *SBNetwork::GetAllPlayers() { return &mPlayers; }
 
 #ifdef RAKNET_NETWORK
 
-#define AT_Log(a,...) AT_Log_I("SBNetwork", a, __VA_ARGS__)
+#define AT_Log(a, ...) AT_Log_I("SBNetwork", a, __VA_ARGS__)
 
-SBNetwork::SBNetwork(bool)
-    : mState(SBNETWORK_IDLE)
-      , mType(){
+SBNetwork::SBNetwork(bool) : mState(SBNETWORK_IDLE), mType() {
 
     mNetwork = nullptr;
 
@@ -314,11 +312,11 @@ SBNetwork::SBNetwork(bool)
 
 SLONG SBNetwork::GetMessageCount() { return mNetwork->GetMessageCount(); }
 
-bool SBNetwork::Connect(const SBStr & /*unused*/) {
+bool SBNetwork::Connect(SBStr) {
     return false; // No longer used..
 }
 
-bool SBNetwork::Connect(const SBStr & /*unused*/, const char *ip) { return mNetwork->Connect(ip); }
+bool SBNetwork::Connect(SBStr, const char *ip) { return mNetwork->Connect(ip); }
 
 void SBNetwork::DisConnect() {
     if (mNetwork != nullptr) {
@@ -328,7 +326,7 @@ void SBNetwork::DisConnect() {
     }
 }
 
-bool SBNetwork::CreateSession(const SBStr & /*name*/, SBNetworkCreation *settings) { return mNetwork->CreateSession(settings); }
+bool SBNetwork::CreateSession(SBStr name, SBNetworkCreation *settings) { return mNetwork->CreateSession(settings); }
 
 void SBNetwork::CloseSession() { mNetwork->CloseSession(); }
 
@@ -359,12 +357,10 @@ SBProviderEnum SBNetwork::GetProviderID(char *name) {
     return SBProviderEnum::SBNETWORK_NONE;
 }
 
-SBProviderEnum SBNetwork::GetSelectedProviderID() const{
-    return mType;
-}
+SBProviderEnum SBNetwork::GetSelectedProviderID() const { return mType; }
 
 SBCapabilitiesFlags SBNetwork::GetSelectedProviderCapabilities() const {
-    if(mNetwork)
+    if (mNetwork)
         return mNetwork->GetCapabilities();
 
     return SBCapabilitiesFlags::SBNETWORK_NONE;
@@ -374,11 +370,11 @@ void SBNetwork::SetProvider(SBProviderEnum type) {
     mType = type;
     switch (type) {
 
-    case SBProviderEnum::SBNETWORK_RAKNET_DIRECT_JOIN: 
+    case SBProviderEnum::SBNETWORK_RAKNET_DIRECT_JOIN:
     case SBProviderEnum::SBNETWORK_RAKNET_DIRECT_HOST:
     case SBProviderEnum::SBNETWORK_RAKNET_NAT_HOST:
     case SBProviderEnum::SBNETWORK_RAKNET_NAT_JOIN: {
-        RAKNetNetwork* const net = new RAKNetNetwork;
+        RAKNetNetwork *const net = new RAKNetNetwork;
         net->SetNatMode(type >= SBProviderEnum::SBNETWORK_RAKNET_NAT_JOIN);
 
         mNetwork = net;
@@ -404,7 +400,7 @@ bool SBNetwork::Receive(UBYTE **buffer, ULONG &size) { return mNetwork->Receive(
 
 SBList<SBNetworkPlayer *> *SBNetwork::GetAllPlayers() { return mNetwork->GetAllPlayers(); }
 
-bool SBNetwork::JoinSession(const SBStr &name, const SBStr &user) {
+bool SBNetwork::JoinSession(const SBStr &name, SBStr user) {
     if (mNetwork->IsServerSearchable()) {
         return mNetwork->GetServerSearcher()->JoinSession(name, user);
     }
@@ -412,7 +408,7 @@ bool SBNetwork::JoinSession(const SBStr &name, const SBStr &user) {
     return false;
 }
 
-SBList<std::shared_ptr<SBStr>>* SBNetwork::GetSessionListAsync() {
+SBList<std::shared_ptr<SBStr>> *SBNetwork::GetSessionListAsync() {
     if (mNetwork->IsServerSearchable()) {
         return mNetwork->GetServerSearcher()->GetSessionListAsync();
     }
