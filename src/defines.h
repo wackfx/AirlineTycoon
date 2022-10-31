@@ -120,9 +120,9 @@ inline bool operator!=(const CPoint &lhs, const CPoint &rhs) { return !(lhs == r
 
 
 #ifdef _DEBUG
-constexpr char VersionString[] = "VERSION 1.5.2 DEBUG";
+constexpr char VersionString[] = "VERSION 1.6 DEBUG";
 #else
-constexpr char VersionString[] = "VERSION 1.5.2 PRE-RELEASE";
+constexpr char VersionString[] = "VERSION 1.6 PRE-RELEASE";
 #endif
 
 //Generelles
