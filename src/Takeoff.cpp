@@ -132,10 +132,12 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
+#ifdef TEST
     if (!run_regression()) {
         hprintf("Regression test failed!");
         return 1;
     }
+#endif
 
 	theApp.InitInstance(argc, argv);
 
