@@ -847,7 +847,7 @@ bool RAKNetNetwork::JoinSession(const SBStr &session, SBStr nickname) {
 
     RAKSessionInfo *info = new RAKSessionInfo();
 
-    strcpy_s(info->sessionName, session.c_str());
+    strcpy(info->sessionName, session.c_str());
     info->address = mRoomCallbacks->joinedRoom.roomDescriptor.roomMemberList[0].guid;
 
     mSessionInfo = info;

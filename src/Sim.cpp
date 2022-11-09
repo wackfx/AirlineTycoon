@@ -2830,18 +2830,16 @@ CPlane SIM::CreateRandomUsedPlane(SLONG seed) const {
 
     rnd.SRand((Date + seed) * 0x504020 + static_cast<ULONG>(StartTime));
 
+    // Get Random Time: Now > Desired Time > Release Year
 
-	//Get Random Time: Now > Desired Time > Release Year
-
-	auto t = time(nullptr);
-	tm currentTime{};
-	localtime_s(  &currentTime, &t);
-	const int thisYear = currentTime.tm_year + 1900;
+    auto t = time(nullptr);
+    tm *currentTime = localtime(&t);
+    const int thisYear = currentTime->tm_year + 1900;
 
     CPlane usedPlane = CPlane(PlaneNames.GetUnused(&rnd), PlaneTypes.GetRandomExistingType(&rnd), 100, 0);
 
-    if(thisYear < usedPlane.ptErstbaujahr) {
-	    TeakLibW_Exception(FNL, "Tried to add used plane that was built before this year (%d < %d)", thisYear, usedPlane.ptErstbaujahr);
+    if (thisYear < usedPlane.ptErstbaujahr) {
+        TeakLibW_Exception(FNL, "Tried to add used plane that was built before this year (%d < %d)", thisYear, usedPlane.ptErstbaujahr);
     }
 
     usedPlane.Baujahr = thisYear - rnd.Rand(thisYear - usedPlane.ptErstbaujahr);
