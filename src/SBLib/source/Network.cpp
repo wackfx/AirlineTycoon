@@ -294,7 +294,7 @@ SBList<SBNetworkPlayer> *SBNetwork::GetAllPlayers() { return &mPlayers; }
 
 #ifdef RAKNET_NETWORK
 
-#define AT_Log(a, ...) AT_Log_I("SBNetwork", a, __VA_ARGS__)
+#define AT_Log(...) AT_Log_I("SBNetwork", __VA_ARGS__)
 
 SBNetwork::SBNetwork(bool) : mState(SBNETWORK_IDLE), mType() {
 

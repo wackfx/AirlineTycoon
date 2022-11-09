@@ -10,7 +10,7 @@
 #include "RAKNetRoomCallbacks.hpp"
 
 using namespace RakNet;
-#define AT_Log(a, ...) AT_Log_I("RAKNetNetwork", a, __VA_ARGS__)
+#define AT_Log(...) AT_Log_I("RAKNetNetwork", __VA_ARGS__)
 
 void SerializePacket(ATPacket *p, BitStream *data) {
     data->Write(p->messageType);
