@@ -138,8 +138,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 #endif
-
-	theApp.InitInstance(argc, argv);
+    try {
+        theApp.InitInstance(argc, argv);
+    } catch (TeakLibException &e) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "AT - Exception", e.what(), nullptr);
+        throw;
+    }
 
 #ifdef SENTRY
     if (!disableSentry) {
