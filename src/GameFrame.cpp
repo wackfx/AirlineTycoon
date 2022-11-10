@@ -250,7 +250,7 @@ GameFrame::GameFrame() {
     }
 
     if (h == nullptr) {
-        MyMessageBox("ERROR", "CreateWindow failed");
+        SimpleMessageBox(MESSAGEBOX_ERROR, "ERROR", "CreateWindow failed");
         return;
     }
     SDL_ShowWindow(h);
