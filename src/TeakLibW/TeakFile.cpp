@@ -220,7 +220,20 @@ BOOL DoesFileExist(char const *path) {
         return 1;
     }
 #ifdef _DEBUG
-    hprintf("TeakFile.cpp: File not found: %s", path);
+    AT_Log_Generic("TeakFile.cpp: File not found: %s", path);
+#endif
+    return 0;
+}
+
+BOOL DoesDirectoryExist(char const *path) {
+    struct stat info{};
+
+    if (stat(path, &info) == 0 && (info.st_mode & S_IFMT) == S_IFDIR) {
+        return 1;
+    }
+
+#ifdef _DEBUG
+    AT_Log_Generic("TeakFile.cpp: File not found: %s", path);
 #endif
     return 0;
 }
