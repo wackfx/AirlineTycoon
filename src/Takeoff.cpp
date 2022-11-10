@@ -44,6 +44,7 @@
 
 #include "AtNet.h"
 #include "SbLib.h"
+class TeakLibException;
 extern SBNetwork gNetwork;
 
 #include <filesystem>
@@ -114,14 +115,19 @@ int main(int argc, char *argv[]) {
         srand(time(nullptr));
         int crashId = rand() % 1000 + rand() % 1000 * 1000;
 
-        sentry_options_set_on_crash(options, [](const sentry_ucontext_t* uctx, sentry_value_t event, void* closure) {
+        sentry_options_set_on_crash(
+            options,
+            [](const sentry_ucontext_t *uctx, sentry_value_t event, void *closure) -> sentry_value_t {
             const std::string id = std::to_string(*(int*)closure);
-            const std::string msg = std::string("Airline Tycoon experienced an unexpected exception\nCrash information is being send to sentry...\nCustom Crash ID is: ") + id;
+            const std::string msg = std::string("Airline Tycoon experienced an unexpected exception\nPress OK to send crash information to sentry\nPress Abort to not send the crash to sentry\n\nCustom Crash ID is: ") + id;
             AT_Log_I("CRASH", msg);
-            std::filesystem::copy_file("debug.txt", std::string("crash-") + id + std::string(".txt"));
-            MessageBoxA(nullptr, msg.c_str(), "Airline Tycoon Deluxe Crash Handler", MB_OK);
+            std::filesystem::copy_file("debug.txt", "crash-" + id + ".txt");
+            if (AbortMessageBox(MESSAGEBOX_ERROR, "Airline Tycoon Deluxe Crash Handler", msg.c_str(), nullptr)) {
+                return sentry_value_new_null(); // Skip
+            }
+            
             return event;
-            }, &crashId);
+        }, &crashId);
         sentry_init(options);
 
         const sentry_value_t crumbId = sentry_value_new_breadcrumb("default", "");
