@@ -179,3 +179,4 @@ Misc:
 * Use player colors when showing routes on laptop
 * Buy kerosene by clicking price chart
 * Change tooltip of savegames (number of days played)
+* Decryption of data files with the run argument "/savedata"
