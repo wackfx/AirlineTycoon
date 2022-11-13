@@ -1,5 +1,8 @@
 #include "StdAfx.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #define AT_Log(...) AT_Log_I("TeakFile", __VA_ARGS__)
 
 const char *ExcOpen = "Can't open %s!";
