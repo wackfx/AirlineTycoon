@@ -572,7 +572,7 @@ void BLOCK::LinkeSeiteIndex(XY TitleArea, XY ClientArea) {
             Bitmap.PrintAt(Table.Values[3 + c * Table.AnzColums], *f, TEC_FONT_LEFT, ClientArea + XY(0, (c - Page) * 26 + 10), Bitmap.Size);
 
             // Add additional information to plane list
-            for (SLONG i = 0, d = 0; i < (SLONG)qPlayer.Planes.AnzEntries(); i++) {
+            for (SLONG i = 0; i < (SLONG)qPlayer.Planes.AnzEntries(); i++) {
                 if (qPlayer.Planes.IsInAlbum(i)) {
                     CPlane &qPlane = qPlayer.Planes[i];
 
