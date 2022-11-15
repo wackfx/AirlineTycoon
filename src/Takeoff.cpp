@@ -2250,7 +2250,7 @@ void CTakeOffApp::LadeWeitereStandardTexte() {
 
     StandardTexte.UpdateText(TOKEN_EXPERT, 3404, "E::OrdersD::Auftr\xE4ge");
     StandardTexte.AddText(TOKEN_EXPERT, 10000, "E::Kerosine for planeD::Kerosinkauf Flugzeug");
-    StandardTexte.AddText(TOKEN_EXPERT, 10001, "E::Kerosine for stock::Kerosinkauf Vorrat");
+    StandardTexte.AddText(TOKEN_EXPERT, 10001, "E::Kerosine for stockD::Kerosinkauf Vorrat");
     StandardTexte.AddText(TOKEN_EXPERT, 10002, "E::Meals for passengersD::Essen f\xFCr Passagiere");
     StandardTexte.AddText(TOKEN_EXPERT, 10003, "E::Plane rework\r\ncargo/passengersD::Flugzeugumr\xFCstung\r\nFracht/Passagiere");
     StandardTexte.AddText(TOKEN_EXPERT, 10004, "E::Current loansD::Aktuelle Kredite");
