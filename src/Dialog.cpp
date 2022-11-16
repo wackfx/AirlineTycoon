@@ -1319,7 +1319,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].NumAuftraege > Sim.Players.Players[d].NumAuftraege) {
                             d = c;
@@ -1464,7 +1464,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].NumPassengers > Sim.Players.Players[d].NumPassengers) {
                             d = c;
@@ -1560,7 +1560,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].Gewinn > Sim.Players.Players[d].Gewinn) {
                             d = c;
@@ -1654,7 +1654,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].ConnectFlags > Sim.Players.Players[d].ConnectFlags) {
                             d = c;
@@ -1755,7 +1755,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].Image > Sim.Players.Players[d].Image) {
                             d = c;
@@ -1849,7 +1849,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || GetAnzBits(Sim.Players.Players[c].RocketFlags) > GetAnzBits(Sim.Players.Players[d].RocketFlags)) {
                             d = c;
@@ -1935,7 +1935,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() < Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2021,7 +2021,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].NumFracht > Sim.Players.Players[d].NumFracht) {
                             d = c;
@@ -2106,7 +2106,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].NumFrachtFree > Sim.Players.Players[d].NumFrachtFree) {
                             d = c;
@@ -2191,7 +2191,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].NumMiles > Sim.Players.Players[d].NumMiles) {
                             d = c;
@@ -2276,7 +2276,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2363,7 +2363,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2450,7 +2450,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2537,7 +2537,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2623,7 +2623,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2710,7 +2710,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2789,7 +2789,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -2875,7 +2875,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (Sim.Players.Players[c].HasWon() != 0) {
                             bAnywon = true;
@@ -2965,7 +2965,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (Sim.Players.Players[c].HasWon() != 0) {
                             bAnywon = true;
@@ -3055,7 +3055,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (Sim.Players.Players[c].HasWon() != 0) {
                             bAnywon = true;
@@ -3143,7 +3143,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -3227,7 +3227,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -3315,7 +3315,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (Sim.Players.Players[c].HasWon() != 0) {
                             bAnywon = true;
@@ -3403,7 +3403,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -3487,7 +3487,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
@@ -3571,7 +3571,7 @@ BOOL CStdRaum::PreLButtonDown(CPoint point) {
                 SLONG c = 0;
                 SLONG d = -1;
 
-                for (c = d = 0; c < Sim.Players.Players.AnzEntries(); c++) {
+                for (c = 0; c < Sim.Players.Players.AnzEntries(); c++) {
                     if (Sim.Players.Players[c].IsOut == 0) {
                         if (d == -1 || Sim.Players.Players[c].GetMissionRating() > Sim.Players.Players[d].GetMissionRating()) {
                             d = c;
