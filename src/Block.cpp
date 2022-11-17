@@ -609,8 +609,7 @@ void BLOCK::LinkeSeiteIndex(XY TitleArea, XY ClientArea) {
         }
         break;
     default:
-        hprintf("Block.cpp: Default case should not be reached.");
-        DebugBreak();
+        break;
     }
 }
 
@@ -1676,8 +1675,7 @@ void BLOCK::RefreshData(SLONG PlayerNum) {
         }
         break;
     default:
-        hprintf("Block.cpp: Default case should not be reached.");
-        DebugBreak();
+        break;
     }
 
     switch (BlockTypeB) {
@@ -1696,8 +1694,7 @@ void BLOCK::RefreshData(SLONG PlayerNum) {
         TableB.FillWithFracht(&Sim.Players.Players[PlayerNum].Frachten);
         break;
     default:
-        hprintf("Block.cpp: Default case should not be reached.");
-        DebugBreak();
+        break;
     }
 
     UpdatePageSize();
