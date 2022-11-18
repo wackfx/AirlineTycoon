@@ -2287,8 +2287,8 @@ void CTakeOffApp::LadeWeitereStandardTexte() {
     StandardTexte.AddText(TOKEN_EXPERT, 10031, "E::Buying of routesD::Kauf von Routen");
     StandardTexte.AddText(TOKEN_EXPERT, 10032, "E::Buying of gatesD::Kauf von Gates");
     StandardTexte.AddText(TOKEN_EXPERT, 10033, "E::Kerosene tanksD::Kerosintanks");
-    StandardTexte.AddText(TOKEN_EXPERT, 10034, "E::Branch office\r\nrental feesD::Mieten für\r\nNiederlassungen");
-    StandardTexte.AddText(TOKEN_EXPERT, 10035, "E::Route rental feesD::Mieten für Routen");
+    StandardTexte.AddText(TOKEN_EXPERT, 10034, "E::Branch office\r\nrental feesD::Mieten f\xFCr\r\nNiederlassungen");
+    StandardTexte.AddText(TOKEN_EXPERT, 10035, "E::Route rental feesD::Mieten f\xFCr Routen");
     StandardTexte.AddText(TOKEN_EXPERT, 10036, "E::Credit interestD::HabenZinsen");
     StandardTexte.AddText(TOKEN_EXPERT, 10037, "E::Debit interestD::SollZinsen");
     StandardTexte.AddText(TOKEN_EXPERT, 10038, "E::Dividend receivedD::Dividende erhalten");
