@@ -418,6 +418,8 @@ BOOL CTakeOffApp::InitInstance(int argc, char *argv[]) {
             if (pRoomLib == nullptr && pRoomLib2 == nullptr) {
                 throw;
             }
+
+            e.caught();
             //title2.gli is not present in every installation of ATD
         }
 
