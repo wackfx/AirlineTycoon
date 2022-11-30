@@ -2832,8 +2832,8 @@ CPlane SIM::CreateRandomUsedPlane(SLONG seed) const {
 
     // Get Random Time: Now > Desired Time > Release Year
 
-    auto t = time(nullptr);
-    tm *currentTime = localtime(&t);
+    const time_t t = time(nullptr);
+    const tm *currentTime = localtime(&t);
     const int thisYear = currentTime->tm_year + 1900;
 
     CPlane usedPlane = CPlane(PlaneNames.GetUnused(&rnd), PlaneTypes.GetRandomExistingType(&rnd), 100, 0);
@@ -2842,7 +2842,11 @@ CPlane SIM::CreateRandomUsedPlane(SLONG seed) const {
         TeakLibW_Exception(FNL, "Tried to add used plane that was built before this year (%d < %d)", thisYear, usedPlane.ptErstbaujahr);
     }
 
-    usedPlane.Baujahr = thisYear - rnd.Rand(thisYear - usedPlane.ptErstbaujahr);
+    if (thisYear == usedPlane.ptErstbaujahr) {
+        usedPlane.Baujahr = thisYear; //fallback for when the plane is brand new
+    } else {
+        usedPlane.Baujahr = thisYear - rnd.Rand(thisYear - usedPlane.ptErstbaujahr);
+    }
     usedPlane.Zustand = static_cast<UBYTE>(usedPlane.Baujahr - usedPlane.ptErstbaujahr + 25 + rnd.Rand(40) - 20);
     usedPlane.Zustand = static_cast<UBYTE>(max(20, min(usedPlane.Zustand, 100)));
     usedPlane.TargetZustand = usedPlane.Zustand;
