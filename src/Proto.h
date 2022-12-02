@@ -103,7 +103,7 @@ void DebugBreak(void);
 DWORD AtGetTime(void);
 SLONG AtGetAsyncKeyState(SLONG vKey);
 DWORD AtGetTickCount(void);
-const char* getRobotActionName(SLONG a);
+SLONG GetCurrentYear();
 CString getCurrentDayString();
 
 //--------------------------------------------------------------------------------------------

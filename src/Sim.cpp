@@ -2832,9 +2832,7 @@ CPlane SIM::CreateRandomUsedPlane(SLONG seed) const {
 
     // Get Random Time: Now > Desired Time > Release Year
 
-    const time_t t = time(nullptr);
-    const tm *currentTime = localtime(&t);
-    const int thisYear = currentTime->tm_year + 1900;
+    const SLONG thisYear = GetCurrentYear();
 
     CPlane usedPlane = CPlane(PlaneNames.GetUnused(&rnd), PlaneTypes.GetRandomExistingType(&rnd), 100, 0);
 
