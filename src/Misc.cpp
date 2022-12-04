@@ -1879,6 +1879,11 @@ UWORD TEAKRAND::Rand() {
 // Zufallszahl aus dem Intervall [0..Max]
 //--------------------------------------------------------------------------------------------
 UWORD TEAKRAND::Rand(SLONG Max) {
+    if (Max == 0) {
+        AT_Log_I("RAND", "0 used as Rand(m) argument");
+        return 0;
+    }
+        
     if (this == pSurvisedRandom1 || this == pSurvisedRandom2) {
         CheckEventSync(-Sim.TimeSlice);
         CheckEventSync(Max);
