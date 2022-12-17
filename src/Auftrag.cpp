@@ -203,7 +203,7 @@ CAuftrag::CAuftrag(char *VonCity, char *NachCity, ULONG Personen, UWORD Date) {
 }
 
 //--------------------------------------------------------------------------------------------
-// Legt Städte fest: (AreaType: 0=Europa-Europa, 1=Region-gleicher Region, 2=alles
+// Legt Städte fest: (AreaType: 0=Region-gleicher Region, 1=Europa-Europa, 2=alles
 //--------------------------------------------------------------------------------------------
 void CAuftrag::RandomCities(SLONG AreaType, SLONG HomeCity, TEAKRAND *pRandom) {
     SLONG TimeOut = 0;
@@ -788,14 +788,13 @@ TEAKFILE &operator>>(TEAKFILE &File, CAuftrag &Auftrag) {
 // Fügt eine Reihe von neuen Aufträgen ein:
 //============================================================================================
 void CAuftraege::FillForLastMinute() {
-    SLONG c = 0;
-
     CalcPlayerMaximums();
 
     ReSize(6); // ex:10
 
+    SLONG c = 0;
     for (auto &a : *this) {
-        a.RefillForLastMinute(c / 2, &Random);
+        a.RefillForLastMinute(c++ / 2, &Random);
     }
 
     if (Sim.Difficulty == DIFF_ATFS10 && Sim.Date >= 20 && Sim.Date <= 30) {
@@ -809,7 +808,6 @@ void CAuftraege::FillForLastMinute() {
 // Fügt einen neuen Auftrag ein:
 //--------------------------------------------------------------------------------------------
 void CAuftraege::RefillForLastMinute(SLONG Minimum) {
-    SLONG c = 0;
     SLONG Anz = min(AnzEntries(), Sim.TickLastMinuteRefill);
 
     NetGenericSync(7000, Minimum);
@@ -820,12 +818,13 @@ void CAuftraege::RefillForLastMinute(SLONG Minimum) {
 
     ReSize(6); // ex:10
 
+    SLONG c = 0;
     for (auto &a : *this) {
         if (Anz <= 0) {
             break;
         }
         if (a.Praemie == 0) {
-            a.RefillForLastMinute(c / 2, &Random);
+            a.RefillForLastMinute(c++ / 2, &Random);
             Anz--;
         }
     }
@@ -839,12 +838,13 @@ void CAuftraege::RefillForLastMinute(SLONG Minimum) {
         }
     }
 
+    c = 0;
     for (auto &a : *this) {
         if (Anz <= 0) {
             break;
         }
         if (a.Praemie == 0 && Minimum > 0) {
-            a.RefillForLastMinute(c / 2, &Random);
+            a.RefillForLastMinute(c++ / 2, &Random);
             Minimum--;
         }
     }
@@ -862,12 +862,12 @@ void CAuftraege::RefillForLastMinute(SLONG Minimum) {
 // Fügt eine Reihe von neuen Aufträgen ein:
 //--------------------------------------------------------------------------------------------
 void CAuftraege::FillForReisebuero() {
-    SLONG c = 0;
 
     CalcPlayerMaximums();
 
     ReSize(6);
 
+    SLONG c = 0;
     for (auto &a : *this) {
         if (Sim.Date < 5 && c < 5) {
             a.RefillForAusland(4, Sim.HomeAirportId, &Random);
@@ -876,6 +876,8 @@ void CAuftraege::FillForReisebuero() {
         } else {
             a.RefillForAusland(c / 2, Sim.HomeAirportId, &Random);
         }
+
+        c++;
     }
 
     if (Sim.Difficulty == DIFF_ATFS10 && Sim.Date >= 20 && Sim.Date <= 30) {
@@ -889,7 +891,6 @@ void CAuftraege::FillForReisebuero() {
 // Fügt einen neuen Auftrag ein:
 //--------------------------------------------------------------------------------------------
 void CAuftraege::RefillForReisebuero(SLONG Minimum) {
-    SLONG c = 0;
     SLONG Anz = min(AnzEntries(), Sim.TickReisebueroRefill);
 
     // NetGenericSync (8000, Minimum);
@@ -899,6 +900,7 @@ void CAuftraege::RefillForReisebuero(SLONG Minimum) {
 
     ReSize(6);
 
+    SLONG c = 0;
     for (auto &a : *this) {
         if (Anz <= 0) {
             break;
@@ -914,6 +916,8 @@ void CAuftraege::RefillForReisebuero(SLONG Minimum) {
 
             Anz--;
         }
+
+        c++;
     }
 
     for (auto &a : *this) {
@@ -925,6 +929,7 @@ void CAuftraege::RefillForReisebuero(SLONG Minimum) {
         }
     }
 
+    c = 0;
     for (auto &a : *this) {
         if (Anz <= 0) {
             break;
@@ -940,6 +945,8 @@ void CAuftraege::RefillForReisebuero(SLONG Minimum) {
 
             Minimum--;
         }
+
+        c++;
     }
 
     Sim.TickReisebueroRefill = 0;
@@ -955,12 +962,12 @@ void CAuftraege::RefillForReisebuero(SLONG Minimum) {
 // Fügt eine Reihe von neuen Aufträgen ein:
 //--------------------------------------------------------------------------------------------
 void CAuftraege::FillForAusland(SLONG CityNum) {
-    SLONG c = 0;
 
     CalcPlayerMaximums();
 
     ReSize(6); // ex:10
 
+    SLONG c = 0;
     for (auto &a : *this) {
         if (Sim.Date < 5 && c < 5) {
             a.RefillForAusland(4, CityNum, &Random);
@@ -969,6 +976,8 @@ void CAuftraege::FillForAusland(SLONG CityNum) {
         } else {
             a.RefillForAusland(c / 2, CityNum, &Random);
         }
+
+        c++;
     }
 }
 
@@ -976,13 +985,13 @@ void CAuftraege::FillForAusland(SLONG CityNum) {
 // Fügt einen neuen Auftrag ein:
 //--------------------------------------------------------------------------------------------
 void CAuftraege::RefillForAusland(SLONG CityNum, SLONG Minimum) {
-    SLONG c = 0;
     SLONG Anz = min(AnzEntries(), AuslandsRefill[CityNum]);
 
     CalcPlayerMaximums();
 
     ReSize(6);
 
+    SLONG c = 0;
     for (auto &a : *this) {
         if (Anz <= 0) {
             break;
@@ -998,6 +1007,8 @@ void CAuftraege::RefillForAusland(SLONG CityNum, SLONG Minimum) {
 
             Anz--;
         }
+
+        c++;
     }
 
     for (auto &a : *this) {
@@ -1009,6 +1020,7 @@ void CAuftraege::RefillForAusland(SLONG CityNum, SLONG Minimum) {
         }
     }
 
+    c = 0;
     for (auto &a : *this) {
         if (Anz <= 0) {
             break;
@@ -1024,6 +1036,8 @@ void CAuftraege::RefillForAusland(SLONG CityNum, SLONG Minimum) {
 
             Minimum--;
         }
+
+        c++;
     }
 
     AuslandsRefill[CityNum] = 0;
@@ -1033,10 +1047,9 @@ void CAuftraege::RefillForAusland(SLONG CityNum, SLONG Minimum) {
 // Returns the number of open Order flights which are due today:
 //--------------------------------------------------------------------------------------------
 SLONG CAuftraege::GetNumDueToday() {
-    SLONG c = 0;
     SLONG Anz = 0;
 
-    for (c = 0; c < AnzEntries(); c++) {
+    for (SLONG c = 0; c < AnzEntries(); c++) {
         if ((IsInAlbum(c) != 0) && at(c).BisDate >= Sim.Date) {
             if (at(c).InPlan == 0 && at(c).BisDate == Sim.Date) {
                 Anz++;
@@ -1051,10 +1064,9 @@ SLONG CAuftraege::GetNumDueToday() {
 // Returns the number of open Order flights which still need to be done:
 //--------------------------------------------------------------------------------------------
 SLONG CAuftraege::GetNumOpen() {
-    SLONG c = 0;
     SLONG Anz = 0;
 
-    for (c = 0; c < AnzEntries(); c++) {
+    for (SLONG c = 0; c < AnzEntries(); c++) {
         if ((IsInAlbum(c) != 0) && at(c).BisDate >= Sim.Date) {
             if (at(c).InPlan == 0) {
                 Anz++;
