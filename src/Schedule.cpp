@@ -939,12 +939,13 @@ void CFlugplanEintrag::BookFlight(CPlane *Plane, SLONG PlayerNum) {
 
     // Flugzeugabnutzung verbuchen:
     auto faktorDistanz = (1 + Cities.CalcDistance(VonCity, NachCity) * 10 / 40040174);
-    auto faktorBaujahr = (2015 - Plane->Baujahr);
+    auto faktorBaujahr = (GetCurrentYear() - Plane->Baujahr);
     auto faktorKerosin = 1;
     if (KerosinGesamtQuali > 1.0) {
-        faktorKerosin = 3 * (KerosinGesamtQuali - 1.0) * (KerosinGesamtQuali - 1.0);
+        faktorKerosin = static_cast<int>(3.0 * (KerosinGesamtQuali - 1.0) * (KerosinGesamtQuali - 1.0));
     }
-    Plane->Zustand = UBYTE(Plane->Zustand - faktorDistanz * faktorBaujahr * faktorKerosin / 15);
+
+    Plane->Zustand = static_cast<UBYTE>(Plane->Zustand - faktorDistanz * faktorBaujahr * faktorKerosin / 15);
     if (Plane->Zustand > 200) {
         Plane->Zustand = 0;
     }
