@@ -114,9 +114,9 @@ void DisplayBroadcastMessage(CString str, SLONG FromPlayer) {
         str = Sim.Players.Players[FromPlayer].NameX + ": " + str;
     }
 
-   sy   = gBroadcastBm.TryPrintAt(str, FontSmallBlack, TEC_FONT_LEFT, XY(10, 10), XY(320, 1000));
-   oldy = gBroadcastBm.Size.y;
-   offy = gBroadcastBm.Size.y;
+    sy = gBroadcastBm.TryPrintAt(str.c_str(), FontSmallBlack, TEC_FONT_LEFT, XY(10, 10), XY(320, 1000));
+    oldy = gBroadcastBm.Size.y;
+    offy = gBroadcastBm.Size.y;
 
     if (oldy < 10) {
         oldy = 10;
@@ -158,7 +158,7 @@ void DisplayBroadcastMessage(CString str, SLONG FromPlayer) {
 //                      called normally for half a second
 //--------------------------------------------------------------------------------------------
 void PumpBroadcastBitmap (bool bJustForEmergency) {
-    if (gBroadcastBm.Size.y==0) {
+    if (gBroadcastBm.Size.y == 0) {
       return;
     }
 
