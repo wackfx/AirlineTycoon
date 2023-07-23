@@ -2553,7 +2553,7 @@ class SIM // Die Simulationswelt; alles was zur aktuellen Partie gehört
     SLONG HomeAirportId{}; // Id der Heimatstadt
     COptions Options;
     BUFFER_V<UBYTE> RoomBusy;
-    BUFFER_V<CAirportSmack> AirportSmacks;
+    BUFFER<CAirportSmack> AirportSmacks;
 
   public:
     SIM();
