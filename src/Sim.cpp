@@ -4135,6 +4135,9 @@ void COptions::ReadOptions() {
         if (!reg.ReadRegistryKey_b(OptionKeepAspectRatio)) {
             OptionKeepAspectRatio = 1;
         }
+        if (!reg.ReadRegistryKey_u(OptionTicketPriceIncrement)) {
+            OptionTicketPriceIncrement = 10;
+        }
 
         // Falls Setup nicht geladen wurde dann Standard-Parameter initialisieren
         if (!reg.ReadRegistryKey_b(OptionPlanes)) {
@@ -4378,8 +4381,12 @@ void COptions::WriteOptions() {
 
     CRegistryAccess reg(chRegKey);
 
+    // Modded
     reg.WriteRegistryKey_l(OptionFullscreen);
     reg.WriteRegistryKey_b(OptionKeepAspectRatio);
+    reg.WriteRegistryKey_u(OptionTicketPriceIncrement);
+
+    // Regular
     reg.WriteRegistryKey_b(OptionPlanes);
     reg.WriteRegistryKey_b(OptionPassengers);
     reg.WriteRegistryKey_l(OptionMusicType);
