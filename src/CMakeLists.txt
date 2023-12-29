@@ -1,21 +1,47 @@
-﻿
 project (AT)
+
+add_library(common INTERFACE)
+
+if(MSVC)
+    add_compile_options("/MP")
+    add_compile_options("-m")
+else()
+    target_compile_options(common INTERFACE "-Wall")
+    target_compile_options(common INTERFACE "-Wextra")
+    target_compile_options(common INTERFACE "-Wno-format-nonliteral")
+    target_compile_options(common INTERFACE "-Wno-sign-compare")
+    target_compile_options(common INTERFACE "-Wno-type-limits")
+
+    target_compile_options(common INTERFACE "-Wcast-align")
+    target_compile_options(common INTERFACE "-Wcast-qual")
+    target_compile_options(common INTERFACE "-Wctor-dtor-privacy")
+    target_compile_options(common INTERFACE "-Wdisabled-optimization")
+    target_compile_options(common INTERFACE "-Wfloat-equal")
+    target_compile_options(common INTERFACE "-Wformat=2")
+    target_compile_options(common INTERFACE "-Winit-self")
+    target_compile_options(common INTERFACE "-Winline")
+    target_compile_options(common INTERFACE "-Wlogical-op")
+    target_compile_options(common INTERFACE "-Wmissing-declarations")
+    target_compile_options(common INTERFACE "-Wmissing-include-dirs")
+    target_compile_options(common INTERFACE "-Wnoexcept")
+    #target_compile_options(common INTERFACE "-Wold-style-cast")
+    target_compile_options(common INTERFACE "-Woverloaded-virtual")
+    target_compile_options(common INTERFACE "-Wredundant-decls")
+    #target_compile_options(common INTERFACE "-Wshadow")
+    #target_compile_options(common INTERFACE "-Wsign-conversion")
+    target_compile_options(common INTERFACE "-Wsign-promo")
+    target_compile_options(common INTERFACE "-Wstrict-null-sentinel")
+    target_compile_options(common INTERFACE "-Wstrict-overflow=2")
+    target_compile_options(common INTERFACE "-Wswitch-default")
+    target_compile_options(common INTERFACE "-Wundef")
+    target_compile_options(common INTERFACE "-Wunsafe-loop-optimizations")
+endif()
 
 add_subdirectory (TeakLibW)
 add_subdirectory (SBLib)
 add_subdirectory (SSE)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-if(MSVC)
-    add_compile_options("/Zc:forScope-")
-    add_compile_options("/MP")
-else()
-    add_compile_options("-fno-for-scope")
-    add_compile_options("-fpermissive")
-    add_compile_options("-Wno-conversion-null")
-endif()
-add_compile_options("-m")
 
 # Add source to this project's executable.
 add_executable (AT
@@ -35,7 +61,7 @@ add_executable (AT
     Block.cpp
     Brick.cpp
     Checkup.cpp
-    Colorfx.cpp
+    ColorFx.cpp
     Credits.cpp
     DeltaVid.cpp
     Designer.cpp
@@ -43,7 +69,7 @@ add_executable (AT
     DutyFree.cpp
     Editor.cpp
     Fracht.cpp
-    Gameframe.cpp
+    GameFrame.cpp
     Global.cpp
     Globe.cpp
     HalldiskMenu.cpp
@@ -60,8 +86,9 @@ add_executable (AT
     Misc.cpp
     Museum.cpp
     Nasa.cpp
-    NewgamePopup.cpp
+    NewGamePopup.cpp
     Options.cpp
+    CVideo.cpp
     Outro.cpp
     Person.cpp
     Personal.cpp
@@ -70,27 +97,25 @@ add_executable (AT
     PlanProp.cpp
     Player.cpp
     PNet.cpp
-    Protect.cpp
-    reise.cpp
+    Reise.cpp
     Ricks.cpp
     RouteBox.cpp
     Rushmore.cpp
-    sabotage.cpp
-    SBBM.cpp
+    Sabotage.cpp
+    Sbbm.cpp
     Schedule.cpp
     Security.cpp
-    SecurityManager.cpp
     Sim.cpp
-    Smackprs.cpp
+    SmackPrs.cpp
     Sound.cpp
     Statistk.cpp
     StdAfx.cpp
-    Stdraum.cpp
+    StdRaum.cpp
     Synthese.cpp
     Tafel.cpp
     Takeoff.cpp
     Talker.cpp
-    Titlepopup.cpp
+    TitlePopup.cpp
     WeltAll.cpp
     Werbung.cpp
     Werkstat.cpp
@@ -116,15 +141,17 @@ if(MSVC)
 endif()
 
 if(NOT ${CMAKE_VERSION} VERSION_LESS "3.16.0")
-    target_precompile_headers(AT PUBLIC Stdafx.h)
+    target_precompile_headers(AT PUBLIC StdAfx.h)
 endif()
 
-target_link_libraries(AT
+target_link_libraries(AT PRIVATE
+    common
     TeakLibW
     SSE
     SBLib
     libsmacker
     enet
+    jansson
     SDL2::SDL2_ttf
     SDL2::SDL2_image
     SDL2::SDL2_mixer
@@ -133,11 +160,51 @@ target_link_libraries(AT
 )
 
 if (WIN32)
-  target_link_libraries(AT ws2_32 Winmm)
+    target_link_libraries(AT PRIVATE ws2_32 Winmm)
+
+    # Copy external deps into our target folder
+    add_custom_command(
+        TARGET AT PRE_LINK
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_BINARY_DIR}/dependencies"
+        "$<TARGET_FILE_DIR:AT>"
+        COMMENT "Copying dependencies to $<TARGET_FILE_DIR:AT>"
+    )
 endif()
 
-add_custom_command(TARGET AT POST_BUILD 
-  COMMAND "${CMAKE_COMMAND}" -E copy 
-     "$<TARGET_FILE:AT>"
-     "BUILD/$<TARGET_FILE_NAME:AT>" 
-  COMMENT "Copying to output directory")
+# Does our src folder contains a "gamefiles" folder ? Copy it.
+if(EXISTS ${GAMEFILES_FOLDER} AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Cleanup unusued files
+    add_custom_command(
+        TARGET AT PRE_LINK
+        COMMENT "Cleaning up gamefolder"
+        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_MODULE_PATH}/cleanup_folder.cmake" "${GAMEFILES_FOLDER}"
+    )
+    add_custom_command(
+        TARGET AT PRE_LINK
+        COMMENT "Copying gamefiles to ${CMAKE_BUILD_TYPE} directory"
+        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_MODULE_PATH}/copy_if_different.cmake" "${GAMEFILES_FOLDER}" "$<TARGET_FILE_DIR:AT>"
+    )
+endif()
+
+# Copy patched assets into target
+add_custom_command(
+    TARGET AT PRE_LINK
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_MODULE_PATH}/copy_if_different.cmake" "${PATCH_FOLDER}" "$<TARGET_FILE_DIR:AT>/patch"
+    COMMENT "Copying patches to ${CMAKE_BUILD_TYPE} directory"
+)
+
+# Compile patched assets with the freshly build executable
+add_custom_command(
+    TARGET AT POST_BUILD
+    COMMAND $<TARGET_FILE:AT> /update-patched-files-only
+    COMMENT "Compiling patched assets"
+    WORKING_DIRECTORY "$<TARGET_FILE_DIR:AT>"
+)
+
+# Clean up patched assets from folder
+add_custom_command(
+    TARGET AT POST_BUILD
+    COMMENT "Cleaning up patch folder"
+    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_MODULE_PATH}/cleanup_folder.cmake" "$<TARGET_FILE_DIR:AT>/patch" ".txt"
+)
